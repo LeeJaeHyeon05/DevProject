@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "23567264223",
+    "project_id": "deverence-2022",
+    "storage_bucket": "deverence-2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23567264223:android:e653694e4c7a63ca3d7c6a",
+        "android_client_info": {
+          "package_name": "com.example.devproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23567264223-lmq57somvdgr8uj1fl5h6ck4eeuiine7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.devproject",
+            "certificate_hash": "648c50c80a2f8bd2db1ea8ce832124ccc66ba49e"
+          }
+        },
+        {
+          "client_id": "23567264223-eopgt9cb21cle5m1anl75fjhgdndlk9j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyZoZkdmoAVFrax7QyR2rS8HkDkHWnrpE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "23567264223-eopgt9cb21cle5m1anl75fjhgdndlk9j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
