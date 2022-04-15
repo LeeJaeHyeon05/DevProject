@@ -10,10 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DevProject">
         <activity
-            android:name=".SignUpAcitivty"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SignUpAcitivty"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
