@@ -7,10 +7,7 @@ buildscript {
     dependencies {
         // Add this line
         classpath 'com.google.gms:google-services:4.3.10'
-<<<<<<< HEAD
-=======
 
->>>>>>> b71afdd (-Add firebase key)
     }
 }
 
@@ -22,10 +19,6 @@ plugins {
 }
 
 allprojects {
-<<<<<<< HEAD
-=======
-
->>>>>>> b71afdd (-Add firebase key)
     repositories {
         // Check that you have the following line (if not, add it):
         google()  // Google's Maven repository
