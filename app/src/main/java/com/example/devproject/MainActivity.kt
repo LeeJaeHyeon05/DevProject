@@ -5,6 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.widget.Button
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import java.io.File
 import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
@@ -15,6 +19,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        DataHandler.load()
+        UIHandler.allocateUI(window.decorView.rootView)
+        UIHandler.activateUI(R.id.conferRecyclerView)
 
         someFunction()
         someLamdaFunction.invoke()

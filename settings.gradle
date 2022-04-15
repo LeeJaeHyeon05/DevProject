@@ -6,9 +6,7 @@ pluginManagement {
     }
 }
 
-<<<<<<< HEAD
+
 rootProject.name = "DevProject"
-=======
-rootProject.name = "dev project"
->>>>>>> b71afdd (-Add firebase key)
+
 include ':app'
