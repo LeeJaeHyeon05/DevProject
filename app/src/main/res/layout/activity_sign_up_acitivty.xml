@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.31" />
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/GuidelineBottom"
@@ -63,17 +63,19 @@
         style="@style/TextInputLayoutStyle"
         android:id="@+id/TextLayoutId"
         android:layout_width="0dp"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
+        app:helperTextEnabled="true"
+        app:helperTextTextColor="@color/textInputErrorColor"
         app:layout_constraintStart_toStartOf="@id/GuidelineLeft"
         app:layout_constraintEnd_toEndOf="@id/GuidelineRight"
         app:layout_constraintTop_toTopOf="@id/GuidelineTop">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             style="@style/TextInputEditTextStyle"
             android:id="@+id/TvFieldInputId"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="아이디 입력" />
+            android:layout_height="match_parent"
+            android:hint="아이디 입력"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -81,13 +83,15 @@
         android:id="@+id/TextLayoutEmail"
         android:layout_marginTop="20dp"
         android:layout_width="0dp"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:gravity="top"
+        app:helperTextEnabled="true"
+        app:helperTextTextColor="@color/textInputErrorColor"
         app:layout_constraintStart_toStartOf="@id/GuidelineLeft"
         app:layout_constraintEnd_toEndOf="@id/GuidelineRight"
         app:layout_constraintTop_toBottomOf="@id/TextLayoutId">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             style="@style/TextInputEditTextStyle"
             android:id="@+id/TvFieldInputEmail"
             android:layout_width="match_parent"
@@ -102,13 +106,20 @@
         android:id="@+id/TextLayoutPassword"
         android:layout_marginTop="20dp"
         android:layout_width="0dp"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        app:helperTextEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
+        app:counterTextColor="@color/textInputErrorColor"
+        app:helperTextTextColor="@color/textInputErrorColor"
         app:layout_constraintStart_toStartOf="@id/GuidelineLeft"
         app:layout_constraintEnd_toEndOf="@id/GuidelineRight"
         app:layout_constraintTop_toBottomOf="@id/TextLayoutEmail">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             style="@style/TextInputEditTextStyle"
+            android:inputType="textPassword"
             android:id="@+id/TvFieldInputPassword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -121,14 +132,21 @@
         android:id="@+id/TextLayoutPasswordConfirm"
         android:layout_marginTop="20dp"
         android:layout_width="0dp"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        app:helperTextEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
+        app:counterTextColor="@color/textInputErrorColor"
+        app:helperTextTextColor="@color/textInputErrorColor"
         app:layout_constraintStart_toStartOf="@id/GuidelineLeft"
         app:layout_constraintEnd_toEndOf="@id/GuidelineRight"
         app:layout_constraintTop_toBottomOf="@id/TextLayoutPassword">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             style="@style/TextInputEditTextStyle"
             android:id="@+id/TvFieldInputPasswordConfirm"
+            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="비밀번호 재입력"
@@ -137,7 +155,7 @@
 
     <Button
         android:id="@+id/BtnSinUp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="100dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="가입하기"
