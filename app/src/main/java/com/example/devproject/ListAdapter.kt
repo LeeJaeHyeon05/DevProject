@@ -1,6 +1,7 @@
 package com.example.devproject
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +17,11 @@ class ListAdapter(val imageDataSet : MutableList<Array<File>>,
     private var context : Context? = null
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val conferImageView : ImageView = view.findViewById(R.id.conferImageView)
-        val conferTitleTextVIew : TextView = view.findViewById(R.id.conferTitleTextView)
-        val conferDateTextView : TextView = view.findViewById(R.id.conferDateTextView)
-        val conferContentTextView : TextView = view.findViewById(R.id.conferContentTextView)
-        val conferCardView: CardView = view.findViewById(R.id.conferCardView)
+        val conferPreImageView : ImageView = view.findViewById(R.id.conferPreImageView)
+        val conferPreTitleTextVIew : TextView = view.findViewById(R.id.conferPreTitleTextView)
+        val conferPreDateTextView : TextView = view.findViewById(R.id.conferPreDateTextView)
+        val conferPreContentTextView : TextView = view.findViewById(R.id.conferPreContentTextView)
+        val conferPreCardView: CardView = view.findViewById(R.id.conferPreCardView)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ListAdapter.ViewHolder {
@@ -33,11 +34,17 @@ class ListAdapter(val imageDataSet : MutableList<Array<File>>,
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         //Binding Image & Text data Set trough firebase
-        viewHolder.conferImageView.setImageResource(R.drawable.ic_launcher_foreground)
-        viewHolder.conferTitleTextVIew.text = textDataSet[position][0]
-        viewHolder.conferDateTextView.text = textDataSet[position][1]
-        viewHolder.conferContentTextView.text = textDataSet[position][2]
-        viewHolder.conferCardView.setOnLongClickListener {
+        viewHolder.conferPreImageView.setImageResource(R.drawable.ic_launcher_foreground)
+        viewHolder.conferPreTitleTextVIew.text = textDataSet[position][0]
+        viewHolder.conferPreDateTextView.text = textDataSet[position][1]
+        viewHolder.conferPreContentTextView.text = textDataSet[position][2]
+        viewHolder.conferPreCardView.setOnClickListener {
+            val intent = Intent(UIHandler?.rootView?.context, DetailPageActivity::class.java)
+            intent.putExtra("position", position)
+            UIHandler?.rootView?.context?.startActivity(intent)
+
+        }
+        viewHolder.conferPreCardView.setOnLongClickListener {
             //TO DO Somethinmg
             true
         }
