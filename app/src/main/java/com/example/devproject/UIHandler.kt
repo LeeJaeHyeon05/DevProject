@@ -12,7 +12,7 @@ class UIHandler {
         private var conferAddButton : Button? = null// findViewById<Button>(R.id.addBtn)
         private var conferRecyclerView : RecyclerView? = null//findViewById<RecyclerView>(R.id.conferRecyclerView)
         private var adapter : ListAdapter? = null// ListAdapter(emptyList<Array<File>>().toMutableList(), dummyTextDataSet)
-        private var rootView : View? = null
+        var rootView : View? = null
 
         fun allocateUI(rootView: View) {
             this.rootView = rootView
