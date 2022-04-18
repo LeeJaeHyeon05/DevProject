@@ -10,16 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DevProject">
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".SignUpAcitivty"
-            android:exported="false" />
-        <activity
             android:name=".LoginActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,8 +20,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpAcitivty"
+            android:exported="false" />
+        <activity
             android:name=".DetailPageActivity"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>
