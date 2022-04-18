@@ -1,6 +1,7 @@
 package com.example.devproject
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -54,6 +55,14 @@ class MainActivity : AppCompatActivity() {
 
         }
         Log.d(TAG, "onCreate: $transformedList")
+
+        addConferences()
+    }
+    private fun addConferences() {
+        val addCon = findViewById<Button>(R.id.conferAddButton)
+        addCon.setOnClickListener {
+            startActivity(Intent(this, addConferencesActivity::class.java))
+        }
     }
 
     fun someFunction(){

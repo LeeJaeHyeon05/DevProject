@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-<<<<<<< HEAD
-<<<<<<< HEAD
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
-=======
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/font/font.xml" value="0.525" />
-        <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/layout/activity_main.xml" value="0.5020833333333333" />
-        <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/layout/activity_sign_up_acitivty.xml" value="0.5" />
+        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/drawable/con_round.xml" value="0.133" />
+        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.133" />
+        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_add_conferences.xml" value="0.25" />
+        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_detail_page.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_login.xml" value="0.22" />
+        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_sign_up_acitivty.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/conference_list_item.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/dialog_find_password.xml" value="0.36614583333333334" />
       </map>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
->>>>>>> def9fa8 (SignUpActivity 생성)
-=======
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
->>>>>>> b71afdd (-Add firebase key)
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
