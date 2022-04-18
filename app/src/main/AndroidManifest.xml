@@ -12,8 +12,12 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
         <activity
             android:name=".SignUpAcitivty"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
