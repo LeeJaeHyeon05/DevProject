@@ -1,6 +1,5 @@
 package com.example.devproject
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,7 +19,6 @@ class SignUpAcitivty : AppCompatActivity() {
 
     lateinit var binding: ActivitySignUpAcitivtyBinding
     private lateinit var  auth: FirebaseAuth
-    private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,13 +26,6 @@ class SignUpAcitivty : AppCompatActivity() {
         binding = ActivitySignUpAcitivtyBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-
-        keyboardVisibilityUtils = KeyboardVisibilityUtils(window,
-            onShowKeyboard = {keyboardHeight ->
-                binding.signUpScrollView.run {
-                    smoothScrollBy(scrollX, scrollY)
-                }
-            })
 
 
         binding.TvFieldInputId.addTextChangedListener(object: TextWatcher{
@@ -155,11 +146,7 @@ class SignUpAcitivty : AppCompatActivity() {
                             Log.d("TAG", "createUserWithEmail:success")
                             val user = auth.currentUser
                             Toast.makeText(this, "회원가입 완료", Toast.LENGTH_SHORT).show()
-
-                            val mIntent = Intent(this, LoginActivity::class.java)
-                            mIntent.putExtra("LoginId", binding.TvFieldInputEmail.text.toString())
-                            mIntent.putExtra("LoginPassword", binding.TvFieldInputPassword.text.toString())
-                            setResult(Activity.RESULT_OK, mIntent)
+                            startActivity(Intent(this, MainActivity::class.java))
                             finish()
                         }
                         else{
