@@ -8,9 +8,16 @@ pluginManagement {
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 rootProject.name = "DevProject"
 
 include ':app'
+=======
+include ':app'
+rootProject.name = "DevProject"
+
+include ':app'
+>>>>>>> parent of ba2163f (Revert "-<<<< HEAD 삭제")
 =======
 include ':app'
 rootProject.name = "DevProject"
