@@ -11,6 +11,16 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <!-- Customize your theme here. --> <!-- 텍스트뷰와 버튼 Jua 폰트 적용 -->
+        <item name="android:textViewStyle">@style/JuaTextView</item>
+        <item name="android:buttonStyle">@style/JuaButton</item>
+    </style>
+
+    <style name = "JuaTextView" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/jua_regular</item>
+    </style>
+
+    <style name = "JuaButton" parent="android:Widget.Button">
+        <item name="android:fontFamily">@font/jua_regular</item>
     </style>
 </resources>
