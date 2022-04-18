@@ -6,11 +6,6 @@ pluginManagement {
     }
 }
 
-
-<<<<<<< HEAD
-include ':app'
-=======
 rootProject.name = "DevProject"
 
 include ':app'
->>>>>>> origin/tmpark2
