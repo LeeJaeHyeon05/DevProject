@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:id="@+id/loginScrollView"
+    tools:context=".LoginActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/titleTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.1"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/titleBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.3"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/loginGuidelineLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.08" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/loginGuidelineRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.92" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/loginGuidelineHorizonMiddle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.36" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/loginGuidelineVerticalMiddle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.45" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/GuidelineAutoLoginTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.57" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/GuidelineAutoLoginBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.64" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deverence"
+            android:textColor="@color/black"
+            android:textSize="70sp"
+            app:layout_constraintBottom_toBottomOf="@id/titleBottom"
+            app:layout_constraintEnd_toEndOf="@id/loginGuidelineRight"
+            app:layout_constraintStart_toStartOf="@id/loginGuidelineLeft"
+            app:layout_constraintTop_toTopOf="@id/titleTop" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/TextInputLayoutStyle"
+            android:id="@+id/TextLayoutLoginId"
+            app:helperTextEnabled="true"
+            app:helperTextTextColor="@color/textInputErrorColor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/loginGuidelineRight"
+            app:layout_constraintStart_toStartOf="@id/loginGuidelineLeft"
+            app:layout_constraintTop_toTopOf="@+id/loginGuidelineHorizonMiddle">
+
+            <EditText
+                style="@style/TextInputEditTextStyle"
+                android:id="@+id/EtLoginId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="이메일 입력"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/TextInputLayoutStyle"
+            android:id="@+id/TextLayoutLoginPassword"
+            app:helperTextEnabled="true"
+            app:helperTextTextColor="@color/textInputErrorColor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/loginGuidelineRight"
+            app:layout_constraintStart_toStartOf="@id/loginGuidelineLeft"
+            app:layout_constraintTop_toBottomOf="@+id/TextLayoutLoginId">
+
+            <EditText
+                style="@style/TextInputEditTextStyle"
+                android:inputType="textPassword"
+                android:id="@+id/EtLoginPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="비밀번호 입력"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/CheckboxAutoLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            app:layout_constraintStart_toStartOf="@id/loginGuidelineLeft"
+            app:layout_constraintEnd_toStartOf="@id/TvAutoLogin"
+            app:layout_constraintTop_toTopOf="@id/GuidelineAutoLoginTop"
+            app:layout_constraintBottom_toBottomOf="@id/GuidelineAutoLoginBottom" />
+
+        <TextView
+            android:id="@+id/TvAutoLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="자동로그인"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@id/CheckboxAutoLogin"
+            app:layout_constraintEnd_toEndOf="@id/loginGuidelineVerticalMiddle"
+            app:layout_constraintTop_toTopOf="@id/GuidelineAutoLoginTop"
+            app:layout_constraintBottom_toBottomOf="@id/GuidelineAutoLoginBottom" />
+
+        <Button
+            android:id="@+id/BtnSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="회원가입"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/jua_regular"
+            android:backgroundTint="@color/white"
+            app:layout_constraintStart_toStartOf="@id/loginGuidelineVerticalMiddle"
+            app:layout_constraintEnd_toStartOf="@id/BtnFindPassword"
+            app:layout_constraintTop_toBottomOf="@id/GuidelineAutoLoginTop"
+            app:layout_constraintBottom_toBottomOf="@id/GuidelineAutoLoginBottom"/>
+
+
+        <Button
+            android:id="@+id/BtnFindPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비밀번호 찾기"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/jua_regular"
+            android:backgroundTint="@color/white"
+            app:layout_constraintStart_toEndOf="@id/BtnSignUp"
+            app:layout_constraintTop_toTopOf="@id/GuidelineAutoLoginTop"
+            app:layout_constraintBottom_toBottomOf="@id/GuidelineAutoLoginBottom"
+            app:layout_constraintEnd_toEndOf="@id/loginGuidelineRight"/>
+
+        <Button
+            android:id="@+id/BtnLogin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="88dp"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/jua_regular"
+            android:text="로그인"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@id/loginGuidelineRight"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/loginGuidelineLeft"
+            app:layout_constraintTop_toBottomOf="@id/GuidelineAutoLoginBottom" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
