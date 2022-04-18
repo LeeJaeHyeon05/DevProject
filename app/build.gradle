@@ -45,7 +45,10 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.3.0')
     implementation 'com.google.firebase:firebase-analytics'
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of ba2163f (Revert "-<<<< HEAD 삭제")
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:29.3.0')
     // Add the dependency for the Firebase SDK for Google Analytics
