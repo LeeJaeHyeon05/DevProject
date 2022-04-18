@@ -24,7 +24,6 @@
 
     <style name = "JuaButton" parent="android:Widget.Button">
         <item name="android:fontFamily">@font/jua_regular</item>
-        <item name="android:background">@color/white</item>
     </style>
 
 
