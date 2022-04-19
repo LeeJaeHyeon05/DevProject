@@ -16,7 +16,7 @@ import com.google.firebase.firestore.ktx.FirebaseFirestoreKtxRegistrar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class SignUpAcitivty : AppCompatActivity() {
+class SignUpActivity : AppCompatActivity() {
 
     lateinit var binding: ActivitySignUpAcitivtyBinding
     private lateinit var  auth: FirebaseAuth

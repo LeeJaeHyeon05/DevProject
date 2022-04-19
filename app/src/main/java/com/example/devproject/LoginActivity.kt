@@ -79,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.BtnSignUp.setOnClickListener {
-            val mIntent = Intent(this, SignUpAcitivty::class.java)
+            val mIntent = Intent(this, SignUpActivity::class.java)
             getResultLoginInfo.launch(mIntent)
         }
     }
