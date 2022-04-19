@@ -17,6 +17,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.devproject.databinding.ActivityLoginBinding
 import com.example.devproject.databinding.DialogFindPasswordBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -33,6 +34,8 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) //나이트모드 적용 해제
+
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -45,18 +48,19 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-//        authListener = FirebaseAuth.AuthStateListener {
-//            val user = it.currentUser
-//            if(user != null){
-//                Toast.makeText(this, "자동로그인 되었습니다", Toast.LENGTH_SHORT).show()
-//                startActivity(Intent(this, MainActivity::class.java))
-//                finish()
-//            }
-//            else{
-//                Log.d("TAG", "onCreate: 자동로그인 꺼짐")
-//            }
-//        } 자동로그인 보류
+        val sharedPref = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE).getBoolean("CheckBox", false)
 
+        if(sharedPref){
+            val user = auth.currentUser
+            if(user != null){
+                Toast.makeText(this, "자동로그인 되었습니다", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+            else{
+                Log.d("TAG", "onCreate: 자동로그인 꺼짐")
+            }
+        }
 
         getResultLoginInfo = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()){ result ->
@@ -78,6 +82,13 @@ class LoginActivity : AppCompatActivity() {
             val mIntent = Intent(this, SignUpAcitivty::class.java)
             getResultLoginInfo.launch(mIntent)
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        val savePref = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE)
+        savePref.edit().putBoolean("CheckBox", binding.CheckboxAutoLogin.isChecked).apply()
     }
 
     private fun loginProcess(){
