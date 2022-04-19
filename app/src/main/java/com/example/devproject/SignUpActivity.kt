@@ -7,20 +7,21 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import com.example.devproject.databinding.ActivitySignUpAcitivtyBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.FirebaseFirestoreKtxRegistrar
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class SignUpAcitivty : AppCompatActivity() {
+class SignUpActivity : AppCompatActivity() {
 
     lateinit var binding: ActivitySignUpAcitivtyBinding
     private lateinit var  auth: FirebaseAuth
     private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
+    private var db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +36,6 @@ class SignUpAcitivty : AppCompatActivity() {
                     smoothScrollBy(scrollX, scrollY)
                 }
             })
-
 
         binding.TvFieldInputId.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -149,22 +149,31 @@ class SignUpAcitivty : AppCompatActivity() {
                 && binding.TextLayoutId.helperText == null && binding.TextLayoutEmail.helperText == null
                 && binding.TextLayoutPassword.helperText == null && binding.TextLayoutPasswordConfirm.helperText == null){
 
-                auth.createUserWithEmailAndPassword(binding.TvFieldInputEmail.text.toString(), binding.TvFieldInputPassword.text.toString())
-                    .addOnCompleteListener(this){ task ->
-                        if(task.isSuccessful){
-                            Log.d("TAG", "createUserWithEmail:success")
-                            val user = auth.currentUser
-                            Toast.makeText(this, "회원가입 완료", Toast.LENGTH_SHORT).show()
-                            val mIntent = Intent(this, LoginActivity::class.java)
-                            mIntent.putExtra("LoginId", binding.TvFieldInputEmail.text.toString())
-                            mIntent.putExtra("LoginPassword", binding.TvFieldInputPassword.text.toString())
-                            setResult(Activity.RESULT_OK, mIntent)
-                            finish()
+                    db.collection(binding.TvFieldInputId.text.toString()).document("UserInfo").get() //firestore에 저장된 아이디와 중복이 있는지 확인
+                        .addOnSuccessListener {
+                            if(it.data != null){
+                                Toast.makeText(this, "중복된 아이디입니다", Toast.LENGTH_SHORT).show()
+                            }
+                            else{
+                                auth.createUserWithEmailAndPassword(binding.TvFieldInputEmail.text.toString(), binding.TvFieldInputPassword.text.toString())
+                                    .addOnCompleteListener(this){ task ->
+                                        if(task.isSuccessful){
+
+                                            storeUserId()
+
+                                            Toast.makeText(this, "회원가입 완료", Toast.LENGTH_SHORT).show()
+                                            val mIntent = Intent(this, LoginActivity::class.java)
+                                            mIntent.putExtra("LoginId", binding.TvFieldInputEmail.text.toString())
+                                            mIntent.putExtra("LoginPassword", binding.TvFieldInputPassword.text.toString())
+                                            setResult(Activity.RESULT_OK, mIntent)
+                                            finish()
+                                        }
+                                        else{
+                                            Toast.makeText(this, "${task.exception?.message}", Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+                            }
                         }
-                        else{
-                            Toast.makeText(this, "존재하는 아이디입니다", Toast.LENGTH_SHORT).show()
-                        }
-                    }
             }
             else{
                 if(binding.TvFieldInputId.text == null || binding.TextLayoutId.helperText != null){
@@ -176,10 +185,34 @@ class SignUpAcitivty : AppCompatActivity() {
                 else if(binding.TvFieldInputPassword.text == null || binding.TextLayoutPassword.helperText != null){
                     Toast.makeText(this, "비밀번호가 입력되지 않았거나 입력이 잘못되었습니다", Toast.LENGTH_SHORT).show()
                 }
+                else if (binding.TextLayoutPasswordConfirm.helperText != null){
+                    Toast.makeText(this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
+                }
                 else{
                     Toast.makeText(this, "공란이 있습니다", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
+
+    private fun storeUserId(){
+        var userInfo = UserInfo()
+        userInfo.uid = auth.uid
+        userInfo.Id = binding.TvFieldInputId.text.toString()
+        userInfo.Email = binding.TvFieldInputEmail.text.toString()
+
+        db.collection(binding.TvFieldInputId.text.toString()).document("UserInfo").set(userInfo)
+            .addOnSuccessListener {
+                Log.d("TAG", "DocumentSnapshot successfully written! ")
+            }
+            .addOnFailureListener {
+                Log.d("TAG", "Error writing document, $it")
+            }
+    }
 }
+
+data class UserInfo(
+    var uid: String? = null,
+    var Id: String? = null,
+    var Email: String? = null
+)
