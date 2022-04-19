@@ -1,16 +1,11 @@
 package com.example.devproject
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.widget.Button
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import java.io.File
-import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
 
@@ -61,7 +56,7 @@ class MainActivity : AppCompatActivity() {
     private fun addConferences() {
         val addCon = findViewById<Button>(R.id.conferAddButton)
         addCon.setOnClickListener {
-            startActivity(Intent(this, addConferencesActivity::class.java))
+            startActivity(Intent(this, AddConferencesActivity::class.java))
         }
     }
 

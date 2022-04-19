@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">DevProject</string>
+    <string name="locationText">위치</string>
+    <string name="priceText">금액</string>
+    <string name="dateText">날짜</string>
+    <string name="addConferenceText">컨퍼런스 등록하기</string>
 </resources>
