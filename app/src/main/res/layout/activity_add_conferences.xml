@@ -46,7 +46,8 @@
             android:id="@+id/addConTitle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="제목  추가하기" />
+            android:hint="제목  추가하기"
+            android:gravity="top|start"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,9 +64,9 @@
         <EditText
             style="@style/TextInputEditTextStyle"
             android:id="@+id/addConDetail"
-            android:layout_gravity="top"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="top|start"
             android:hint="내용 추가하기" />
 
     </com.google.android.material.textfield.TextInputLayout>
