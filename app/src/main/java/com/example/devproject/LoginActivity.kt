@@ -22,6 +22,8 @@ import com.example.devproject.databinding.ActivityLoginBinding
 import com.example.devproject.databinding.DialogFindPasswordBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
@@ -31,6 +33,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var getResultLoginInfo: ActivityResultLauncher<Intent>
     private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
+
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,19 +52,7 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        val sharedPref = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE).getBoolean("CheckBox", false)
-
-        if(sharedPref){
-            val user = auth.currentUser
-            if(user != null){
-                Toast.makeText(this, "자동로그인 되었습니다", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
-            else{
-                Log.d("TAG", "onCreate: 자동로그인 꺼짐")
-            }
-        }
+        autoLoginValidate() //자동 로그인
 
         getResultLoginInfo = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()){ result ->
@@ -89,19 +81,51 @@ class LoginActivity : AppCompatActivity() {
 
         val savePref = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE)
         savePref.edit().putBoolean("CheckBox", binding.CheckboxAutoLogin.isChecked).apply()
+        savePref.edit().putString("Email", binding.EtLoginId.text.toString()).apply()
+    }
+
+    private fun autoLoginValidate(){
+        val sharedPref = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE).getBoolean("CheckBox", false)
+        val sharedId = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE).getString("Email", null)
+        var userInfo:UserInfo
+
+        if (sharedId != null && sharedPref) {
+            db.collection("UserInfo").document(sharedId).get()
+                .addOnSuccessListener { documentsnapshot ->
+                    userInfo = documentsnapshot.toObject<UserInfo>()!!
+
+                    if(userInfo.Suspend != true && sharedId == userInfo.Email){
+                        Toast.makeText(this, "자동로그인 되었습니다", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    }
+                }
+        }
     }
 
     private fun loginProcess(){
         val email = binding.EtLoginId.text.toString()
         val password = binding.EtLoginPassword.text.toString()
+        var userInfo:UserInfo
 
         if(email.isNotEmpty()&&password.isNotEmpty()){
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this){ task ->
                     if(task.isSuccessful){
-                        Toast.makeText(this@LoginActivity, "로그인되었습니다", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                        finish()
+                        db.collection("UserInfo").document(email).get()
+                            .addOnSuccessListener { documentsnapshot ->
+                                userInfo = documentsnapshot.toObject<UserInfo>()!!
+
+                                if(userInfo.Suspend != true){
+                                    Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
+                                    startActivity(Intent(this, MainActivity::class.java))
+                                    finish()
+                                }
+                                else{
+                                    //계정이 정지된 상태
+                                    Toast.makeText(this, "계정이 정지되어 로그인 할 수 없습니다", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                     }
                     else{
                         Toast.makeText(this@LoginActivity, "등록되지 않은 아이디거나 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()

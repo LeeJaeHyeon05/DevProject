@@ -200,8 +200,9 @@ class SignUpActivity : AppCompatActivity() {
         userInfo.uid = auth.uid
         userInfo.Id = binding.TvFieldInputId.text.toString()
         userInfo.Email = binding.TvFieldInputEmail.text.toString()
+        userInfo.Suspend = false
 
-        db.collection(binding.TvFieldInputId.text.toString()).document("UserInfo").set(userInfo)
+        db.collection("UserInfo").document(binding.TvFieldInputEmail.text.toString()).set(userInfo)
             .addOnSuccessListener {
                 Log.d("TAG", "DocumentSnapshot successfully written! ")
             }
@@ -211,8 +212,3 @@ class SignUpActivity : AppCompatActivity() {
     }
 }
 
-data class UserInfo(
-    var uid: String? = null,
-    var Id: String? = null,
-    var Email: String? = null
-)
