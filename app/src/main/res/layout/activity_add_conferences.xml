@@ -63,7 +63,7 @@
         <EditText
             style="@style/TextInputEditTextStyle"
             android:id="@+id/addConDetail"
-            android:layout_gravity="top|left"
+            android:layout_gravity="top"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="내용 추가하기" />

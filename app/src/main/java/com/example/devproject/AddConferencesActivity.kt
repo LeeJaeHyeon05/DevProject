@@ -21,8 +21,8 @@ class AddConferencesActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val conTitle = binding.addConTitle
-        val conContent = binding.addConDetail
+        val conTitle = binding.addConTitle.text.toString()
+        val conContent = binding.addConDetail.text.toString()
         val conButton = binding.addConButton
 
         val db = Firebase.firestore
@@ -33,8 +33,8 @@ class AddConferencesActivity : AppCompatActivity() {
                 "content" to conContent
 
             )
-            db.collection("conference")
-                .add(deverence)
+            db.collection("conferenceDocument").document("document0402")
+                .set(deverence)
                 .addOnSuccessListener {
                     Log.d(TAG, "성공")
                 }
