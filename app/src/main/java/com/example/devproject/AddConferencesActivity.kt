@@ -21,19 +21,21 @@ class AddConferencesActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val conTitle = binding.addConTitle.text.toString()
-        val conContent = binding.addConDetail.text.toString()
+
         val conButton = binding.addConButton
 
         val db = Firebase.firestore
 
         conButton.setOnClickListener {
+            val conTitle = binding.addConTitle.text.toString()
+            val conContent = binding.addConDetail.text.toString()
+
             val deverence = hashMapOf(
                 "title" to conTitle,
                 "content" to conContent
 
             )
-            db.collection("conferenceDocument").document("document0402")
+            db.collection("conferenceDocument").document("document0403")
                 .set(deverence)
                 .addOnSuccessListener {
                     Log.d(TAG, "성공")
