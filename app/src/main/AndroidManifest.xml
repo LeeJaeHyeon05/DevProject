@@ -26,7 +26,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpAcitivty"
+            android:name=".SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".DetailPageActivity"
