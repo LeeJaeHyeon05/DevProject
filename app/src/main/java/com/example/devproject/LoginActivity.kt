@@ -29,12 +29,9 @@ import com.google.firebase.ktx.Firebase
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var authListener: FirebaseAuth.AuthStateListener
     private lateinit var binding: ActivityLoginBinding
     private lateinit var getResultLoginInfo: ActivityResultLauncher<Intent>
     private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
-
-    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,48 +84,35 @@ class LoginActivity : AppCompatActivity() {
     private fun autoLoginValidate(){
         val sharedPref = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE).getBoolean("CheckBox", false)
         val sharedId = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE).getString("Email", null)
-        var userInfo:UserInfo
 
         if (sharedId != null && sharedPref) {
-            db.collection("UserInfo").document(sharedId).get()
-                .addOnSuccessListener { documentsnapshot ->
-                    userInfo = documentsnapshot.toObject<UserInfo>()!!
-
-                    if(userInfo.Suspend != true && sharedId == userInfo.Email){
-                        Toast.makeText(this, "자동로그인 되었습니다", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
-                    }
+            auth.currentUser?.reload()?.addOnCompleteListener { task -> //자동로그인시 계정이 정지되었는지 삭제되었는지 확인
+                if(task.isSuccessful){
+                    Toast.makeText(this, "자동로그인 되었습니다", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
                 }
+                else{
+                    Toast.makeText(this, "사용자 계정이 정지되었거나 삭제되었습니다. 관리자에게 문의하세요", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
     private fun loginProcess(){
         val email = binding.EtLoginId.text.toString()
         val password = binding.EtLoginPassword.text.toString()
-        var userInfo:UserInfo
 
         if(email.isNotEmpty()&&password.isNotEmpty()){
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this){ task ->
                     if(task.isSuccessful){
-                        db.collection("UserInfo").document(email).get()
-                            .addOnSuccessListener { documentsnapshot ->
-                                userInfo = documentsnapshot.toObject<UserInfo>()!!
-
-                                if(userInfo.Suspend != true){
-                                    Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
-                                    startActivity(Intent(this, MainActivity::class.java))
-                                    finish()
-                                }
-                                else{
-                                    //계정이 정지된 상태
-                                    Toast.makeText(this, "계정이 정지되어 로그인 할 수 없습니다", Toast.LENGTH_SHORT).show()
-                                }
-                            }
+                        Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
                     }
                     else{
-                        Toast.makeText(this@LoginActivity, "등록되지 않은 아이디거나 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, "등록되지 않은 계정이거나 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()
                     }
                 }
         }
@@ -145,7 +129,6 @@ class LoginActivity : AppCompatActivity() {
 
         ad.setView(dialogBinding.root)
         ad.setTitle("비밀번호 찾기")
-
 
         dialogBinding.BtnFindPasswordDialogOk.setOnClickListener {
             var email = dialogBinding.EtFindPasswordEmail.text.toString()

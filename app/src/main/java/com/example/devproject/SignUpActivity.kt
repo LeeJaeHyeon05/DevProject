@@ -149,7 +149,7 @@ class SignUpActivity : AppCompatActivity() {
                 && binding.TextLayoutId.helperText == null && binding.TextLayoutEmail.helperText == null
                 && binding.TextLayoutPassword.helperText == null && binding.TextLayoutPasswordConfirm.helperText == null){
 
-                    db.collection(binding.TvFieldInputId.text.toString()).document("UserInfo").get() //firestore에 저장된 아이디와 중복이 있는지 확인
+                    db.collection("UserInfo").document(binding.TvFieldInputId.text.toString()).get() //firestore에 저장된 아이디와 중복이 있는지 확인
                         .addOnSuccessListener {
                             if(it.data != null){
                                 Toast.makeText(this, "중복된 아이디입니다", Toast.LENGTH_SHORT).show()
@@ -200,9 +200,8 @@ class SignUpActivity : AppCompatActivity() {
         userInfo.uid = auth.uid
         userInfo.Id = binding.TvFieldInputId.text.toString()
         userInfo.Email = binding.TvFieldInputEmail.text.toString()
-        userInfo.Suspend = false
 
-        db.collection("UserInfo").document(binding.TvFieldInputEmail.text.toString()).set(userInfo)
+        db.collection("UserInfo").document(binding.TvFieldInputId.text.toString()).set(userInfo)
             .addOnSuccessListener {
                 Log.d("TAG", "DocumentSnapshot successfully written! ")
             }
