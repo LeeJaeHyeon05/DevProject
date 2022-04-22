@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DevProject">
         <activity
+            android:name=".InsertConferenceActivity"
+            android:exported="false" />
+        <activity
             android:name=".addConferencesActivity"
             android:exported="false" />
         <activity

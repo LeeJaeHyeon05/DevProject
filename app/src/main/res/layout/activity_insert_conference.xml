@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".InsertConferenceActivity">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:animateLayoutChanges="true"
+        android:layout_height="match_parent">
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/insertConferenceGuidelineLeft"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/insertConferenceGuidelineRight"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/insertConferenceGuidelineHorizonMiddle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.2"/>
+
+        <EditText
+            android:id="@+id/EtConferenceTitle"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:hint="컨퍼런스 이름"
+            android:inputType="textImeMultiLine|textNoSuggestions"
+            android:padding="5dp"
+            app:layout_constraintBottom_toTopOf="@id/EtConferenceContent"
+            app:layout_constraintStart_toStartOf="@id/insertConferenceGuidelineLeft"
+            app:layout_constraintEnd_toEndOf="@id/insertConferenceGuidelineRight"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <EditText
+            android:id="@+id/EtConferenceContent"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:hint="컨퍼런스 설명"
+            android:drawableStart="@drawable/ic_insert_comment"
+            android:drawablePadding="10dp"
+            android:padding="5dp"
+            android:inputType="textImeMultiLine|textNoSuggestions"
+            app:layout_constraintBottom_toTopOf="@id/insertConferenceGuidelineHorizonMiddle"
+            app:layout_constraintStart_toStartOf="@id/insertConferenceGuidelineLeft"
+            app:layout_constraintEnd_toEndOf="@id/insertConferenceGuidelineRight"
+            app:layout_constraintTop_toBottomOf="@id/EtConferenceTitle"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:text="날짜 추가"
+            android:orientation="vertical"
+            android:padding="3dp"
+            android:textSize="25sp"
+            app:layout_constraintStart_toStartOf="@id/insertConferenceGuidelineLeft"
+            app:layout_constraintEnd_toEndOf="@id/insertConferenceGuidelineRight"
+            app:layout_constraintTop_toBottomOf="@id/EtConferenceContent"
+            app:layout_constraintBottom_toTopOf="@id/insertConferenceGuidelineHorizonMiddle"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            app:layout_constraintStart_toStartOf="@id/insertConferenceGuidelineLeft"
+            app:layout_constraintEnd_toEndOf="@id/insertConferenceGuidelineRight"
+            app:layout_constraintTop_toBottomOf="@id/insertConferenceGuidelineHorizonMiddle">
+
+            <CalendarView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
