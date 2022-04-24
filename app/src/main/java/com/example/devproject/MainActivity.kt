@@ -6,11 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
-
+    private var backPressedTime : Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,10 +34,20 @@ class MainActivity : AppCompatActivity() {
 
         addConferences()
     }
+
+    override fun onBackPressed() {
+        if(System.currentTimeMillis() - backPressedTime >= 1500){
+            backPressedTime = System.currentTimeMillis()
+            Snackbar.make(window.decorView.rootView, "한번 더 눌러 종료합니다." , Snackbar.LENGTH_LONG).show()
+        }else{
+            finish()
+        }
+    }
+
     private fun addConferences() {
         val addCon = findViewById<Button>(R.id.conferAddButton)
         addCon.setOnClickListener {
-            startActivity(Intent(this, addConferencesActivity::class.java))
+            startActivity(Intent(this, AddConferencesActivity::class.java))
         }
     }
 }

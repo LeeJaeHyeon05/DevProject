@@ -88,7 +88,6 @@ class LoginActivity : AppCompatActivity() {
         val sharedId = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE).getString("Email", null)
 
         if (sharedId != null && sharedPref) {
-            DataHandler.load()
             auth.currentUser?.reload()?.addOnCompleteListener { task -> //자동로그인시 계정이 정지되었는지 삭제되었는지 확인
                 if(task.isSuccessful){
                     Toast.makeText(this, "자동로그인 되었습니다", Toast.LENGTH_SHORT).show()
