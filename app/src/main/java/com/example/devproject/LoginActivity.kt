@@ -107,18 +107,18 @@ class LoginActivity : AppCompatActivity() {
         if(email.isNotEmpty()&&password.isNotEmpty()){
             DataHandler.load()
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this){ task ->
-                    if(task.isSuccessful){
-                        Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
-                    }
-                    else{
-                        Toast.makeText(this@LoginActivity, "등록되지 않은 계정이거나 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()
-                    }
-
+                if(task.isSuccessful){
+                    Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
                 }
+                else{
+                    Toast.makeText(this@LoginActivity, "등록되지 않은 계정이거나 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
         else{
+            DataHandler.delete()
             Toast.makeText(this, "이메일 또는 비밀번호가 입력되지 않았습니다", Toast.LENGTH_SHORT).show()
         }
     }

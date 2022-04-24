@@ -1,5 +1,12 @@
 package com.example.devproject
 
+/**
+ * Developers
+ * LeeJaeHyeon05
+ * jundonghyun
+ * volta2030
+ */
+
 import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,8 +14,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import com.google.android.material.snackbar.Snackbar
-import java.io.File
-import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
     private var backPressedTime : Long = 0

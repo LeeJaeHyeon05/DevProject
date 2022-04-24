@@ -27,6 +27,10 @@ class DataHandler {
                 }
             }
         }
+
+        fun delete(){
+           textDataSet = emptyList<Array<String>>().toMutableList()
+        }
     }
 
 }
