@@ -1,24 +1,26 @@
 package com.example.devproject
 
+/**
+ * Developers
+ * LeeJaeHyeon05
+ * jundonghyun
+ * volta2030
+ */
+
 import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.widget.Button
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import java.io.File
-import kotlin.math.log
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
-
+    private var backPressedTime : Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        DataHandler.load()
+        setContentView(R.layout.activity_main)
         UIHandler.allocateUI(window.decorView.rootView)
         UIHandler.activateUI(R.id.conferRecyclerView)
 
@@ -37,10 +39,20 @@ class MainActivity : AppCompatActivity() {
 
         addConferences()
     }
+
+    override fun onBackPressed() {
+        if(System.currentTimeMillis() - backPressedTime >= 1500){
+            backPressedTime = System.currentTimeMillis()
+            Snackbar.make(window.decorView.rootView, "한번 더 눌러 종료합니다." , Snackbar.LENGTH_LONG).show()
+        }else{
+            finish()
+        }
+    }
+
     private fun addConferences() {
         val addCon = findViewById<Button>(R.id.conferAddButton)
         addCon.setOnClickListener {
-            startActivity(Intent(this, addConferencesActivity::class.java))
+            startActivity(Intent(this, AddConferencesActivity::class.java))
         }
     }
 }

@@ -25,6 +25,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.squareup.okhttp.Dispatcher
+import kotlinx.coroutines.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -102,21 +104,21 @@ class LoginActivity : AppCompatActivity() {
     private fun loginProcess(){
         val email = binding.EtLoginId.text.toString()
         val password = binding.EtLoginPassword.text.toString()
-
         if(email.isNotEmpty()&&password.isNotEmpty()){
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this){ task ->
-                    if(task.isSuccessful){
-                        Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
-                    }
-                    else{
-                        Toast.makeText(this@LoginActivity, "등록되지 않은 계정이거나 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()
-                    }
+            DataHandler.load()
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this){ task ->
+                if(task.isSuccessful){
+                    Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
                 }
+                else{
+                    Toast.makeText(this@LoginActivity, "등록되지 않은 계정이거나 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
         else{
+            DataHandler.delete()
             Toast.makeText(this, "이메일 또는 비밀번호가 입력되지 않았습니다", Toast.LENGTH_SHORT).show()
         }
     }

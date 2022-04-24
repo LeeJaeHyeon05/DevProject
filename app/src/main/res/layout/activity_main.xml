@@ -35,8 +35,6 @@
             android:text="컨퍼런스 추가!"
             android:textColor="@color/white"
             android:textSize="16sp" />
-
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
