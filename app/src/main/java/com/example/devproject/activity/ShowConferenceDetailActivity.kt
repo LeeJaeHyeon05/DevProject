@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.util.DataHandler
 import com.example.devproject.R
 
-class DetailPageActivity : AppCompatActivity() {
+class ShowConferenceDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_page)

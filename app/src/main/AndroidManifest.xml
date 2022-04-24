@@ -29,7 +29,7 @@
             android:name=".activity.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.DetailPageActivity"
+            android:name=".activity.ShowConferenceDetailActivity"
             android:exported="false" />
     </application>
 

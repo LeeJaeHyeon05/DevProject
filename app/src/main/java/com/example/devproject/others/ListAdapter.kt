@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.R
-import com.example.devproject.activity.DetailPageActivity
+import com.example.devproject.activity.ShowConferenceDetailActivity
 import com.example.devproject.util.UIHandler
 import java.io.File
 
@@ -42,7 +42,7 @@ class ListAdapter(val imageDataSet : MutableList<Array<File>>,
         viewHolder.conferPreDateTextView.text = textDataSet[position][1]!!
         viewHolder.conferPreContentTextView.text = textDataSet[position][2]!!
         viewHolder.conferPreCardView.setOnClickListener {
-            val intent = Intent(UIHandler?.rootView?.context, DetailPageActivity::class.java)
+            val intent = Intent(UIHandler?.rootView?.context, ShowConferenceDetailActivity::class.java)
             intent.putExtra("position", position)
             UIHandler?.rootView?.context?.startActivity(intent)
 
