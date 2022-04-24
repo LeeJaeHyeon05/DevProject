@@ -18,11 +18,11 @@ class DetailPageActivity : AppCompatActivity() {
         var conferContentTextView : TextView = findViewById(R.id.conferConetentTextView)
 
 
-        conferTitleTextView.text = DataHandler.textDataSet[position][0]
+        conferTitleTextView.text = DataHandler.textDataSet!![position][0]
         //DummyImage
         conferImageView.setImageResource(R.drawable.ic_launcher_foreground)
-        conferDateTextView.text = DataHandler.textDataSet[position][1]
-        conferContentTextView.text = DataHandler.textDataSet[position][2]
+        conferDateTextView.text = DataHandler.textDataSet!![position][1]
+        conferContentTextView.text = DataHandler.textDataSet!![position][2]
 
     }
 }
