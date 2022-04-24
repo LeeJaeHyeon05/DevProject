@@ -3,6 +3,7 @@ buildscript {
         // Check that you have the following line (if not, add it):
         google()  // Google's Maven repository
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         // Add this line
