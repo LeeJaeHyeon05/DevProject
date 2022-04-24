@@ -25,6 +25,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.squareup.okhttp.Dispatcher
+import kotlinx.coroutines.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -86,6 +88,7 @@ class LoginActivity : AppCompatActivity() {
         val sharedId = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE).getString("Email", null)
 
         if (sharedId != null && sharedPref) {
+            DataHandler.load()
             auth.currentUser?.reload()?.addOnCompleteListener { task -> //자동로그인시 계정이 정지되었는지 삭제되었는지 확인
                 if(task.isSuccessful){
                     Toast.makeText(this, "자동로그인 되었습니다", Toast.LENGTH_SHORT).show()
@@ -102,10 +105,9 @@ class LoginActivity : AppCompatActivity() {
     private fun loginProcess(){
         val email = binding.EtLoginId.text.toString()
         val password = binding.EtLoginPassword.text.toString()
-
         if(email.isNotEmpty()&&password.isNotEmpty()){
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this){ task ->
+            DataHandler.load()
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this){ task ->
                     if(task.isSuccessful){
                         Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this, MainActivity::class.java))
@@ -114,6 +116,7 @@ class LoginActivity : AppCompatActivity() {
                     else{
                         Toast.makeText(this@LoginActivity, "등록되지 않은 계정이거나 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()
                     }
+
                 }
         }
         else{

@@ -1,26 +1,31 @@
 package com.example.devproject
 
+import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
 import java.io.File
 
 class DataHandler {
     companion object {
 
         lateinit var imageDataSet : MutableList<Array<File>>
-        lateinit var textDataSet : MutableList<Array<String>>
+        var textDataSet : MutableList<Array<String>> = emptyList<Array<String>>().toMutableList()
+        private var db = FirebaseFirestore.getInstance()
 
+        //firebase load
         fun load() {
-
             imageDataSet = emptyList<Array<File>>().toMutableList()
-
-            //for test.
-            val dummyTextDataSet = emptyList<Array<String>>().toMutableList()
-            dummyTextDataSet.add(arrayOf("네이버", "1월 1일", "네이버 무엇"))
-            dummyTextDataSet.add(arrayOf("카카오", "1월 2일", "카카오 초콜릿"))
-            dummyTextDataSet.add(arrayOf("라인", "1월 3일", "라인 잘 타라"))
-            dummyTextDataSet.add(arrayOf("쿠팡", "1월 4일", "쿠팡 무엇"))
-            dummyTextDataSet.add(arrayOf("배민", "1월 5일", "배달료 6000원 실화임???"))
-
-            textDataSet = dummyTextDataSet
+            db.collection("conferenceDocument").get().addOnSuccessListener { result ->
+                run {
+                    for (document in result) {
+                        textDataSet.add(arrayOf(
+                                document.data["title"] as String,
+                                "1월1일",
+                                document.data["content"] as String
+                            )
+                        )
+                    }
+                }
+            }
         }
     }
 

@@ -35,9 +35,9 @@ class ListAdapter(val imageDataSet : MutableList<Array<File>>,
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         //Binding Image & Text data Set trough firebase
         viewHolder.conferPreImageView.setImageResource(R.drawable.ic_launcher_foreground)
-        viewHolder.conferPreTitleTextVIew.text = textDataSet[position][0]
-        viewHolder.conferPreDateTextView.text = textDataSet[position][1]
-        viewHolder.conferPreContentTextView.text = textDataSet[position][2]
+        viewHolder.conferPreTitleTextVIew.text = textDataSet[position][0]!!
+        viewHolder.conferPreDateTextView.text = textDataSet[position][1]!!
+        viewHolder.conferPreContentTextView.text = textDataSet[position][2]!!
         viewHolder.conferPreCardView.setOnClickListener {
             val intent = Intent(UIHandler?.rootView?.context, DetailPageActivity::class.java)
             intent.putExtra("position", position)
