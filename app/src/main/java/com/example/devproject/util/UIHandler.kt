@@ -1,12 +1,14 @@
-package com.example.devproject
+package com.example.devproject.util
 
 import android.content.Intent
-import android.provider.ContactsContract
 import android.view.View
 import android.widget.Button
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.devproject.others.ListAdapter
+import com.example.devproject.R
+import com.example.devproject.activity.AddConferencesActivity
+import com.example.devproject.activity.MainActivity
 
 class UIHandler {
 
@@ -18,18 +20,18 @@ class UIHandler {
         var mainActivity : MainActivity? = null
 
         fun allocateUI(rootView: View, mainActivity : MainActivity) {
-            this.rootView = rootView
-            this.mainActivity = mainActivity
-            this.conferAddButton = rootView.findViewById(R.id.conferAddButton)
-            this.conferRecyclerView = rootView.findViewById(R.id.conferRecyclerView)
-            this.adapter = ListAdapter(DataHandler.imageDataSet, DataHandler.textDataSet)
+            Companion.rootView = rootView
+            Companion.mainActivity = mainActivity
+            conferAddButton = rootView.findViewById(R.id.conferAddButton)
+            conferRecyclerView = rootView.findViewById(R.id.conferRecyclerView)
+            adapter = ListAdapter(DataHandler.imageDataSet, DataHandler.textDataSet)
         }
 
         fun activateUI(id: Int) {
             when (id) {
                 R.id.conferRecyclerView ->{
-                    this.conferRecyclerView?.layoutManager = LinearLayoutManager(rootView?.context)
-                    this.conferRecyclerView?.adapter = adapter
+                    conferRecyclerView?.layoutManager = LinearLayoutManager(rootView?.context)
+                    conferRecyclerView?.adapter = adapter
                 }
                 R.id.conferAddButton ->{
                     conferAddButton?.setOnClickListener {

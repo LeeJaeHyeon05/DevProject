@@ -1,7 +1,9 @@
-package com.example.devproject
+package com.example.devproject.util
 
 import android.annotation.SuppressLint
 import android.util.Log
+import com.example.devproject.format.ConferenceInfo
+import com.example.devproject.format.UserInfo
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore

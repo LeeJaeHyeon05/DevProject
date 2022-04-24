@@ -1,10 +1,11 @@
-package com.example.devproject
+package com.example.devproject.activity
 
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.devproject.util.DataHandler
+import com.example.devproject.R
 
 class DetailPageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

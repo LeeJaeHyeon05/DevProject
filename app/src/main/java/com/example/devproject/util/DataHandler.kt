@@ -1,17 +1,15 @@
-package com.example.devproject
+package com.example.devproject.util
 
 import java.io.File
 
 class DataHandler {
     companion object {
 
-        lateinit var imageDataSet : MutableList<Array<File>>
+        var imageDataSet : MutableList<Array<File>> = emptyList<Array<File>>().toMutableList()
         var textDataSet : MutableList<Array<String>> = emptyList<Array<String>>().toMutableList()
 
         //firebase load
         fun load() {
-            imageDataSet = emptyList<Array<File>>().toMutableList()
-
             FirebaseIO.read("conferenceDocument").addOnSuccessListener { result ->
                 run {
                     for (document in result) {
@@ -27,7 +25,8 @@ class DataHandler {
         }
 
         fun delete(){
-           textDataSet = emptyList<Array<String>>().toMutableList()
+            imageDataSet = emptyList<Array<File>>().toMutableList()
+            textDataSet = emptyList<Array<String>>().toMutableList()
         }
     }
 

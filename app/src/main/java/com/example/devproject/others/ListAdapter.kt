@@ -1,4 +1,4 @@
-package com.example.devproject
+package com.example.devproject.others
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.devproject.R
+import com.example.devproject.activity.DetailPageActivity
+import com.example.devproject.util.UIHandler
 import java.io.File
 
 class ListAdapter(val imageDataSet : MutableList<Array<File>>,
@@ -24,7 +27,7 @@ class ListAdapter(val imageDataSet : MutableList<Array<File>>,
         val conferPreCardView: CardView = view.findViewById(R.id.conferPreCardView)
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ListAdapter.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.conference_list_item, viewGroup, false)

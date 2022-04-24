@@ -1,4 +1,4 @@
-package com.example.devproject
+package com.example.devproject.format
 
 data class UserInfo(
     var uid: String? = null,

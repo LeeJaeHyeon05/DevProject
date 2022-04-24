@@ -1,4 +1,4 @@
-package com.example.devproject
+package com.example.devproject.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import com.example.devproject.util.FirebaseIO
+import com.example.devproject.util.KeyboardVisibilityUtils
+import com.example.devproject.format.UserInfo
 import com.example.devproject.databinding.ActivitySignUpAcitivtyBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -195,7 +198,7 @@ class SignUpActivity : AppCompatActivity() {
         userInfo.Id = binding.TvFieldInputId.text.toString()
         userInfo.Email = binding.TvFieldInputEmail.text.toString()
 
-        FirebaseIO.write("userInfo",  binding.TvFieldInputId.text.toString(), userInfo)
+        FirebaseIO.write("userInfo", binding.TvFieldInputId.text.toString(), userInfo)
 
     }
 }
