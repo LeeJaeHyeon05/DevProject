@@ -1,32 +1,19 @@
-package com.example.devproject
+package com.example.devproject.activity
 
-import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Layout
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View.inflate
-import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.devproject.util.DataHandler
+import com.example.devproject.util.KeyboardVisibilityUtils
 import com.example.devproject.databinding.ActivityLoginBinding
 import com.example.devproject.databinding.DialogFindPasswordBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
-import com.squareup.okhttp.Dispatcher
-import kotlinx.coroutines.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -88,6 +75,7 @@ class LoginActivity : AppCompatActivity() {
         val sharedId = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE).getString("Email", null)
 
         if (sharedId != null && sharedPref) {
+            DataHandler.load()
             auth.currentUser?.reload()?.addOnCompleteListener { task -> //자동로그인시 계정이 정지되었는지 삭제되었는지 확인
                 if(task.isSuccessful){
                     Toast.makeText(this, "자동로그인 되었습니다", Toast.LENGTH_SHORT).show()

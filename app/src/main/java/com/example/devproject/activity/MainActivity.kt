@@ -1,4 +1,4 @@
-package com.example.devproject
+package com.example.devproject.activity
 
 /**
  * Developers
@@ -13,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import com.example.devproject.R
+import com.example.devproject.util.DataHandler
+import com.example.devproject.util.UIHandler
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
@@ -20,8 +23,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main)
-        UIHandler.allocateUI(window.decorView.rootView)
+        setContentView(R.layout.activity_main, )
+        UIHandler.allocateUI(window.decorView.rootView, this)
         UIHandler.activateUI(R.id.conferRecyclerView)
 
         var someList = mutableListOf<Int>()
@@ -45,6 +48,7 @@ class MainActivity : AppCompatActivity() {
             backPressedTime = System.currentTimeMillis()
             Snackbar.make(window.decorView.rootView, "한번 더 눌러 종료합니다." , Snackbar.LENGTH_LONG).show()
         }else{
+            DataHandler.delete()
             finish()
         }
     }
