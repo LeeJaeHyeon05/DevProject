@@ -11,9 +11,10 @@
         android:theme="@style/Theme.DevProject">
         <activity
             android:name=".AddConferences.AddConferencesActivity"
+            android:name=".activity.AddConferencesActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -23,13 +24,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpAcitivty"
+            android:name=".activity.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".DetailPageActivity"
+            android:name=".activity.ShowConferenceDetailActivity"
             android:exported="false" />
     </application>
 

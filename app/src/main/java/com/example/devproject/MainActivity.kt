@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         someLamdaFunctionWithMultiParams("여러매개변수", 1)
 
         Log.d(TAG, "${someLamdaFuncationWithReturn(3, 5)}")
-        
+
 //        this.someFunctionWithLamda{
 //            Log.d(TAG, "onCreate: 3초가 지났습니다")
 //        }
@@ -68,45 +68,3 @@ class MainActivity : AppCompatActivity() {
     val someLamdaFunction: () -> Unit = {
         Log.d("TAG", "someLamdaFunction: () called")
     }
-
-    fun someFunctionWithParam(title: String){
-        Log.d(TAG, "someFunctionWithParma: $title")
-    }
-
-    val someLamdaFunctionWithParam: (String) -> Unit = {
-        Log.d(TAG, "someLamdaFunctionWithParam: $it")
-    }
-
-    val someLamdaFunctionWithMultiParams: (String, Int) -> Unit = { userInput, _ ->
-        Log.d(TAG, "someLamdaFunctionWithMultiParams: $userInput")
-    }
-
-    val someLamdaFunctionWithMultiParamsOtherMethod = { userInput: String, number: Int ->
-        Log.d(TAG, "someLamdaFunctionWithMultiParams: $userInput, $number")
-    }
-
-    fun someFuncationWithReturn(firstNumber: Int, secondNumber: Int): Int {
-        Log.d(TAG, "someFuncationWithReturn: () called")
-        val total = firstNumber + secondNumber
-        return total
-    }
-
-    val someLamdaFuncationWithReturn: (Int, Int) -> String = { a, b ->
-        val total = a + b
-        "$a + $b 는 $total 입니다"
-    }
-
-    fun someFunctionWithLamda(completion: () -> Unit){
-        Log.d(TAG, "somFunctionWithLamda: ")
-        Handler().postDelayed({
-            completion()
-        }, 3000L)
-    }
-
-    fun someFunctionWithParamAndLamda(myNumber: Int, completion: (String) -> Unit){
-        Log.d(TAG, "somFunctionWithLamda: ")
-        Handler().postDelayed({
-            completion("myNumber는 $myNumber 입니다! 3초가 지났습니다.")
-        }, 3000L)
-    }
-}

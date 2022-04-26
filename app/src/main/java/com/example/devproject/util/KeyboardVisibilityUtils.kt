@@ -1,4 +1,4 @@
-package com.example.devproject
+package com.example.devproject.util
 
 import android.graphics.Rect
 import android.view.ViewTreeObserver
