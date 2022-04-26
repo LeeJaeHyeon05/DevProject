@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.widget.Button
+import com.example.devproject.AddConferences.AddConferencesActivity
 
 class MainActivity : AppCompatActivity() {
 
