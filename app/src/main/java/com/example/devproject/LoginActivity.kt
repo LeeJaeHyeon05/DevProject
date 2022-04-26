@@ -26,7 +26,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.squareup.okhttp.Dispatcher
-import kotlinx.coroutines.*
 
 class LoginActivity : AppCompatActivity() {
 
