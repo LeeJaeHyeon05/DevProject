@@ -10,11 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DevProject">
         <activity
-            android:name=".AddConferences.AddConferencesActivity"
-            android:name=".activity.AddConferencesActivity"
+            android:name=".activity.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".AddConferences.AddConferencesActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
