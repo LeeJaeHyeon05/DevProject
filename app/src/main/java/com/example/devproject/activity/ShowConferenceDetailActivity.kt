@@ -1,11 +1,13 @@
 package com.example.devproject.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.util.DataHandler
 import com.example.devproject.R
+import com.example.devproject.util.UIHandler
 
 class ShowConferenceDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +32,11 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         conferPriceTextView.text = DataHandler.conferDataSet[position][3].toString()
         conferOfflineTextView.text = DataHandler.conferDataSet[position][4].toString()
         conferURLImageView.setImageResource(R.drawable.link)
-        conferContentTextView.text = DataHandler.conferDataSet[position][2].toString()
+        conferURLImageView.setOnClickListener {
+            val intent = Intent(this, ShowWebViewActivity::class.java)
+            intent.putExtra("conferenceURL", DataHandler.conferDataSet[position][5].toString())
+            this.startActivity(intent)
+        }
+        conferContentTextView.text = DataHandler.conferDataSet[position][6].toString()
     }
 }
