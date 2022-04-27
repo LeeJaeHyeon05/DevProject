@@ -1,16 +1,14 @@
-package com.example.devproject
+package com.example.devproject.activity
 
-import android.R.attr
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import com.example.devproject.R
 import com.example.devproject.databinding.ActivityMapBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -18,6 +16,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -48,21 +47,25 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback{
 
         var list = mutableListOf<Address>()
 
-
         binding.BtnAddressSearch.setOnClickListener {
             if(binding.EtAddress != null){
                 var softKeyboard: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 softKeyboard.hideSoftInputFromWindow(binding.EtAddress.windowToken, 0)
                 list = mGeocoder.getFromLocationName(binding.EtAddress.text.toString(), 10)
-                currentLat = list[0].latitude
-                currentLng = list[0].longitude
 
-                mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(currentLat, currentLng), 16f))
+                if(list.size > 0){
+                    currentLat = list[0].latitude
+                    currentLng = list[0].longitude
 
-                setMarker()
+                    mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(currentLat, currentLng), 16f))
 
-                list = mGeocoder.getFromLocation(currentLat, currentLng, 1)
+                    setMarker()
 
+                    list = mGeocoder.getFromLocation(currentLat, currentLng, 1)
+                }
+                else{
+                    Snackbar.make(window.decorView.rootView, "좀더 자세한 주소를 입력하세요" , Snackbar.LENGTH_LONG).show()
+                }
             }
         }
 
@@ -95,13 +98,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback{
         }
 
         binding.BtnMapCancel.setOnClickListener { finish() }
-    }
-
-    private fun BitmapCompress(bitmap: Bitmap): Bitmap {
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream)
-        val byteArray = stream.toByteArray()
-        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
