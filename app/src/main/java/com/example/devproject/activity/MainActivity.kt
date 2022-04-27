@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import com.example.devproject.AddConferences.AddConferencesActivity
 import com.example.devproject.R
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.UIHandler
