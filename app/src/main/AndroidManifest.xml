@@ -12,7 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DevProject" >
         <activity
+<<<<<<< HEAD
             android:name=".MapActivity"
+=======
+            android:name=".activity.AddConferencesActivity"
+>>>>>>> 784ae9aa1cc16f1e4ad45b4aabf66a81f8951e61
             android:exported="false" />
 
         <meta-data
@@ -20,10 +24,14 @@
             android:value="AIzaSyA_ppNk6FfxhQVmU59Ic5zmaS_9KEbeipk"/>
 
         <activity
+<<<<<<< HEAD
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
             android:name=".InsertConferenceActivity"
+=======
+            android:name=".activity.LoginActivity"
+>>>>>>> 784ae9aa1cc16f1e4ad45b4aabf66a81f8951e61
             android:exported="true"
             android:windowSoftInputMode="adjustResize" >
             <intent-filter>
@@ -33,13 +41,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".activity.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".DetailPageActivity"
+            android:name=".activity.ShowConferenceDetailActivity"
             android:exported="false" />
     </application>
 
