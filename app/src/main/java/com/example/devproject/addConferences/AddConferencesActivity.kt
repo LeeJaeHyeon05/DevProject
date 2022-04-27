@@ -1,10 +1,9 @@
-package com.example.devproject.AddConferences
+package com.example.devproject.addConferences
 
 import android.app.DatePickerDialog
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.devproject.databinding.ActivityAddConferencesBinding

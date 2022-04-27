@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.devproject.AddConferences.AddConferencesActivity
+import com.example.devproject.addConferences.AddConferencesActivity
 import com.example.devproject.others.ListAdapter
 import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
