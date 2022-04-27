@@ -1,4 +1,4 @@
-package com.example.devproject.AddConferences
+package com.example.devproject.addConferences
 
 import android.app.Dialog
 import android.content.Context
