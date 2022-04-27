@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.devproject" >
-
-    <uses-permission android:name="android.permission.INTERNET"/>
+    package="com.example.devproject">
 
     <application
         android:allowBackup="true"
@@ -10,30 +8,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DevProject" >
+        android:theme="@style/Theme.DevProject">
         <activity
-<<<<<<< HEAD
-            android:name=".MapActivity"
-=======
+            android:name=".AddConferences.AddConferencesActivity"
             android:name=".activity.AddConferencesActivity"
->>>>>>> 784ae9aa1cc16f1e4ad45b4aabf66a81f8951e61
-            android:exported="false" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA_ppNk6FfxhQVmU59Ic5zmaS_9KEbeipk"/>
-
-        <activity
-<<<<<<< HEAD
-            android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".InsertConferenceActivity"
-=======
             android:name=".activity.LoginActivity"
->>>>>>> 784ae9aa1cc16f1e4ad45b4aabf66a81f8951e61
             android:exported="true"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
