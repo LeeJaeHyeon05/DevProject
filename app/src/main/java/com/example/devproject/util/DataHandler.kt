@@ -6,17 +6,21 @@ class DataHandler {
     companion object {
 
         var imageDataSet : MutableList<Array<File>> = emptyList<Array<File>>().toMutableList()
-        var textDataSet : MutableList<Array<String>> = emptyList<Array<String>>().toMutableList()
+        var conferDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
 
         //firebase load
         fun load() {
             FirebaseIO.read("conferenceDocument").addOnSuccessListener { result ->
                 run {
                     for (document in result) {
-                        textDataSet.add(arrayOf(
-                            document.data["title"] as String,
-                            "1월1일",
-                            document.data["content"] as String
+                        conferDataSet.add(arrayOf(                   //index
+                            document.data["uploader"] as String,     //0
+                            document.data["title"] as String,        //1
+                            document.data["date"] as String,         //2
+                            document.data["price"] as Long,           //3
+                            document.data["offline"] as Boolean,     //4
+                            document.data["conferenceURL"] as String,//5
+                            document.data["content"] as String       //6
                         )
                         )
                     }
@@ -26,7 +30,7 @@ class DataHandler {
 
         fun delete(){
             imageDataSet = emptyList<Array<File>>().toMutableList()
-            textDataSet = emptyList<Array<String>>().toMutableList()
+            conferDataSet = emptyList<Array<Any>>().toMutableList()
         }
     }
 
