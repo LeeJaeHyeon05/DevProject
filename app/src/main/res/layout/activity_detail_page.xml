@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp"
-    android:weightSum="22">
+    android:weightSum="15">
 
     <TextView
         android:id="@+id/conferUploaderTextView"
@@ -24,7 +24,8 @@
         android:layout_marginBottom="5dp"
         android:layout_weight="2"
         android:gravity="center"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="18sp" />
 
     <ImageView
         android:id="@+id/conferImageView"
@@ -35,38 +36,43 @@
         android:foregroundGravity="center"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/conferDateTextView"
+    <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:text="TextView" />
+        android:layout_weight="0">
 
-    <TextView
-        android:id="@+id/conferPriceTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="TextView" />
+        <TextView
+            android:id="@+id/conferDateTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="TextView" />
 
-    <TextView
-        android:id="@+id/conferOfflineTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:text="TextView" />
+        <TextView
+            android:id="@+id/conferPriceTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="TextView" />
 
-    <ImageView
-        android:id="@+id/conferURLImageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_weight="2"
-        tools:srcCompat="@drawable/link" />
+        <TextView
+            android:id="@+id/conferOfflineTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="TextView" />
+
+        <ImageView
+            android:id="@+id/conferURLImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            tools:srcCompat="@drawable/link" />
+    </TableRow>
 
     <TextView
         android:id="@+id/conferConetentTextView"
