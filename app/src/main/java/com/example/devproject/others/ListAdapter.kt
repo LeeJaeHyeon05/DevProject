@@ -8,14 +8,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.R
 import com.example.devproject.activity.ShowConferenceDetailActivity
+import com.example.devproject.activity.ShowWebViewActivity
+import com.example.devproject.util.DataHandler
 import com.example.devproject.util.UIHandler
 import java.io.File
 
 class ListAdapter(val imageDataSet : MutableList<Array<File>>,
-                  val textDataSet : MutableList<Array<String>>) : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
+                  val conferDataSet : MutableList<Array<Any>>) : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
     private var context : Context? = null
 
@@ -38,9 +41,14 @@ class ListAdapter(val imageDataSet : MutableList<Array<File>>,
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         //Binding Image & Text data Set trough firebase
         viewHolder.conferPreImageView.setImageResource(R.drawable.ic_launcher_foreground)
-        viewHolder.conferPreTitleTextVIew.text = textDataSet[position][0]
-        viewHolder.conferPreDateTextView.text = textDataSet[position][1]
-        viewHolder.conferPreContentTextView.text = textDataSet[position][2]
+        viewHolder.conferPreImageView.setOnClickListener {
+            val intent = Intent(context, ShowWebViewActivity::class.java)
+            intent.putExtra("conferenceURL", DataHandler.conferDataSet[position][5].toString())
+            context?.startActivity(intent)
+        }
+        viewHolder.conferPreTitleTextVIew.text = conferDataSet[position][1].toString()
+        viewHolder.conferPreDateTextView.text = conferDataSet[position][2].toString()
+        viewHolder.conferPreContentTextView.text = conferDataSet[position][6].toString()
         viewHolder.conferPreCardView.setOnClickListener {
             val intent = Intent(UIHandler.rootView?.context, ShowConferenceDetailActivity::class.java)
             intent.putExtra("position", position)
@@ -53,5 +61,5 @@ class ListAdapter(val imageDataSet : MutableList<Array<File>>,
         }
     }
 
-    override fun getItemCount() = textDataSet.size
+    override fun getItemCount() = conferDataSet.size
 }

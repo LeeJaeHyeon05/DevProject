@@ -24,7 +24,7 @@ class UIHandler {
             Companion.mainActivity = mainActivity
             conferAddButton = rootView.findViewById(R.id.conferAddButton)
             conferRecyclerView = rootView.findViewById(R.id.conferRecyclerView)
-            adapter = ListAdapter(DataHandler.imageDataSet, DataHandler.textDataSet)
+            adapter = ListAdapter(DataHandler.imageDataSet, DataHandler.conferDataSet)
         }
 
         fun activateUI(id: Int) {
