@@ -2,7 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.devproject">
 
+<<<<<<< HEAD
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+=======
     <uses-permission android:name="android.permission.INTERNET" />
+>>>>>>> 9a30b5324feb8a39e0ed4cbde1ec5561bffa1216
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,9 +15,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DevProject">
-        <activity
-            android:name=".addConferences.AddConferencesActivity"
-            android:exported="false" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA_ppNk6FfxhQVmU59Ic5zmaS_9KEbeipk"/>
+
         <activity
             android:name=".activity.LoginActivity"
             android:exported="true"
@@ -32,9 +38,20 @@
         <activity
             android:name=".activity.ShowConferenceDetailActivity"
             android:exported="false" />
+<<<<<<< HEAD
+
+        <activity
+            android:name=".addConferences.AddConferencesActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".activity.MapActivity"
+            android:exported="false"/>
+=======
         <activity
             android:name=".activity.ShowWebViewActivity"
             android:exported="false" />
+>>>>>>> 9a30b5324feb8a39e0ed4cbde1ec5561bffa1216
     </application>
 
 </manifest>

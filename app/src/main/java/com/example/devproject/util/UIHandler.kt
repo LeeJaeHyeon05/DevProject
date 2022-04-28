@@ -9,7 +9,6 @@ import com.example.devproject.addConferences.AddConferencesActivity
 import com.example.devproject.others.ListAdapter
 import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
-
 class UIHandler {
 
     companion object{
@@ -19,7 +18,7 @@ class UIHandler {
         var rootView : View? = null
         var mainActivity : MainActivity? = null
 
-        fun allocateUI(rootView: View, mainActivity : MainActivity) {
+        fun allocateUI(rootView: View, mainActivity: MainActivity) {
             Companion.rootView = rootView
             Companion.mainActivity = mainActivity
             conferAddButton = rootView.findViewById(R.id.conferAddButton)
@@ -35,7 +34,7 @@ class UIHandler {
                 }
                 R.id.conferAddButton ->{
                     conferAddButton?.setOnClickListener {
-                            mainActivity?.startActivity(Intent(rootView?.context, AddConferencesActivity::class.java))
+                        mainActivity?.startActivity(Intent(rootView?.context, AddConferencesActivity::class.java))
                     }
                 }
                 else ->{
