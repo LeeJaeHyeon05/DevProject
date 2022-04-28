@@ -12,15 +12,19 @@ import android.os.Bundle
 import android.text.Editable
 import android.util.Log
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import com.example.devproject.activity.MapActivity
-import com.example.devproject.R
+import com.example.devproject.addConferences.PriceDialog
 import com.example.devproject.databinding.ActivityAddConferencesBinding
+import com.example.devproject.databinding.ExpandableSecondMapSnapshotBinding
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.util.FirebaseIO
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDateTime
@@ -30,12 +34,15 @@ import java.util.*
 class AddConferencesActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddConferencesBinding
+    private lateinit var expandablebinding: ExpandableSecondMapSnapshotBinding
+    private val db = Firebase.firestore
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddConferencesBinding.inflate(layoutInflater)
+        expandablebinding = ExpandableSecondMapSnapshotBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
@@ -47,9 +54,6 @@ class AddConferencesActivity : AppCompatActivity() {
 
         val conButton = binding.addConButton
 
-        val db = Firebase.firestore
-
-
         var startMapActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result -> //지도 액티비티 결과값 받아오기
             if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
                 latitude  = result?.data?.getDoubleExtra("latitude", 0.0)?: 0.0
@@ -60,9 +64,8 @@ class AddConferencesActivity : AppCompatActivity() {
 
                 if(snapShot != null){
                     binding.showMapSnapShotLayout.setOnExpandedListener { view, isExpanded ->
-                        view.findViewById<ImageView>(R.id.IvMapSnapshot).setImageBitmap(
+                        expandablebinding.IvMapSnapshot.setImageBitmap(
                             BitmapFactory.decodeByteArray(snapShot, 0, snapShot.size))
-
                     }
                     binding.showMapSnapShotLayout.expand()
                 }
@@ -80,6 +83,7 @@ class AddConferencesActivity : AppCompatActivity() {
             intent.putExtra("currentLng", longitude)
             startMapActivityResult.launch(intent)
         }
+        findUploader()
 
 
         conButton.setOnClickListener {
@@ -99,7 +103,8 @@ class AddConferencesActivity : AppCompatActivity() {
 
 
             //구조 설정
-            val deverence = Dev(conTitle, conContent, date)
+
+            //val deverence = Dev(conTitle, conContent, date)
             val conferenceInfo = ConferenceInfo(
                 content = conContent,
                 date = date,
@@ -108,7 +113,7 @@ class AddConferencesActivity : AppCompatActivity() {
                 place = place,
                 price = price,
                 title = conTitle,
-                uploader = FirebaseAuth.getInstance().currentUser?.email.toString()
+                uploader = "123"
             )
 
             FirebaseIO.write("conferenceDocument", docNumText, conferenceInfo)
@@ -131,6 +136,25 @@ class AddConferencesActivity : AppCompatActivity() {
 
         getPrice()
     }
+
+    private fun findUploader(){
+        var getEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
+        var id: String? = null
+
+        db.collection("UserInfo")
+            .whereEqualTo("email", getEmail)
+            .get()
+            .addOnSuccessListener {
+                val documents: MutableList<DocumentSnapshot> = it.documents
+                for(document in documents){
+                    id = document.get("id").toString()
+                }
+
+            }
+        Log.d("TAG", "findUploader: $id")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun getDate() {
         val dateBtn = binding.datePickButton
 
@@ -141,12 +165,12 @@ class AddConferencesActivity : AppCompatActivity() {
 
 
         dateBtn.setOnClickListener {
-            val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, _, _ ->
-                binding.dateTextView.text = "날짜 : $year, ${month+1}, $day"
-            }, year, month, day)
-            dpd.show()
+            val dig = DatePickerDialog(this,
+                { p0, year, month, day ->
+                    binding.dateTextView.text = "날짜 : $year, ${month+1}, $day"
+                }, year, month, day)
+            dig.show()
         }
-
     }
 
     private fun getPrice() {
