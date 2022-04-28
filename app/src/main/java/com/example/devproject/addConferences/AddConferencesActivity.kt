@@ -1,4 +1,4 @@
-package com.example.devproject.AddConferences
+package com.example.devproject.addConferences
 
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -14,17 +14,16 @@ import android.util.Log
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
-import com.example.devproject.addConferences.PriceDialog
 import com.example.devproject.databinding.ActivityAddConferencesBinding
 import com.example.devproject.databinding.ExpandableSecondMapSnapshotBinding
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.util.FirebaseIO
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDateTime
@@ -34,25 +33,22 @@ import java.util.*
 class AddConferencesActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddConferencesBinding
-    private lateinit var expandablebinding: ExpandableSecondMapSnapshotBinding
-    private val db = Firebase.firestore
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddConferencesBinding.inflate(layoutInflater)
-        expandablebinding = ExpandableSecondMapSnapshotBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
         var latitude: Double = 0.0
         var longitude: Double = 0.0
         var mGeocoder = Geocoder(this, Locale.getDefault())
         var list = mutableListOf<Address>()
 
+        getDate()
 
-        val conButton = binding.addConButton
+        getPrice()
 
         var startMapActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result -> //지도 액티비티 결과값 받아오기
             if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
@@ -64,7 +60,7 @@ class AddConferencesActivity : AppCompatActivity() {
 
                 if(snapShot != null){
                     binding.showMapSnapShotLayout.setOnExpandedListener { view, isExpanded ->
-                        expandablebinding.IvMapSnapshot.setImageBitmap(
+                        view.findViewById<ImageView>(R.id.IvMapSnapshot).setImageBitmap(
                             BitmapFactory.decodeByteArray(snapShot, 0, snapShot.size))
                     }
                     binding.showMapSnapShotLayout.expand()
@@ -83,26 +79,29 @@ class AddConferencesActivity : AppCompatActivity() {
             intent.putExtra("currentLng", longitude)
             startMapActivityResult.launch(intent)
         }
-        findUploader()
 
-
-        conButton.setOnClickListener {
+        binding.addConButton.setOnClickListener {
             //editText 불러오기
             val conTitle = binding.addConTitle.text.toString()
             val conContent = binding.addConDetail.text.toString()
             val place = binding.ETConferenceGeo.text.toString()
-            val price = Integer.parseInt(binding.priceTextView.text.toString())
+
+            val exceptWon = binding.priceTextView.text.split(" ")
+            val price = Integer.parseInt(exceptWon[0])
 
             //월 불러오기
             val todayMonth = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
             //합치기 document + 날짜 + 숫자 플러스
             val docNumText = "document$todayMonth"
-            val date = getDate().toString()
+            val date = binding.dateTextView.text.toString()
 
             //위치 불러오기
 
 
             //구조 설정
+
+            //val id = findUploader()
+
 
             //val deverence = Dev(conTitle, conContent, date)
             val conferenceInfo = ConferenceInfo(
@@ -110,10 +109,10 @@ class AddConferencesActivity : AppCompatActivity() {
                 date = date,
                 imageURL = null,
                 offline = false,
-                place = place,
+                place = GeoPoint(latitude, longitude),
                 price = price,
                 title = conTitle,
-                uploader = "123"
+                uploader = FirebaseAuth.getInstance().currentUser?.email.toString()
             )
 
             FirebaseIO.write("conferenceDocument", docNumText, conferenceInfo)
@@ -132,26 +131,24 @@ class AddConferencesActivity : AppCompatActivity() {
 //                }
 
         }
-        getDate()
-
-        getPrice()
     }
 
-    private fun findUploader(){
-        var getEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
+    private fun findUploader(): String?{
+        var getUid = FirebaseAuth.getInstance().currentUser?.uid.toString()
         var id: String? = null
+        val mFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-        db.collection("UserInfo")
-            .whereEqualTo("email", getEmail)
+        mFirestore.collection("UserInfo")
+            .whereEqualTo("uid", getUid)
             .get()
-            .addOnSuccessListener {
-                val documents: MutableList<DocumentSnapshot> = it.documents
-                for(document in documents){
-                    id = document.get("id").toString()
+            .addOnCompleteListener {
+                if(it.isSuccessful){
+                    for(document in it.result!!.documents){
+                        id = document.toString()
+                    }
                 }
-
             }
-        Log.d("TAG", "findUploader: $id")
+        return id
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -167,7 +164,7 @@ class AddConferencesActivity : AppCompatActivity() {
         dateBtn.setOnClickListener {
             val dig = DatePickerDialog(this,
                 { p0, year, month, day ->
-                    binding.dateTextView.text = "날짜 : $year, ${month+1}, $day"
+                    binding.dateTextView.text = "$year, ${month+1}, $day"
                 }, year, month, day)
             dig.show()
         }
@@ -178,7 +175,7 @@ class AddConferencesActivity : AppCompatActivity() {
         priceBtn.setOnClickListener {
             val dialog = PriceDialog(this)
             dialog.setOnOkClickedListener{ price->
-                binding.priceTextView.text = price + "원"
+                binding.priceTextView.text = price + " 원"
             }
             dialog.priceDia()
         }
