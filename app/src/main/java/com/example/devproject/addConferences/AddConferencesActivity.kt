@@ -10,21 +10,22 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import com.example.devproject.R
+import com.example.devproject.activity.MainActivity
 import com.example.devproject.activity.MapActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
-import com.example.devproject.databinding.ExpandableSecondMapSnapshotBinding
 import com.example.devproject.format.ConferenceInfo
+import com.example.devproject.others.ListAdapter
+import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
+import com.example.devproject.util.UIHandler
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -102,34 +103,22 @@ class AddConferencesActivity : AppCompatActivity() {
 
             //val id = findUploader()
 
-
-            //val deverence = Dev(conTitle, conContent, date)
-            val conferenceInfo = ConferenceInfo(
+            val conference = ConferenceInfo(
+                conferenceURL = "www.naver.com",
                 content = conContent,
                 date = date,
-                imageURL = null,
                 offline = false,
                 place = GeoPoint(latitude, longitude),
                 price = price,
                 title = conTitle,
+                documentID = "1",
                 uploader = FirebaseAuth.getInstance().currentUser?.email.toString()
             )
-
-            FirebaseIO.write("conferenceDocument", docNumText, conferenceInfo)
-            //아직 FIrebaseIO에 SuccessListener가 없어서 finish()를 넣지 않았습니다.
-
-//            //db에 보내기
-//            db.collection("conferenceDocument").document(docNumText)
-//                .set(deverence)
-//                .addOnSuccessListener {
-//                    finish()
-//                    Toast.makeText(this, "업로드 성공!", Toast.LENGTH_SHORT).show()
-//                }
-//                .addOnFailureListener {
-//                    finish()
-//                    Toast.makeText(this, "업로드 실패 다시 시도해 주세요", Toast.LENGTH_SHORT).show()
-//                }
-
+            if(FirebaseIO.write("conferenceDocument", docNumText, conference)){
+                Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
+//                DataHandler.load()
+                finish()
+            }
         }
     }
 

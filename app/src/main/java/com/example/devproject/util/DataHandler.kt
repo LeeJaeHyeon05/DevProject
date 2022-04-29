@@ -1,5 +1,6 @@
 package com.example.devproject.util
 
+import android.util.Log
 import java.io.File
 
 class DataHandler {
