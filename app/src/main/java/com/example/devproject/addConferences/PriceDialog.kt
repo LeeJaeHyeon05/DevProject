@@ -5,30 +5,48 @@ import android.content.Context
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import com.example.devproject.R
+import com.example.devproject.databinding.ActivityDialogPriceBinding
 
 class PriceDialog(context: Context) {
     private val dialog = Dialog(context)
+    private lateinit var listener: PriceDialogClickedListener
+    private lateinit var binding: ActivityDialogPriceBinding
 
     fun priceDia() {
+
+        binding = ActivityDialogPriceBinding.inflate(dialog.layoutInflater)
+
         dialog.show()
-        dialog.setContentView(R.layout.activity_dialog_price)
+        dialog.setContentView(binding.root)
+
         dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
 
-        val addPrice = dialog.findViewById<EditText>(R.id.addPrice)
-        val finishBtn = dialog.findViewById<Button>(R.id.cancelBtn)
-        val continueBtn = dialog.findViewById<Button>(R.id.addBtn)
-        val mainTV = dialog.findViewById<TextView>(R.id.priceTextView)
+        val addPrice = binding.addPrice
+        val finishBtn = binding.cancelBtn
+        val continueBtn = binding.addBtn
+
 
         continueBtn.setOnClickListener {
             val priceNum = addPrice.text.toString()
-            mainTV.text = priceNum
+            listener.onClicked(priceNum)
+
             dialog.dismiss()
         }
         finishBtn.setOnClickListener {
             dialog.dismiss()
         }
 
+    }
+    fun setOnOkClickedListener(listener: (String) -> Unit){
+        this.listener = object: PriceDialogClickedListener{
+            override fun onClicked(content: String) {
+                listener(content)
+            }
+        }
+    }
+
+    interface PriceDialogClickedListener{
+        fun onClicked(content: String)
     }
 }
