@@ -7,12 +7,14 @@ package com.example.devproject.activity
  * volta2030
  */
 
+import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.devproject.addConferences.AddConferencesActivity
 import com.example.devproject.R
 import com.example.devproject.util.DataHandler
@@ -57,6 +59,11 @@ class MainActivity : AppCompatActivity() {
     private fun addConferences() {
         val addCon = findViewById<Button>(R.id.conferAddButton)
         addCon.setOnClickListener {
+//            var startAddConferenceActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//                if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
+//                    DataHandler.load()
+//                }
+//            }
             startActivity(Intent(this, AddConferencesActivity::class.java))
         }
     }
