@@ -13,8 +13,8 @@ class UIHandler {
 
     companion object{
         private var conferAddButton : Button? = null// findViewById<Button>(R.id.addBtn)
-        private var conferRecyclerView : RecyclerView? = null//findViewById<RecyclerView>(R.id.conferRecyclerView)
-        private var adapter : ListAdapter? = null// ListAdapter(emptyList<Array<File>>().toMutableList(), dummyTextDataSet)
+        var conferRecyclerView : RecyclerView? = null//findViewById<RecyclerView>(R.id.conferRecyclerView)
+        var adapter : ListAdapter? = null// ListAdapter(emptyList<Array<File>>().toMutableList(), dummyTextDataSet)
         var rootView : View? = null
         var mainActivity : MainActivity? = null
 
@@ -23,13 +23,13 @@ class UIHandler {
             Companion.mainActivity = mainActivity
             conferAddButton = rootView.findViewById(R.id.conferAddButton)
             conferRecyclerView = rootView.findViewById(R.id.conferRecyclerView)
-            adapter = ListAdapter(DataHandler.imageDataSet, DataHandler.conferDataSet)
         }
 
         fun activateUI(id: Int) {
             when (id) {
                 R.id.conferRecyclerView ->{
                     conferRecyclerView?.layoutManager = LinearLayoutManager(rootView?.context)
+                    adapter = ListAdapter()
                     conferRecyclerView?.adapter = adapter
                 }
                 R.id.conferAddButton ->{

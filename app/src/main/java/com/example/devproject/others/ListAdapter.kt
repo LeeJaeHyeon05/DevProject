@@ -17,8 +17,7 @@ import com.example.devproject.util.DataHandler
 import com.example.devproject.util.UIHandler
 import java.io.File
 
-class ListAdapter(val imageDataSet : MutableList<Array<File>>,
-                  val conferDataSet : MutableList<Array<Any>>) : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
+class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
     private var context : Context? = null
 
@@ -46,9 +45,9 @@ class ListAdapter(val imageDataSet : MutableList<Array<File>>,
             intent.putExtra("conferenceURL", DataHandler.conferDataSet[position][5].toString())
             context?.startActivity(intent)
         }
-        viewHolder.conferPreTitleTextVIew.text = conferDataSet[position][1].toString()
-        viewHolder.conferPreDateTextView.text = conferDataSet[position][2].toString()
-        viewHolder.conferPreContentTextView.text = conferDataSet[position][6].toString()
+        viewHolder.conferPreTitleTextVIew.text = DataHandler.conferDataSet[position][1].toString()
+        viewHolder.conferPreDateTextView.text = DataHandler.conferDataSet[position][2].toString()
+        viewHolder.conferPreContentTextView.text = DataHandler.conferDataSet[position][6].toString()
         viewHolder.conferPreCardView.setOnClickListener {
             val intent = Intent(UIHandler.rootView?.context, ShowConferenceDetailActivity::class.java)
             intent.putExtra("position", position)
@@ -61,5 +60,5 @@ class ListAdapter(val imageDataSet : MutableList<Array<File>>,
         }
     }
 
-    override fun getItemCount() = conferDataSet.size
+    override fun getItemCount() = DataHandler.conferDataSet.size
 }

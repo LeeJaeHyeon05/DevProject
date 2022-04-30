@@ -1,6 +1,7 @@
 package com.example.devproject.util
 
 import android.util.Log
+import com.example.devproject.format.ConferenceInfo
 import java.io.File
 
 class DataHandler {
@@ -32,6 +33,10 @@ class DataHandler {
         fun delete(){
             imageDataSet = emptyList<Array<File>>().toMutableList()
             conferDataSet = emptyList<Array<Any>>().toMutableList()
+        }
+
+        fun updateConferDataSet(conferenceInfo: ConferenceInfo){
+            conferDataSet.add(conferenceInfo.toArray())
         }
     }
 

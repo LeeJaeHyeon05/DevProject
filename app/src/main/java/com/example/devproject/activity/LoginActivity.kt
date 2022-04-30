@@ -29,10 +29,11 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) //나이트모드 적용 해제
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.hide()
 
         keyboardVisibilityUtils = KeyboardVisibilityUtils(window,
             onShowKeyboard = {keyboardHeight ->
