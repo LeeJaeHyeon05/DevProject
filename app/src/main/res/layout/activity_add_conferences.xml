@@ -2,9 +2,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:fillViewport="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".addConferences.AddConferencesActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,14 +16,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.05"/>
+            app:layout_constraintGuide_percent="0.05" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/addConferenceGuideRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.95"/>
+            app:layout_constraintGuide_percent="0.95" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/titleTextInput"
@@ -31,10 +31,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toTopOf="@id/detailTextInput"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
-            app:layout_constraintBottom_toTopOf="@id/detailTextInput">
+            app:layout_constraintTop_toTopOf="parent">
 
             <EditText
                 android:id="@+id/addConTitle"
@@ -51,11 +51,10 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            app:layout_constraintTop_toBottomOf="@id/titleTextInput"
+            app:layout_constraintBottom_toTopOf="@id/conferenceLinkInput"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
             app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
-            app:layout_constraintBottom_toTopOf="@id/dateTextView"
-            >
+            app:layout_constraintTop_toBottomOf="@id/titleTextInput">
 
             <EditText
                 android:id="@+id/addConDetail"
@@ -67,108 +66,15 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/dateTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
-            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
-            app:layout_constraintTop_toBottomOf="@+id/detailTextInput"
-            app:layout_constraintBottom_toTopOf="@+id/datePickButton"/>
-
-        <Button
-            android:id="@+id/datePickButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/con_round"
-            android:fontFamily="@font/jua_regular"
-            android:text="@string/dateText"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
-            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
-            app:layout_constraintTop_toBottomOf="@+id/dateTextView"
-            app:layout_constraintBottom_toTopOf="@id/priceTextView"
-            />
-
-        <TextView
-            android:id="@+id/priceTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:padding="5dp"
-            android:text=""
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
-            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
-            app:layout_constraintTop_toBottomOf="@+id/datePickButton"
-            app:layout_constraintBottom_toTopOf="@+id/priceButton"/>
-
-        <Button
-            android:id="@+id/priceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/con_round"
-            android:fontFamily="@font/jua_regular"
-            android:text="@string/priceText"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
-            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
-            app:layout_constraintTop_toBottomOf="@+id/priceTextView"
-            app:layout_constraintBottom_toTopOf="@id/TextLayoutConferenceGeo"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/TextLayoutConferenceGeo"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            app:endIconMode="custom"
-            app:endIconDrawable="@drawable/ic_map"
-            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
-            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
-            app:layout_constraintTop_toBottomOf="@id/priceButton"
-            app:layout_constraintBottom_toTopOf="@id/showMapSnapShotLayout">
-
-            <EditText
-                style="@style/TextInputEditTextStyle"
-                android:id="@+id/ETConferenceGeo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textColorHint="@color/black"
-                android:hint="위치"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.alespero.expandablecardview.ExpandableCardView
-            android:id="@+id/showMapSnapShotLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:title="지도 보이기"
-            app:animationDuration="300"
-            app:expandOnClick="true"
-            app:inner_view="@layout/expandable_second_map_snapshot"
-            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
-            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
-            app:layout_constraintTop_toBottomOf="@+id/TextLayoutConferenceGeo"
-            app:layout_constraintBottom_toTopOf="@id/conferenceLinkInput">
-        </com.alespero.expandablecardview.ExpandableCardView>
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/conferenceLinkInput"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintBottom_toTopOf="@+id/TextLayoutConferenceGeo"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
-            app:layout_constraintTop_toBottomOf="@id/showMapSnapShotLayout"
-            app:layout_constraintBottom_toTopOf="@id/addConButton">
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@id/detailTextInput">
 
             <EditText
                 android:id="@+id/addConLink"
@@ -180,23 +86,114 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/TextLayoutConferenceGeo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            app:endIconDrawable="@drawable/ic_map"
+            app:endIconMode="custom"
+            app:layout_constraintBottom_toTopOf="@id/showMapSnapShotLayout"
+            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@id/conferenceLinkInput">
+
+            <EditText
+                android:id="@+id/ETConferenceGeo"
+                style="@style/TextInputEditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="위치"
+                android:textColorHint="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.alespero.expandablecardview.ExpandableCardView
+            android:id="@+id/showMapSnapShotLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:animationDuration="300"
+            app:expandOnClick="true"
+            app:inner_view="@layout/expandable_second_map_snapshot"
+            app:layout_constraintBottom_toTopOf="@id/conferenceLinkInput"
+            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@+id/TextLayoutConferenceGeo"
+            app:title="지도 보이기" />
+
+        <Button
+            android:id="@+id/datePickButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/con_round"
+            android:fontFamily="@font/jua_regular"
+            android:text="@string/dateText"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/priceButton"
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@+id/showMapSnapShotLayout" />
+
+        <Button
+            android:id="@+id/priceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/con_round"
+            android:fontFamily="@font/jua_regular"
+            android:text="@string/priceText"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/datePickButton"
+            app:layout_constraintEnd_toEndOf="@+id/addConferenceGuideRight"
+            app:layout_constraintStart_toEndOf="@+id/datePickButton"
+            app:layout_constraintTop_toTopOf="@+id/datePickButton" />
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@+id/datePickButton" />
+
+        <TextView
+            android:id="@+id/priceTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:padding="5dp"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/addConButton"
+            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@+id/dateTextView" />
+
+
         <Button
             android:id="@+id/addConButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
             android:layout_marginTop="20dp"
-            android:padding="5dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/con_round"
             android:fontFamily="@font/jua_regular"
+            android:padding="5dp"
             android:text="@string/addConferenceText"
             android:textColor="@color/black"
             android:textSize="24sp"
-            app:layout_constraintTop_toBottomOf="@id/conferenceLinkInput"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
-            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft" />
-
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@id/conferenceLinkInput" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
