@@ -24,15 +24,18 @@ import com.example.devproject.others.ListAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler
+import com.example.devproject.util.UIHandler.Companion.adapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class AddConferencesActivity : AppCompatActivity() {
+class AddConferencesActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddConferencesBinding
 
@@ -93,12 +96,11 @@ class AddConferencesActivity : AppCompatActivity() {
             val link = binding.addConLink.text.toString()
 
             val exceptWon = binding.priceTextView.text.split(" ")
-            val price = Integer.parseInt(exceptWon[0])
+            val price =  Integer.parseInt(exceptWon[0]).toLong()
 
             //월 불러오기
-            val todayMonth = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-            //합치기 document + 날짜 + 숫자 플러스
-            val docNumText = "document$todayMonth"
+            val id = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
+            val docNumText = "document$id"
             val date = binding.dateTextView.text.toString()
 
             //구조 설정
@@ -113,7 +115,7 @@ class AddConferencesActivity : AppCompatActivity() {
                 place = GeoPoint(latitude, longitude),
                 price = price,
                 title = conTitle,
-                documentID = "1",
+                documentID = id,
                 uploader = FirebaseAuth.getInstance().currentUser?.email.toString()
             )
 
@@ -121,7 +123,9 @@ class AddConferencesActivity : AppCompatActivity() {
 
             if(FirebaseIO.write("conferenceDocument", docNumText, conference)){
                 Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
-//                DataHandler.load()
+//                ERROR!
+//                DataHandler.updateConferDataSet(conference)
+//                UIHandler.conferRecyclerView?.adapter?.notifyDataSetChanged()
                 finish()
             }
         }
