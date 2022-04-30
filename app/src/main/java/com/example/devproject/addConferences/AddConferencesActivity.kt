@@ -10,6 +10,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -41,6 +42,9 @@ class AddConferencesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddConferencesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar!!.title = "컨퍼런스 추가"
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         var latitude: Double = 0.0
         var longitude: Double = 0.0
@@ -89,10 +93,6 @@ class AddConferencesActivity : AppCompatActivity() {
             val link = binding.addConLink.text.toString()
 
             val exceptWon = binding.priceTextView.text.split(" ")
-
-            val regex = "^[0-9]*$".toRegex()
-
-
             val price = Integer.parseInt(exceptWon[0])
 
             //월 불러오기
@@ -100,10 +100,6 @@ class AddConferencesActivity : AppCompatActivity() {
             //합치기 document + 날짜 + 숫자 플러스
             val docNumText = "document$todayMonth"
             val date = binding.dateTextView.text.toString()
-
-            //오류처리
-
-
 
             //구조 설정
 
@@ -120,11 +116,25 @@ class AddConferencesActivity : AppCompatActivity() {
                 documentID = "1",
                 uploader = FirebaseAuth.getInstance().currentUser?.email.toString()
             )
+
+
+
             if(FirebaseIO.write("conferenceDocument", docNumText, conference)){
                 Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
 //                DataHandler.load()
                 finish()
             }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item?.itemId){
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            else ->
+                return super.onOptionsItemSelected(item)
         }
     }
 
