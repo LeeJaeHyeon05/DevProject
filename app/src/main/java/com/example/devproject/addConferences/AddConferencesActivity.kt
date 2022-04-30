@@ -86,8 +86,13 @@ class AddConferencesActivity : AppCompatActivity() {
             val conTitle = binding.addConTitle.text.toString()
             val conContent = binding.addConDetail.text.toString()
             val place = binding.ETConferenceGeo.text.toString()
+            val link = binding.addConLink.text.toString()
 
             val exceptWon = binding.priceTextView.text.split(" ")
+
+            val regex = "^[0-9]*$".toRegex()
+
+
             val price = Integer.parseInt(exceptWon[0])
 
             //월 불러오기
@@ -96,7 +101,8 @@ class AddConferencesActivity : AppCompatActivity() {
             val docNumText = "document$todayMonth"
             val date = binding.dateTextView.text.toString()
 
-            //위치 불러오기
+            //오류처리
+
 
 
             //구조 설정
@@ -104,7 +110,7 @@ class AddConferencesActivity : AppCompatActivity() {
             //val id = findUploader()
 
             val conference = ConferenceInfo(
-                conferenceURL = "www.naver.com",
+                conferenceURL = link,
                 content = conContent,
                 date = date,
                 offline = false,
