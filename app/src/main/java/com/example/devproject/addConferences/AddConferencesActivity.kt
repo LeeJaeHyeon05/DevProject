@@ -9,6 +9,8 @@ import android.location.Geocoder
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.view.MenuItem
 import android.widget.ImageView
@@ -16,6 +18,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import com.example.devproject.R
+import com.example.devproject.activity.LoginActivity
 import com.example.devproject.activity.MainActivity
 import com.example.devproject.activity.MapActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
@@ -123,9 +126,7 @@ class AddConferencesActivity() : AppCompatActivity() {
 
             if(FirebaseIO.write("conferenceDocument", docNumText, conference)){
                 Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
-//                ERROR!
-//                DataHandler.updateConferDataSet(conference)
-//                UIHandler.conferRecyclerView?.adapter?.notifyDataSetChanged()
+                DataHandler.load()
                 finish()
             }
         }

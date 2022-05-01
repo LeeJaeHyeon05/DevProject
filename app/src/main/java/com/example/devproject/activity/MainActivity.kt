@@ -7,14 +7,20 @@ package com.example.devproject.activity
  * volta2030
  */
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Button
+import android.widget.ListAdapter
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.addConferences.AddConferencesActivity
 import com.example.devproject.R
 import com.example.devproject.util.DataHandler
@@ -46,6 +52,32 @@ class MainActivity : AppCompatActivity() {
         addConferences()
     }
 
+//    override fun onResume() {
+//        super.onResume()
+//
+//        UIHandler.activateUI(R.id.conferRecyclerView)
+//    }
+//
+    override fun onRestart() {
+        super.onRestart()
+        getAllData()
+        Thread.sleep(500)
+    }
+
+    private fun getAllData(){
+        Thread{
+            setRecyclerView()
+        }.start()
+    }
+
+    private fun setRecyclerView(){
+        runOnUiThread{
+            val adater = com.example.devproject.others.ListAdapter()
+            UIHandler.conferRecyclerView?.adapter = adater
+            UIHandler.conferRecyclerView?.layoutManager = LinearLayoutManager(this)
+        }
+    }
+
     override fun onBackPressed() {
         if(System.currentTimeMillis() - backPressedTime >= 1500){
             backPressedTime = System.currentTimeMillis()
@@ -55,6 +87,7 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
+
 
     private fun addConferences() {
         val addCon = findViewById<Button>(R.id.conferAddButton)
