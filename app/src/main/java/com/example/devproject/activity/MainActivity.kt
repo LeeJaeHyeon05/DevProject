@@ -7,25 +7,24 @@ package com.example.devproject.activity
  * volta2030
  */
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.widget.Button
-import android.widget.ListAdapter
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.devproject.addConferences.AddConferencesActivity
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.devproject.R
+import com.example.devproject.addConferences.AddConferencesActivity
+import com.example.devproject.others.ListAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.UIHandler
 import com.google.android.material.snackbar.Snackbar
+import java.lang.String
+import kotlin.Int
+import kotlin.Long
 
 class MainActivity : AppCompatActivity() {
     private var backPressedTime : Long = 0
@@ -35,6 +34,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         UIHandler.allocateUI(window.decorView.rootView, this)
         UIHandler.activateUI(R.id.conferRecyclerView)
+
+        val swipeRefreshLayout : SwipeRefreshLayout = findViewById(R.id.swiperRefreshLayout)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            DataHandler.reload()
+            swipeRefreshLayout.isRefreshing = false
+        }
 
         var someList = mutableListOf<Int>()
         someList.add(0)
@@ -52,30 +58,6 @@ class MainActivity : AppCompatActivity() {
         addConferences()
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//
-//        UIHandler.activateUI(R.id.conferRecyclerView)
-//    }
-//
-    override fun onRestart() {
-        super.onRestart()
-        getAllData()
-        Thread.sleep(500)
-    }
-
-    private fun getAllData(){
-        Thread{
-            setRecyclerView()
-        }.start()
-    }
-
-    private fun setRecyclerView(){
-        runOnUiThread{
-            UIHandler.activateUI(R.id.conferRecyclerView)
-        }
-    }
-
     override fun onBackPressed() {
         if(System.currentTimeMillis() - backPressedTime >= 1500){
             backPressedTime = System.currentTimeMillis()
@@ -85,7 +67,6 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
-
 
     private fun addConferences() {
         val addCon = findViewById<Button>(R.id.conferAddButton)
