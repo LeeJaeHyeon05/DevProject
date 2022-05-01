@@ -47,7 +47,7 @@ class DataHandler {
                         )
                     }
                 }.run {
-                    UIHandler.adapter?.notifyDataSetChanged()
+                    UIHandler.adapter!!.notifyDataSetChanged()
                 }
             }
         }
