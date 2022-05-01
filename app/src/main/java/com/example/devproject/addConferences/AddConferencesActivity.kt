@@ -16,20 +16,16 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import com.example.devproject.R
-import com.example.devproject.activity.MainActivity
 import com.example.devproject.activity.MapActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
+import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
-import com.example.devproject.others.ListAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler
-import com.example.devproject.util.UIHandler.Companion.adapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
-import com.google.firebase.ktx.Firebase
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -123,9 +119,7 @@ class AddConferencesActivity() : AppCompatActivity() {
 
             if(FirebaseIO.write("conferenceDocument", docNumText, conference)){
                 Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
-//                ERROR!
-//                DataHandler.updateConferDataSet(conference)
-//                UIHandler.conferRecyclerView?.adapter?.notifyDataSetChanged()
+                DataHandler.reload()
                 finish()
             }
         }

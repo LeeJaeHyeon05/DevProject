@@ -30,6 +30,28 @@ class DataHandler {
             }
         }
 
+        fun reload(){
+            delete()
+            FirebaseIO.read("conferenceDocument").addOnSuccessListener { result ->
+                run {
+                    for (document in result) {
+                        conferDataSet.add(arrayOf(                   //index
+                            document.data["uploader"] as String,     //0
+                            document.data["title"] as String,        //1
+                            document.data["date"] as String,         //2
+                            document.data["price"] as Long,           //3
+                            document.data["offline"] as Boolean,     //4
+                            document.data["conferenceURL"] as String,//5
+                            document.data["content"] as String       //6
+                        )
+                        )
+                    }
+                }.run {
+                    UIHandler.adapter?.notifyDataSetChanged()
+                }
+            }
+        }
+
         fun delete(){
             imageDataSet = emptyList<Array<File>>().toMutableList()
             conferDataSet = emptyList<Array<Any>>().toMutableList()
