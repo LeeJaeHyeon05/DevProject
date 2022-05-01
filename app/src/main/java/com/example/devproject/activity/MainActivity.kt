@@ -72,9 +72,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setRecyclerView(){
         runOnUiThread{
-            val adater = com.example.devproject.others.ListAdapter()
-            UIHandler.conferRecyclerView?.adapter = adater
-            UIHandler.conferRecyclerView?.layoutManager = LinearLayoutManager(this)
+            UIHandler.activateUI(R.id.conferRecyclerView)
         }
     }
 
