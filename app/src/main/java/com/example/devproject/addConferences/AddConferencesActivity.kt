@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
@@ -15,6 +16,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.core.graphics.drawable.toDrawable
 import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
@@ -22,6 +24,7 @@ import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
+import com.example.devproject.util.FirebaseIO.Companion.storageWrite
 import com.example.devproject.util.UIHandler
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -114,10 +117,10 @@ class AddConferencesActivity() : AppCompatActivity() {
                 documentID = id,
                 uploader = FirebaseAuth.getInstance().currentUser?.email.toString()
             )
+            val bitmapDrawable = findViewById<ImageView>(R.id.IvMapSnapshot).drawable
+            val bitmap = (bitmapDrawable as BitmapDrawable).bitmap
 
-
-
-            if(FirebaseIO.write("conferenceDocument", docNumText, conference)){
+            if(storageWrite(docNumText, bitmap) && FirebaseIO.write("conferenceDocument", docNumText, conference)){
                 Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
                 DataHandler.reload()
                 finish()

@@ -17,7 +17,7 @@
             android:id="@+id/conferRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="14"
+            android:layout_weight="14.5"
             android:padding="5dp"
             tools:listitem="@layout/conference_list_item">
 
@@ -33,7 +33,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:text="컨퍼런스 추가!"
             android:textColor="@color/white"
             android:textSize="16sp" />
