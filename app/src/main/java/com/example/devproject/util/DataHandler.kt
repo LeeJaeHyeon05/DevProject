@@ -1,6 +1,10 @@
 package com.example.devproject.util
 
+import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import com.example.devproject.activity.LoginActivity
 import com.example.devproject.format.ConferenceInfo
 import java.io.File
 
@@ -14,6 +18,7 @@ class DataHandler {
         fun load() {
             FirebaseIO.read("conferenceDocument").addOnSuccessListener { result ->
                 run {
+                    conferDataSet.clear()
                     for (document in result) {
                         conferDataSet.add(arrayOf(                   //index
                             document.data["uploader"] as String,     //0
@@ -58,7 +63,7 @@ class DataHandler {
         }
 
         fun updateConferDataSet(conferenceInfo: ConferenceInfo){
-            conferDataSet.add(conferenceInfo.toArray())
+
         }
     }
 
