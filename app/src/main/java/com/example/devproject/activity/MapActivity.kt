@@ -36,8 +36,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback{
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        currentLat = intent.getDoubleExtra("currentLat", 37.602511)
-        currentLng = intent.getDoubleExtra("currentLng", 126.927569)
+        currentLat = intent.getDoubleExtra("currentLat", 37.500045)
+        currentLng = intent.getDoubleExtra("currentLng", 127.036506)
 
         var mGeocoder = Geocoder(this, Locale.getDefault())
 
@@ -105,7 +105,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback{
 
         mMap?.let{
             //val currentLocation = LatLng(currentLat, currentLng)
-            val currentLocation = LatLng(37.602511, 126.927569)
+            val currentLocation = LatLng(37.500045, 127.036506)
             it.setMaxZoomPreference(20.0f)
             it.setMinZoomPreference(12.0f)
             it.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 16f))

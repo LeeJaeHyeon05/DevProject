@@ -14,7 +14,7 @@ class UIHandler {
     companion object{
         private var conferAddButton : Button? = null// findViewById<Button>(R.id.addBtn)
         var conferRecyclerView : RecyclerView? = null//findViewById<RecyclerView>(R.id.conferRecyclerView)
-        var adapter : ListAdapter? = null// ListAdapter(emptyList<Array<File>>().toMutableList(), dummyTextDataSet)
+        var adapter : ListAdapter? = null
         var rootView : View? = null
         var mainActivity : MainActivity? = null
 

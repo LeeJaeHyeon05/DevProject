@@ -1,11 +1,8 @@
-package com.example.devproject.addConferences
+package com.example.devproject.dialog
 
 import android.app.Dialog
 import android.content.Context
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
-import com.example.devproject.R
 import com.example.devproject.databinding.ActivityDialogPriceBinding
 
 class PriceDialog(context: Context) {
@@ -28,7 +25,11 @@ class PriceDialog(context: Context) {
 
 
         continueBtn.setOnClickListener {
-            val priceNum = addPrice.text.toString()
+            val priceNum: String = if(addPrice.text.isEmpty()){
+                "무료"
+            } else{
+                addPrice.text.toString()
+            }
             listener.onClicked(priceNum)
 
             dialog.dismiss()
@@ -39,7 +40,7 @@ class PriceDialog(context: Context) {
 
     }
     fun setOnOkClickedListener(listener: (String) -> Unit){
-        this.listener = object: PriceDialogClickedListener{
+        this.listener = object: PriceDialogClickedListener {
             override fun onClicked(content: String) {
                 listener(content)
             }
