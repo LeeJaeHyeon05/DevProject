@@ -3,8 +3,10 @@ package com.example.devproject.addConferences
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
@@ -16,7 +18,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.core.graphics.drawable.toDrawable
 import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
@@ -25,7 +26,6 @@ import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
-import com.example.devproject.util.UIHandler
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
@@ -37,7 +37,7 @@ import java.util.*
 class AddConferencesActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddConferencesBinding
-
+    private lateinit var uploader: String
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,12 +50,16 @@ class AddConferencesActivity() : AppCompatActivity() {
 
         var latitude: Double = 0.0
         var longitude: Double = 0.0
-        var mGeocoder = Geocoder(this, Locale.getDefault())
+        val mGeocoder = Geocoder(this, Locale.getDefault())
         var list = mutableListOf<Address>()
+        uploader = ""
 
         getDate()
 
         getPrice()
+
+        //업로더 아이디 가져오기
+        findUploader()
 
         var startMapActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result -> //지도 액티비티 결과값 받아오기
             if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
@@ -91,42 +95,78 @@ class AddConferencesActivity() : AppCompatActivity() {
             //editText 불러오기
             val conTitle = binding.addConTitle.text.toString()
             val conContent = binding.addConDetail.text.toString()
-            val place = binding.ETConferenceGeo.text.toString()
             val link = binding.addConLink.text.toString()
 
             val exceptWon = binding.priceTextView.text.split(" ")
-            val price =  Integer.parseInt(exceptWon[0]).toLong()
+
+            val price: Long = if(exceptWon[0] == "무료" || exceptWon[0] == ""){
+                0
+            } else Integer.parseInt(exceptWon[0]).toLong()
 
             //월 불러오기
             val id = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
             val docNumText = "document$id"
             val date = binding.dateTextView.text.toString()
 
-            //구조 설정
-
-            //val id = findUploader()
+            val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
 
             val conference = ConferenceInfo(
                 conferenceURL = link,
                 content = conContent,
                 date = date,
-                offline = false,
+                offline = checkOffline(snapshotImage),
                 place = GeoPoint(latitude, longitude),
                 price = price,
                 title = conTitle,
                 documentID = id,
-                uploader = FirebaseAuth.getInstance().currentUser?.email.toString()
+                uploader = uploader
             )
-            val bitmapDrawable = findViewById<ImageView>(R.id.IvMapSnapshot).drawable
-            val bitmap = (bitmapDrawable as BitmapDrawable).bitmap
 
-            if(storageWrite(docNumText, bitmap) && FirebaseIO.write("conferenceDocument", docNumText, conference)){
-                Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
-                DataHandler.reload()
-                finish()
+            val bitmapDrawable: Drawable?
+            val bitmap: Bitmap?
+
+            if(latitude != 0.0 && longitude != 0.0){
+                bitmapDrawable = snapshotImage.drawable
+                bitmap = (bitmapDrawable as BitmapDrawable).bitmap
+
+                if(checkInput(conference)){
+                    if(storageWrite(docNumText, bitmap) && FirebaseIO.write("conferenceDocument", docNumText, conference)){
+                        Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
+                        DataHandler.reload()
+                        finish()
+                    }
+                } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                if(checkInput(conference)){
+                    if(FirebaseIO.write("conferenceDocument", docNumText, conference)){
+                        Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
+                        DataHandler.reload()
+                        finish()
+                    }
+                } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
+    private fun checkInput(conference: ConferenceInfo): Boolean{
+        fun validateString(value: String?): Boolean? {
+            return value?.isNotEmpty()
+        }
+
+        fun validateLong(value: Long?): Boolean{
+            return value != null
+        }
+
+        return validateString(conference.documentID) == true &&
+                validateString(conference.conferenceURL) == true &&
+                validateString(conference.content) == true &&
+                validateString(conference.date) == true &&
+                validateString(conference.title) == true &&
+                validateString(conference.uploader) == true && validateLong(conference.price)
+    }
+
+    private fun checkOffline(image: ImageView) = image.drawable == null
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item?.itemId){
@@ -140,7 +180,7 @@ class AddConferencesActivity() : AppCompatActivity() {
     }
 
     private fun findUploader(): String?{
-        var getUid = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        val getUid = FirebaseAuth.getInstance().currentUser?.uid.toString()
         var id: String? = null
         val mFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
@@ -149,12 +189,16 @@ class AddConferencesActivity() : AppCompatActivity() {
             .get()
             .addOnCompleteListener {
                 if(it.isSuccessful){
-                    for(document in it.result!!.documents){
-                        id = document.toString()
+                    for(document in it.result.documents){
+                        handleUploader(document.id)
                     }
                 }
             }
         return id
+    }
+
+    private fun handleUploader(query: String){
+        uploader = query
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -181,7 +225,12 @@ class AddConferencesActivity() : AppCompatActivity() {
         priceBtn.setOnClickListener {
             val dialog = PriceDialog(this)
             dialog.setOnOkClickedListener{ price->
-                binding.priceTextView.text = price + " 원"
+                if(price == "무료"){
+                    binding.priceTextView.text = price
+                }
+                else{
+                    binding.priceTextView.text = "${price} 원"
+                }
             }
             dialog.priceDia()
         }

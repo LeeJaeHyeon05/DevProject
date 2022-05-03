@@ -17,4 +17,5 @@
     <color name="textInputOutlinedColor">#030303</color>
     <color name="textInputHintColor">#6C6C6C</color>
     <color name="textInputErrorColor">#D03939</color>
+    <color name="buttonColor">#FDF0A2</color>
 </resources>

@@ -25,7 +25,11 @@ class PriceDialog(context: Context) {
 
 
         continueBtn.setOnClickListener {
-            val priceNum = addPrice.text.toString()
+            val priceNum: String = if(addPrice.text.isEmpty()){
+                "무료"
+            } else{
+                addPrice.text.toString()
+            }
             listener.onClicked(priceNum)
 
             dialog.dismiss()
