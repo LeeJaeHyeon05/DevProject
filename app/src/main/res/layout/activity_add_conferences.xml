@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:fillViewport="true"
     tools:context=".addConferences.AddConferencesActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/addConferenceGuideLeft"
@@ -31,8 +31,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:textColorHint="#9A9A9A"
             android:layout_marginBottom="10dp"
+            android:textColorHint="#9A9A9A"
             app:layout_constraintBottom_toTopOf="@id/detailTextInput"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
             app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
@@ -53,8 +53,8 @@
             style="@style/TextInputLayoutStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColorHint="#9A9A9A"
             android:layout_marginBottom="10dp"
+            android:textColorHint="#9A9A9A"
             app:layout_constraintBottom_toTopOf="@id/conferenceLinkInput"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
             app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
@@ -62,15 +62,15 @@
 
             <EditText
                 android:id="@+id/addConDetail"
-                android:fontFamily="@font/jua_regular"
                 style="@style/TextInputEditTextStyle"
-                android:background="@null"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxHeight="300dp"
+                android:background="@null"
+                android:fontFamily="@font/jua_regular"
                 android:gravity="top|start"
                 android:hint="내용"
                 android:inputType="text|textMultiLine"
+                android:maxHeight="300dp"
                 android:scrollbars="vertical" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -79,10 +79,10 @@
             android:id="@+id/conferenceLinkInput"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:maxHeight="200dp"
             android:textColorHint="#9A9A9A"
-            android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toTopOf="@+id/TextLayoutConferenceGeo"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
             app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
@@ -93,11 +93,11 @@
                 style="@style/TextInputEditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxHeight="200dp"
                 android:gravity="top|start"
+                android:hint="홈페이지"
                 android:inputType="text|textMultiLine"
-                android:scrollbars="vertical"
-                android:hint="홈페이지" />
+                android:maxHeight="200dp"
+                android:scrollbars="vertical" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,12 +105,12 @@
             android:id="@+id/TextLayoutConferenceGeo"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:maxHeight="100dp"
+            android:textColorHint="#9A9A9A"
             app:endIconDrawable="@drawable/ic_map"
             app:endIconMode="custom"
-            android:maxHeight="100dp"
-            android:layout_marginBottom="10dp"
-            android:textColorHint="#9A9A9A"
             app:layout_constraintBottom_toTopOf="@id/showMapSnapShotLayout"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
             app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
@@ -121,9 +121,9 @@
                 style="@style/TextInputEditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxHeight="100dp"
                 android:hint="위치"
                 android:inputType="text|textMultiLine"
+                android:maxHeight="100dp"
                 android:scrollbars="vertical"
                 android:textColorHint="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -133,8 +133,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:animationDuration="300"
             android:layout_marginTop="10dp"
+            app:animationDuration="300"
             app:expandOnClick="true"
             app:inner_view="@layout/expandable_second_map_snapshot"
             app:layout_constraintBottom_toTopOf="@id/LinearLayout"
@@ -145,36 +145,34 @@
 
         <LinearLayout
             android:id="@+id/LinearLayout"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/showMapSnapShotLayout"
-            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
-            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="0dp"
             android:layout_height="300dp"
-            android:orientation="vertical">
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@id/showMapSnapShotLayout">
 
             <LinearLayout
-                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                >
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginBottom="10dp"
-                    >
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/dateTextView"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:padding="5dp"
                         android:text=""
-                        android:layout_weight="1"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="24sp" />
@@ -185,8 +183,8 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/con_round"
                         android:fontFamily="@font/jua_regular"
-                        android:text="@string/dateText"
                         android:letterSpacing="-0.001"
+                        android:text="@string/dateText"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
@@ -196,16 +194,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/priceTextView"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:padding="5dp"
                         android:text=""
-                        android:layout_weight="1"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="24sp" />
@@ -216,9 +213,9 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/con_round"
                         android:fontFamily="@font/jua_regular"
+                        android:letterSpacing="-0.001"
                         android:text="@string/priceText"
                         android:textColor="@color/black"
-                        android:letterSpacing="-0.001"
                         android:textSize="15sp" />
 
 
@@ -226,29 +223,29 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_weight="2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="2">
 
                 <LinearLayout
-                    android:layout_gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
                     <Button
                         android:id="@+id/addConButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/con_round"
                         android:backgroundTint="@color/white"
                         android:fontFamily="@font/jua_regular"
-                        android:layout_margin="10dp"
+                        android:letterSpacing="-0.01"
                         android:padding="5dp"
                         android:text="@string/addConferenceText"
                         android:textColor="@color/black"
-                        android:background="@drawable/con_round"
-                        android:letterSpacing="-0.01"
                         android:textSize="20sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        />
+                        app:layout_constraintBottom_toBottomOf="parent" />
                 </LinearLayout>
 
             </LinearLayout>
