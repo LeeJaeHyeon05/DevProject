@@ -106,7 +106,7 @@ class AddConferencesActivity() : AppCompatActivity() {
             //월 불러오기
             val id = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
             val docNumText = "document$id"
-            val date = binding.dateTextView.text.toString()
+            val date = binding.dateTextView.text.toString().replace(",", ".")
 
             val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
 
