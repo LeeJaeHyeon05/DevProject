@@ -17,7 +17,10 @@
         <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/drawable/bg_button_orange.xml" value="0.264" />
         <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/drawable/con_round.xml" value="0.374" />
         <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/drawable/ic_map.xml" value="0.264" />
-        <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/layout/activity_add_conferences.xml" value="0.5020833333333333" />
+        <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/font-v26/font.xml" value="0.5301327885597549" />
+        <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/font/font.xml" value="0.5301327885597549" />
+        <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/layout/activity_add_conferences.xml" value="0.5" />
+        <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/layout/activity_detail_page.xml" value="0.24318869828456105" />
         <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/layout/activity_dialog_price.xml" value="0.5020833333333333" />
         <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/layout/activity_insert_conference.xml" value="0.5" />
         <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/layout/activity_login.xml" value="0.5" />
