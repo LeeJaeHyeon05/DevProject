@@ -41,6 +41,7 @@
             android:exported="false" />
         <activity
             android:name=".addConferences.AddConferencesActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".activity.MapActivity"

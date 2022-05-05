@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 //                    DataHandler.load()
 //                }
 //            }
-            startActivity(Intent(this, AddConferencesActivity()::class.java))
+            startActivity(Intent(this, AddConferencesActivity::class.java))
         }
     }
 }

@@ -106,7 +106,7 @@ class AddConferencesActivity() : AppCompatActivity() {
             //월 불러오기
             val id = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
             val docNumText = "document$id"
-            val date = binding.dateTextView.text.toString()
+            val date = binding.dateTextView.text.toString().replace(",", ".")
 
             val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
 
@@ -214,7 +214,7 @@ class AddConferencesActivity() : AppCompatActivity() {
         dateBtn.setOnClickListener {
             val dig = DatePickerDialog(this,
                 { p0, year, month, day ->
-                    binding.dateTextView.text = "$year, ${month+1}, $day"
+                    binding.dateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
                 }, year, month, day)
             dig.show()
         }

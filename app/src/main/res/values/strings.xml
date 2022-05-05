@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DevProject</string>
+    <string name="app_name">데버런스</string>
     <string name="locationText">위치 추가하기</string>
     <string name="priceText">금액 추가하기</string>
     <string name="dateText">날짜 추가하기</string>
