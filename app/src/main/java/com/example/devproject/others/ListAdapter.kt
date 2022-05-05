@@ -2,6 +2,7 @@ package com.example.devproject.others
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.graphics.Color
 import android.opengl.Visibility
 import android.view.LayoutInflater
@@ -64,7 +65,7 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
         viewHolder.conferPreCardView.setOnClickListener {
             val intent = Intent(UIHandler.rootView?.context, ShowConferenceDetailActivity::class.java)
             intent.putExtra("position", position)
-            UIHandler.rootView?.context?.startActivity(intent)
+            UIHandler.rootView?.context?.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK))
 
         }
         viewHolder.conferPreCardView.setOnLongClickListener {
