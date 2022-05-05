@@ -18,9 +18,9 @@
 
         <ImageView
             android:id="@+id/conferPreImageView"
-            android:layout_width="wrap_content"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@drawable/default_image" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,33 +29,33 @@
             android:weightSum="3">
 
             <TextView
-                style="@style/TextInputEditTextStyle"
-                android:text="컨퍼런스 제목"
                 android:id="@+id/conferPreTitleTextView"
+                style="@style/TextInputEditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:text="컨퍼런스 제목"
                 android:textSize="20sp" />
 
             <TextView
-                style="@style/TextInputEditTextStyle"
-                android:text="컨퍼런스 날짜"
                 android:id="@+id/conferPreDateTextView"
+                style="@style/TextInputEditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:text="컨퍼런스 날짜"
                 android:textSize="20sp" />
 
             <TextView
-                style="@style/TextInputEditTextStyle"
-                android:text="컨퍼런스 내용 요약"
                 android:id="@+id/conferPreContentTextView"
+                style="@style/TextInputEditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:text="컨퍼런스 내용 요약"
                 android:textSize="20sp" />
         </LinearLayout>
     </TableRow>

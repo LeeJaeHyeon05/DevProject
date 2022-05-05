@@ -39,7 +39,7 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         //Binding Image & Text data Set trough firebase
-        viewHolder.conferPreImageView.setImageResource(R.drawable.ic_launcher_foreground)
+        viewHolder.conferPreImageView.setImageResource(R.drawable.default_image)
         viewHolder.conferPreImageView.setOnClickListener {
             val intent = Intent(context, ShowWebViewActivity::class.java)
             intent.putExtra("conferenceURL", DataHandler.conferDataSet[position][5].toString())
