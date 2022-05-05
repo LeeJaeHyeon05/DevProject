@@ -106,7 +106,7 @@ class AddConferencesActivity() : AppCompatActivity() {
             //월 불러오기
             val id = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
             val docNumText = "document$id"
-            val date = binding.dateTextView.text.toString()
+            val date = binding.dateTextView.text.toString().replace(",", ".")
 
             val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
 
@@ -180,27 +180,31 @@ class AddConferencesActivity() : AppCompatActivity() {
         }
     }
 
-    private fun findUploader(): String?{
-        val getUid = FirebaseAuth.getInstance().currentUser?.uid.toString()
-        var id: String? = null
-        val mFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private fun findUploader(){
+        val getEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
 
-        mFirestore.collection("UserInfo")
-            .whereEqualTo("uid", getUid)
-            .get()
-            .addOnCompleteListener {
-                if(it.isSuccessful){
-                    for(document in it.result.documents){
-                        handleUploader(document.id)
-                    }
-                }
-            }
-        return id
-    }
+        val id = getEmail.split("@")
 
-    private fun handleUploader(query: String){
-        uploader = query
+        uploader = id[0]
+//        var id: String? = null
+//        val mFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+//
+//        mFirestore.collection("UserInfo")
+//            .whereEqualTo("uid", getEmail)
+//            .get()
+//            .addOnCompleteListener {
+//                if(it.isSuccessful){
+//                    for(document in it.result.documents){
+//                        handleUploader(document.id)
+//                    }
+//                }
+//            }
+//        return id
     }
+//
+//    private fun handleUploader(query: String){
+//        uploader = query
+//    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun getDate() {
@@ -215,7 +219,7 @@ class AddConferencesActivity() : AppCompatActivity() {
         dateBtn.setOnClickListener {
             val dig = DatePickerDialog(this,
                 { p0, year, month, day ->
-                    binding.dateTextView.text = "$year, ${month+1}, $day"
+                    binding.dateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
                 }, year, month, day)
             dig.show()
         }

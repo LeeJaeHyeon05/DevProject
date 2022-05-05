@@ -15,6 +15,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail_page)
         val position = intent.getIntExtra("position", 0)
 
+        var conferUploaderIconImageView : ImageView = findViewById(R.id.conferUploadeIconImageView)
         var conferUploaderTextView : TextView = findViewById(R.id.conferUploaderTextView)
         var conferTitleTextView : TextView = findViewById(R.id.conferTitleTextView)
         var conferImageView : ImageView = findViewById(R.id.conferImageView)
@@ -24,13 +25,14 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         var conferURLImageView : ImageView = findViewById(R.id.conferURLImageView)
         var conferContentTextView : TextView = findViewById(R.id.conferConetentTextView)
 
+        conferUploaderIconImageView.setImageResource(R.drawable.dev)
         conferUploaderTextView.text = DataHandler.conferDataSet[position][0].toString()
         conferTitleTextView.text = DataHandler.conferDataSet[position][1].toString()
         //DummyImage
         conferImageView.setImageResource(R.drawable.ic_launcher_foreground)
         conferDateTextView.text = DataHandler.conferDataSet[position][2].toString()
-        conferPriceTextView.text = DataHandler.conferDataSet[position][3].toString()
-        conferOfflineTextView.text = DataHandler.conferDataSet[position][4].toString()
+        conferPriceTextView.text = if(DataHandler.conferDataSet[position][3].toString().toInt() == 0) "무료" else DataHandler.conferDataSet[position][3].toString()
+        conferOfflineTextView.text = if(DataHandler.conferDataSet[position][4].toString() == "false") "온라인" else "오프라인"
         conferURLImageView.setImageResource(R.drawable.link)
         conferURLImageView.setOnClickListener {
             val intent = Intent(this, ShowWebViewActivity::class.java)
