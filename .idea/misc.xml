@@ -7,12 +7,13 @@
         <entry key="..\:/Users/Admin/DevProject/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.133" />
         <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_add_conferences.xml" value="0.25" />
         <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_date.xml" value="0.22" />
-        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_detail_page.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_detail_page.xml" value="0.22" />
         <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_dialog_price.xml" value="0.18" />
         <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_login.xml" value="0.22" />
-        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_sign_up_acitivty.xml" value="0.36614583333333334" />
-        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/conference_list_item.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/activity_webview.xml" value="0.31145833333333334" />
+        <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/conference_list_item.xml" value="0.25" />
         <entry key="..\:/Users/Admin/DevProject/app/src/main/res/layout/dialog_find_password.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/drawable/bg_button_orange.xml" value="0.264" />
         <entry key="..\:/Users/Administrator/Documents/DevProject/app/src/main/res/drawable/con_round.xml" value="0.374" />

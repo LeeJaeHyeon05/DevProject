@@ -137,7 +137,6 @@
             app:animationDuration="300"
             app:expandOnClick="true"
             app:inner_view="@layout/expandable_second_map_snapshot"
-            app:layout_constraintBottom_toTopOf="@id/LinearLayout"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
             app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
             app:layout_constraintTop_toBottomOf="@+id/TextLayoutConferenceGeo"
@@ -251,5 +250,7 @@
             </LinearLayout>
 
         </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

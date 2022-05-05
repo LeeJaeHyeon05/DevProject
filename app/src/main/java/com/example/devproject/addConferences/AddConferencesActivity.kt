@@ -149,6 +149,7 @@ class AddConferencesActivity() : AppCompatActivity() {
         }
     }
 
+
     private fun checkInput(conference: ConferenceInfo): Boolean{
         fun validateString(value: String?): Boolean? {
             return value?.isNotEmpty()
