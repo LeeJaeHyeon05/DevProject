@@ -44,7 +44,6 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        autoLoginValidate() //자동 로그인
 
         getResultLoginInfo = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()){ result ->
@@ -67,7 +66,6 @@ class LoginActivity : AppCompatActivity() {
             getResultLoginInfo.launch(mIntent)
         }
     }
-
     override fun onStop() {
         super.onStop()
 
@@ -76,24 +74,7 @@ class LoginActivity : AppCompatActivity() {
         savePref.edit().putString("Email", binding.EtLoginId.text.toString()).apply()
     }
 
-    private fun autoLoginValidate(){
-        val sharedPref = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE).getBoolean("CheckBox", false)
-        val sharedId = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE).getString("Email", null)
 
-        if (sharedId != null && sharedPref) {
-            DataHandler.load()
-            auth.currentUser?.reload()?.addOnCompleteListener { task -> //자동로그인시 계정이 정지되었는지 삭제되었는지 확인
-                if(task.isSuccessful){
-                    Toast.makeText(this, "자동로그인 되었습니다", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                }
-                else{
-                    Toast.makeText(this, "사용자 계정이 정지되었거나 삭제되었습니다. 관리자에게 문의하세요", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
 
     private fun loginProcess(){
         val email = binding.EtLoginId.text.toString()
