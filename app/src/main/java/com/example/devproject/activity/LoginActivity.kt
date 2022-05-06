@@ -92,7 +92,6 @@ class LoginActivity : AppCompatActivity() {
             auth.currentUser?.reload()?.addOnCompleteListener { task -> //자동로그인시 계정이 정지되었는지 삭제되었는지 확인
                 if(task.isSuccessful){
                     Toast.makeText(this, "자동로그인 되었습니다", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }
                 else{
@@ -110,7 +109,6 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this){ task ->
                 if(task.isSuccessful){
                     Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }
                 else{
