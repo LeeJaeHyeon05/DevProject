@@ -24,7 +24,7 @@ class DataHandler {
 
         //firebase load
         fun load() {
-            FirebaseIO.read("conferenceDocument").addOnSuccessListener { result ->
+            FirebaseIO.readPublic("conferenceDocument").addOnSuccessListener { result ->
                 run {
                     conferDataSet.clear()
                     for (document in result) {
@@ -38,6 +38,8 @@ class DataHandler {
                             document.data["content"] as String       //6
                         )
                         )
+                        println(document.data["uploader"] as String)
+                        println(document.data["title"] as String)
                     }
                 }
             }
@@ -45,7 +47,7 @@ class DataHandler {
 
         fun reload(){
             delete()
-            FirebaseIO.read("conferenceDocument").addOnSuccessListener { result ->
+            FirebaseIO.readPublic("conferenceDocument").addOnSuccessListener { result ->
                 run {
                     for (document in result) {
                         conferDataSet.add(arrayOf(                   //index

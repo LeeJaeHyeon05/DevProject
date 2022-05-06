@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private var backPressedTime : Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
         UIHandler.allocateUI(window.decorView.rootView, this)
         UIHandler.activateUI(R.id.conferRecyclerView)

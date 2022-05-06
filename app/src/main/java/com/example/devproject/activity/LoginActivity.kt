@@ -30,6 +30,13 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        FirebaseFirestore.getInstance().collection("conferenceDocument").get().addOnSuccessListener { result ->
+            for (document in result) {
+                println(document.data["title"] as String)
+            }
+
+        }
+
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

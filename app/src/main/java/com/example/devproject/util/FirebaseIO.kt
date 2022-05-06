@@ -77,6 +77,10 @@ class FirebaseIO {
         fun read(collectionPath : String, documentPath : String) : Task<DocumentSnapshot> {
             return db.collection(collectionPath).document(documentPath).get()
         }
+
+        fun readPublic(collectionPath : String) : Task<QuerySnapshot> {
+            return FirebaseFirestore.getInstance().collection(collectionPath).get()
+        }
     }
 
 }
