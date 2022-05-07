@@ -16,25 +16,25 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.devproject.R
 import com.example.devproject.addConferences.AddConferencesActivity
-import com.example.devproject.others.ListAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import java.lang.String
 import kotlin.Int
 import kotlin.Long
 
 class MainActivity : AppCompatActivity() {
     private var backPressedTime : Long = 0
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.actionbar_menu, menu)
+        if(FirebaseIO.isValidAccount()) {
+            menuInflater.inflate(R.menu.actionbar_logined_menu, menu)
+        }else{
+            menuInflater.inflate(R.menu.actionbar_public_menu, menu)
+        }
         return true
     }
 
@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
             R.id.loginButton -> {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
+                finish()
             }
         }
 
@@ -54,8 +55,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         UIHandler.allocateUI(window.decorView.rootView, this)
         UIHandler.activateUI(R.id.conferRecyclerView)
+
 
         val swipeRefreshLayout : SwipeRefreshLayout = findViewById(R.id.swiperRefreshLayout)
 
