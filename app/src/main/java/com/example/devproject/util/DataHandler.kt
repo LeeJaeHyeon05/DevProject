@@ -36,10 +36,8 @@ class DataHandler {
                             document.data["offline"] as Boolean,     //4
                             document.data["conferenceURL"] as String,//5
                             document.data["content"] as String       //6
+                            )
                         )
-                        )
-                        println(document.data["uploader"] as String)
-                        println(document.data["title"] as String)
                     }
                 }
             }
@@ -72,9 +70,6 @@ class DataHandler {
             conferDataSet = emptyList<Array<Any>>().toMutableList()
         }
 
-        fun updateConferDataSet(conferenceInfo: ConferenceInfo){
-
-        }
     }
 
 }

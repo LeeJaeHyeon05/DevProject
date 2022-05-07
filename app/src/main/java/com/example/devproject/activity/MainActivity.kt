@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,8 +23,10 @@ import com.example.devproject.R
 import com.example.devproject.addConferences.AddConferencesActivity
 import com.example.devproject.others.ListAdapter
 import com.example.devproject.util.DataHandler
+import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import java.lang.String
 import kotlin.Int
 import kotlin.Long
@@ -83,6 +86,7 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(window.decorView.rootView, "한번 더 눌러 종료합니다." , Snackbar.LENGTH_LONG).show()
         }else{
             DataHandler.delete()
+            FirebaseAuth.getInstance().signOut()
             finish()
         }
     }
@@ -90,12 +94,11 @@ class MainActivity : AppCompatActivity() {
     private fun addConferences() {
         val addCon = findViewById<Button>(R.id.conferAddButton)
         addCon.setOnClickListener {
-//            var startAddConferenceActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//                if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
-//                    DataHandler.load()
-//                }
-//            }
-            startActivity(Intent(this, AddConferencesActivity::class.java))
+            if(FirebaseIO.isValidAccount()){
+                startActivity(Intent(this, AddConferencesActivity::class.java))
+            }else {
+                Toast.makeText(this, "로그인이 필요합니다", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
