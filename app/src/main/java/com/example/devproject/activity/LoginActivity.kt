@@ -13,6 +13,7 @@ import com.example.devproject.util.DataHandler
 import com.example.devproject.util.KeyboardVisibilityUtils
 import com.example.devproject.databinding.ActivityLoginBinding
 import com.example.devproject.databinding.DialogFindPasswordBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -30,6 +31,13 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        FirebaseFirestore.getInstance().collection("conferenceDocument").get().addOnSuccessListener { result ->
+            for (document in result) {
+                println(document.data["title"] as String)
+            }
+
+        }
+
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -43,8 +51,6 @@ class LoginActivity : AppCompatActivity() {
             })
 
         auth = FirebaseAuth.getInstance()
-
-        autoLoginValidate() //자동 로그인
 
         getResultLoginInfo = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()){ result ->
@@ -68,38 +74,25 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
     override fun onStop() {
         super.onStop()
 
         val savePref = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE)
         savePref.edit().putBoolean("CheckBox", binding.CheckboxAutoLogin.isChecked).apply()
         savePref.edit().putString("Email", binding.EtLoginId.text.toString()).apply()
+        savePref.edit().putString("Password", binding.EtLoginPassword.text.toString()).apply()
     }
 
-    private fun autoLoginValidate(){
-        val sharedPref = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE).getBoolean("CheckBox", false)
-        val sharedId = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE).getString("Email", null)
-
-        if (sharedId != null && sharedPref) {
-            DataHandler.load()
-            auth.currentUser?.reload()?.addOnCompleteListener { task -> //자동로그인시 계정이 정지되었는지 삭제되었는지 확인
-                if(task.isSuccessful){
-                    Toast.makeText(this, "자동로그인 되었습니다", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                }
-                else{
-                    Toast.makeText(this, "사용자 계정이 정지되었거나 삭제되었습니다. 관리자에게 문의하세요", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
 
     private fun loginProcess(){
         val email = binding.EtLoginId.text.toString()
         val password = binding.EtLoginPassword.text.toString()
         if(email.isNotEmpty()&&password.isNotEmpty()){
-            DataHandler.load()
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this){ task ->
                 if(task.isSuccessful){
                     Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
