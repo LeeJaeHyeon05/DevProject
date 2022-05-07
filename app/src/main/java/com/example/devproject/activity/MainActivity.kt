@@ -46,6 +46,11 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+            R.id.profileButton ->{
+                val intent = Intent(this, ProfileActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
 
         return super.onOptionsItemSelected(item)
