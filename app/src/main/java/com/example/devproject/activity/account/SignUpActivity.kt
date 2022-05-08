@@ -1,4 +1,4 @@
-package com.example.devproject.activity
+package com.example.devproject.activity.account
 
 import android.app.Activity
 import android.content.Intent

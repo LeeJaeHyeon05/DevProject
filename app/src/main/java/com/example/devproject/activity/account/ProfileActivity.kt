@@ -1,4 +1,4 @@
-package com.example.devproject.activity
+package com.example.devproject.activity.account
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.R
+import com.example.devproject.activity.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class ProfileActivity : AppCompatActivity() {
