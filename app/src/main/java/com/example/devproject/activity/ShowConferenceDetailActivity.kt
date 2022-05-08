@@ -44,6 +44,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
                     val intent = Intent(this, EditConferenceActivity::class.java)
                     intent.putExtra("position", pos)
                     startActivity(intent)
+                    finish()
                 }
             }
             R.id.deleteButton ->{

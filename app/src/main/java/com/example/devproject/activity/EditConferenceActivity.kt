@@ -10,34 +10,33 @@ import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.R
-import com.example.devproject.activity.MapActivity
+import com.example.devproject.addConferences.AddConferencesActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
-import com.google.firebase.auth.FirebaseAuth
+import com.example.devproject.util.UIHandler
 import com.google.firebase.firestore.GeoPoint
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.delay
 import java.util.*
 
 class EditConferenceActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddConferencesBinding
-
+    private var pos = 0
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +51,7 @@ class EditConferenceActivity() : AppCompatActivity() {
         val mGeocoder = Geocoder(this, Locale.getDefault())
         var list = mutableListOf<Address>()
         val position = intent.getIntExtra("position", 0)
+        pos = position
 
         binding.addConTitle.setText(DataHandler.conferDataSet[position][1] as String)
         binding.dateTextView.text = DataHandler.conferDataSet[position][2] as String
@@ -134,8 +134,15 @@ class EditConferenceActivity() : AppCompatActivity() {
                     FirebaseIO.delete("conferenceDocument", DataHandler.conferDataSet[position][8] as String)
                     if(storageWrite(conference.documentID as String, bitmap) && FirebaseIO.write("conferenceDocument", conference.documentID, conference)){
                         Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
+
                         DataHandler.reload()
-                        finish()
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            val intent = Intent(this, ShowConferenceDetailActivity::class.java)
+                            intent.putExtra("position", pos)
+                            startActivity(intent)
+                            finish()
+                        }, 250)
                     }
                 } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
             }
@@ -144,8 +151,16 @@ class EditConferenceActivity() : AppCompatActivity() {
                     FirebaseIO.delete("conferenceDocument", DataHandler.conferDataSet[position][8] as String)
                     if(FirebaseIO.write("conferenceDocument",conference.documentID as String, conference)){
                         Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
+
                         DataHandler.reload()
-                        finish()
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            val intent = Intent(this, ShowConferenceDetailActivity::class.java)
+                            intent.putExtra("position", pos)
+                            startActivity(intent)
+                            finish()
+                        }, 250)
+
                     }
                 } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
             }
@@ -215,5 +230,13 @@ class EditConferenceActivity() : AppCompatActivity() {
             }
             dialog.priceDia()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, ShowConferenceDetailActivity::class.java)
+        intent.putExtra("position", pos)
+        startActivity(intent)
+        finish()
     }
 }
