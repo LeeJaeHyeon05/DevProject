@@ -6,7 +6,7 @@
     android:padding="20dp">
 
     <TextView
-        android:id="@+id/deleteWarningTextView"
+        android:id="@+id/defaultDialogTextView"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/deleteCancelButton"
+        android:id="@+id/defaultDialogCancelButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,12 +26,12 @@
         android:text="@string/cancelText"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/deleteOkBuitton"
-        app:layout_constraintStart_toStartOf="@+id/deleteWarningTextView"
-        app:layout_constraintTop_toBottomOf="@id/deleteWarningTextView" />
+        app:layout_constraintEnd_toStartOf="@+id/defaultDialogOkButton"
+        app:layout_constraintStart_toStartOf="@+id/defaultDialogTextView"
+        app:layout_constraintTop_toBottomOf="@id/defaultDialogTextView" />
 
     <Button
-        android:id="@+id/deleteOkBuitton"
+        android:id="@+id/defaultDialogOkButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,8 +39,8 @@
         android:text="@string/ok"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/deleteWarningTextView"
-        app:layout_constraintStart_toEndOf="@+id/deleteCancelButton"
-        app:layout_constraintTop_toBottomOf="@+id/deleteWarningTextView" />
+        app:layout_constraintEnd_toEndOf="@+id/defaultDialogTextView"
+        app:layout_constraintStart_toEndOf="@+id/defaultDialogCancelButton"
+        app:layout_constraintTop_toBottomOf="@+id/defaultDialogTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -51,7 +51,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".activity.editConferenceActivity"
+            android:name=".activity.EditConferenceActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
 

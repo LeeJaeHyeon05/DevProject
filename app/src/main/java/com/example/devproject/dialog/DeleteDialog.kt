@@ -4,24 +4,24 @@ import android.app.Dialog
 import android.content.Context
 import android.view.WindowManager
 import android.widget.Button
-import com.example.devproject.databinding.ActivityDialogDeleteBinding
-import com.example.devproject.databinding.ActivityDialogPriceBinding
-import com.example.devproject.util.FirebaseIO
+import android.widget.TextView
+import com.example.devproject.databinding.ActivityDialogDefaultBinding
 
 class DeleteDialog(context: Context) {
 
     private val dialog = Dialog(context)
     var okButton : Button?= null
-    private lateinit var binding: ActivityDialogDeleteBinding
-
+    private lateinit var binding: ActivityDialogDefaultBinding
 
     fun deleteDialog() {
-        binding = ActivityDialogDeleteBinding.inflate(dialog.layoutInflater)
+        binding = ActivityDialogDefaultBinding.inflate(dialog.layoutInflater)
         dialog.show()
         dialog.setContentView(binding.root)
         dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
-        okButton = binding.deleteOkBuitton
-        val cancelButton = binding.deleteCancelButton
+        var defaultDialogTextView : TextView = binding.defaultDialogTextView
+        defaultDialogTextView.text = "정말 삭제하시겠습니까?"
+        okButton = binding.defaultDialogOkButton
+        val cancelButton = binding.defaultDialogCancelButton
         cancelButton.setOnClickListener {
             dialog.dismiss()
         }
