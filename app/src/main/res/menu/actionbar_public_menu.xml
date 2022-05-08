@@ -4,8 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:title="로그인"
         android:id="@+id/loginButton"
-        android:title="loginButton"
         android:icon="@drawable/ic_baseline_login_24"
         app:showAsAction="always">
     </item>

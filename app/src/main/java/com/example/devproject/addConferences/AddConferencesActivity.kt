@@ -13,6 +13,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
@@ -105,6 +106,7 @@ class AddConferencesActivity() : AppCompatActivity() {
 
             //월 불러오기
             val id = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
+            var uid = FirebaseAuth.getInstance().uid
             val docNumText = "document$id"
             val date = binding.dateTextView.text.toString().replace(",", ".")
 
@@ -119,7 +121,8 @@ class AddConferencesActivity() : AppCompatActivity() {
                 price = price,
                 title = conTitle,
                 documentID = id,
-                uploader = uploader
+                uploader = uploader,
+                uid = uid
             )
 
             val bitmapDrawable: Drawable?

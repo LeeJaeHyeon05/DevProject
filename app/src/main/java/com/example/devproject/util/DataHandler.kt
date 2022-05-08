@@ -39,7 +39,8 @@ class DataHandler {
                             document.data["price"] as Long,           //3
                             document.data["offline"] as Boolean,     //4
                             document.data["conferenceURL"] as String,//5
-                            document.data["content"] as String       //6
+                            document.data["content"] as String,       //6
+                            document.data["uid"] as String
                         )
                         )
                     }
@@ -59,8 +60,9 @@ class DataHandler {
                             document.data["price"] as Long,           //3
                             document.data["offline"] as Boolean,     //4
                             document.data["conferenceURL"] as String,//5
-                            document.data["content"] as String       //6
-                        )
+                            document.data["content"] as String,       //6
+                            document.data["uid"] as String
+                            )
                         )
                     }
                 }.run {

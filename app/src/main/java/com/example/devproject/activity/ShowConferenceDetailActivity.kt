@@ -2,14 +2,25 @@ package com.example.devproject.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.util.DataHandler
 import com.example.devproject.R
+import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler
+import com.google.firebase.auth.FirebaseAuth
 
 class ShowConferenceDetailActivity : AppCompatActivity() {
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if(FirebaseIO.isValidAccount() && (FirebaseAuth.getInstance().uid == DataHandler.conferDataSet[intent.getIntExtra("position", 0)][7].toString())) {
+            menuInflater.inflate(R.menu.actionbar_add_conference_menu, menu)
+        }
+        return true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_page)
