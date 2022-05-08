@@ -64,26 +64,12 @@ class MainActivity : AppCompatActivity() {
         UIHandler.allocateUI(window.decorView.rootView, this)
         UIHandler.activateUI(R.id.conferRecyclerView)
 
-
         val swipeRefreshLayout : SwipeRefreshLayout = findViewById(R.id.swiperRefreshLayout)
 
         swipeRefreshLayout.setOnRefreshListener {
             DataHandler.reload()
             swipeRefreshLayout.isRefreshing = false
         }
-
-        var someList = mutableListOf<Int>()
-        someList.add(0)
-        someList.add(1)
-        someList.add(2)
-        someList.add(3)
-        someList.add(4)
-        someList.add(5)
-
-        val transformedList =  someList.map {
-
-        }
-        Log.d(TAG, "onCreate: $transformedList")
 
         addConferences()
     }

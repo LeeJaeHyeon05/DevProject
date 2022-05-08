@@ -105,9 +105,9 @@ class AddConferencesActivity() : AppCompatActivity() {
             } else Integer.parseInt(exceptWon[0]).toLong()
 
             //월 불러오기
-            val id = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
+            val id = "document" + ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
             var uid = FirebaseAuth.getInstance().uid
-            val docNumText = "document$id"
+            val docNumText = id
             val date = binding.dateTextView.text.toString().replace(",", ".")
 
             val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)

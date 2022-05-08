@@ -40,7 +40,8 @@ class DataHandler {
                             document.data["offline"] as Boolean,     //4
                             document.data["conferenceURL"] as String,//5
                             document.data["content"] as String,       //6
-                            document.data["uid"] as String
+                            document.data["uid"] as String,
+                            document.data["documentID"] as String
                         )
                         )
                     }
@@ -61,7 +62,8 @@ class DataHandler {
                             document.data["offline"] as Boolean,     //4
                             document.data["conferenceURL"] as String,//5
                             document.data["content"] as String,       //6
-                            document.data["uid"] as String
+                            document.data["uid"] as String,
+                            document.data["documentID"] as String
                             )
                         )
                     }
