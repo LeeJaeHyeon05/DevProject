@@ -186,20 +186,36 @@
             app:layout_constraintStart_toStartOf="@id/loginGuidelineLeft"
             app:layout_constraintTop_toBottomOf="@id/GuidelineAutoLoginBottom" />
 
-        <Button
-            android:id="@+id/githubLoginBtn"
-            android:foreground="@drawable/github"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:fontFamily="@font/jua_regular"
-            android:text="로그인"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@id/loginGuidelineRight"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/loginGuidelineLeft"
-            app:layout_constraintTop_toBottomOf="@+id/BtnLogin" />
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toStartOf="@+id/loginGuidelineRight"
+            app:layout_constraintStart_toStartOf="@+id/loginGuidelineLeft"
+            app:layout_constraintTop_toBottomOf="@+id/BtnLogin">
+
+            <ImageView
+                android:id="@+id/githubImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/github" />
+
+            <Button
+                android:id="@+id/githubLoginBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="40dp"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/jua_regular"
+                android:padding="0sp"
+                android:scaleType="centerCrop"
+                android:text="로그인 with GitHub"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
