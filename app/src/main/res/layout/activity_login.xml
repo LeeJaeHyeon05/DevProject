@@ -186,6 +186,21 @@
             app:layout_constraintStart_toStartOf="@id/loginGuidelineLeft"
             app:layout_constraintTop_toBottomOf="@id/GuidelineAutoLoginBottom" />
 
+        <Button
+            android:id="@+id/githubLoginBtn"
+            android:foreground="@drawable/github"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/jua_regular"
+            android:text="로그인"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@id/loginGuidelineRight"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/loginGuidelineLeft"
+            app:layout_constraintTop_toBottomOf="@+id/BtnLogin" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

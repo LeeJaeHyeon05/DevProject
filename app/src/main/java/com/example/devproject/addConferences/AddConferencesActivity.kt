@@ -49,8 +49,8 @@ class AddConferencesActivity() : AppCompatActivity() {
         supportActionBar!!.title = "컨퍼런스 추가"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        var latitude: Double = 0.0
-        var longitude: Double = 0.0
+        var latitude = 0.0
+        var longitude = 0.0
         val mGeocoder = Geocoder(this, Locale.getDefault())
         var list = mutableListOf<Address>()
         uploader = ""

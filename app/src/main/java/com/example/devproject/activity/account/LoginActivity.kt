@@ -1,20 +1,28 @@
 package com.example.devproject.activity.account
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.activity.MainActivity
-import com.example.devproject.util.DataHandler
-import com.example.devproject.util.KeyboardVisibilityUtils
 import com.example.devproject.databinding.ActivityLoginBinding
 import com.example.devproject.databinding.DialogFindPasswordBinding
+import com.example.devproject.others.LoginType
+import com.example.devproject.util.DataHandler
+import com.example.devproject.util.KeyboardVisibilityUtils
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.OAuthCredential
+import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -56,7 +64,11 @@ class LoginActivity : AppCompatActivity() {
         } //회원가입하고 로그인창에 입력한 아이디와 비밀번호를 가져오기 위한 런처
 
         binding.BtnLogin.setOnClickListener {
-            loginProcess()
+            loginProcess(LoginType.DEFAULT)
+        }
+
+        binding.githubLoginBtn.setOnClickListener {
+            loginProcess(LoginType.GITHUB)
         }
 
         binding.BtnFindPassword.setOnClickListener {
@@ -84,25 +96,62 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    private fun loginProcess(){
+    private fun loginProcess(loginType : LoginType){
+
         val email = binding.EtLoginId.text.toString()
         val password = binding.EtLoginPassword.text.toString()
-        if(email.isNotEmpty()&&password.isNotEmpty()){
-            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this){ task ->
-                if(task.isSuccessful){
-                    Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+
+        when(loginType){
+            LoginType.DEFAULT -> {
+                if(email.isNotEmpty() && password.isNotEmpty()){
+                    auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this){ task ->
+                        if(task.isSuccessful){
+                            Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                        }
+                        else{
+                            Toast.makeText(this@LoginActivity, "등록되지 않은 계정이거나 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
                 else{
-                    Toast.makeText(this@LoginActivity, "등록되지 않은 계정이거나 비밀번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show()
+                    DataHandler.delete()
+                    Toast.makeText(this, "이메일 또는 비밀번호가 입력되지 않았습니다", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            LoginType.GITHUB -> {
+                if (email.isEmpty()) {
+                    Toast.makeText(this, "깃허브 아이디를 입력해주세요.", Toast.LENGTH_LONG).show()
+                } else {
+                    // 선택사항: OAuth 요청과 함께 전송하고자 하는 커스텀 OAuth 매개변수를 추가로 지정합니다.
+//                    provider.addCustomParameter("login", email)
+                    val provider = OAuthProvider.newBuilder("github.com")
+                    provider.addCustomParameter("client-id","6a5083336c7d6f123131")
+                    provider.addCustomParameter("login",email)
+
+                    auth.startActivityForSignInWithProvider( /* activity= */this, provider.build())
+                        .addOnSuccessListener{ authResult ->
+                                auth.signInWithCredential(authResult.credential!!)
+                                    .addOnCompleteListener(this@LoginActivity) { task ->
+                                        if (task.isSuccessful) {
+                                            Toast.makeText(this, "로그인 성공", Toast.LENGTH_LONG).show()
+                                            startActivity(Intent(this, MainActivity::class.java))
+                                            finish()
+                                        } else {
+                                            Toast.makeText(this, "로그인 실패", Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+                            }
+                        .addOnFailureListener{
+                                println(email)
+                                Toast.makeText(this, "Error : $it", Toast.LENGTH_LONG).show()
+                            }
                 }
             }
         }
-        else{
-            DataHandler.delete()
-            Toast.makeText(this, "이메일 또는 비밀번호가 입력되지 않았습니다", Toast.LENGTH_SHORT).show()
-        }
+
     }
 
     private fun showDialog(){

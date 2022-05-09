@@ -3,6 +3,7 @@ package com.example.devproject.activity.account
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.R
@@ -15,6 +16,8 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
+        var profileEmailTextView : TextView = findViewById(R.id.profileEmailTextView)
+        profileEmailTextView.text = FirebaseAuth.getInstance().currentUser?.email
         var logoutButton : Button = findViewById(R.id.logoutButton)
         logoutButton.setOnClickListener {
             logout()
