@@ -2,6 +2,7 @@ package com.example.devproject.addConferences
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.AbstractThreadedSyncAdapter
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,15 +10,19 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
@@ -26,9 +31,11 @@ import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
+import com.example.devproject.util.UIHandler
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
+import kotlinx.android.synthetic.main.activity_add_conferences.*
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -38,6 +45,7 @@ class AddConferencesActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddConferencesBinding
     private lateinit var uploader: String
+    private lateinit var imageAdapter: ImageViewAdapter
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +60,37 @@ class AddConferencesActivity() : AppCompatActivity() {
         var longitude: Double = 0.0
         val mGeocoder = Geocoder(this, Locale.getDefault())
         var list = mutableListOf<Address>()
+        val imagelist = ArrayList<Uri>()
+        val imageRecyclerView = binding.addConferenceImageRecyclerView
+
         uploader = ""
+
+        val startGetImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
+            val data = result.data
+            val size = result.data?.clipData?.itemCount
+            if(data == null){
+                return@registerForActivityResult
+            }
+            else{
+                val imageUri = data.data
+                if (imageUri != null) {
+                    for(i in 0 until size!!){
+                        imagelist.add(result.data!!.clipData!!.getItemAt(i).uri)
+                    }
+                    imageAdapter = ImageViewAdapter(imageList = imagelist, this)
+                    imageRecyclerView.adapter = imageAdapter
+                    imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+                }
+            }
+        }
+
+        binding.addConImageBtn.setOnClickListener { //사진 불러오기
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = MediaStore.Images.Media.CONTENT_TYPE
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            startGetImageResult.launch(intent)
+        }
 
         getDate()
 
