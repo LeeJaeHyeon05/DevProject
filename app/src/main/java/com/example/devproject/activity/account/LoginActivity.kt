@@ -2,7 +2,6 @@ package com.example.devproject.activity.account
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -19,7 +18,6 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.OAuthCredential
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -128,26 +126,28 @@ class LoginActivity : AppCompatActivity() {
                     // 선택사항: OAuth 요청과 함께 전송하고자 하는 커스텀 OAuth 매개변수를 추가로 지정합니다.
 //                    provider.addCustomParameter("login", email)
                     val provider = OAuthProvider.newBuilder("github.com")
-                    provider.addCustomParameter("client-id","6a5083336c7d6f123131")
+                    val scopes: ArrayList<String?> = object : ArrayList<String?>() {
+                        init {
+                            add("user:email")
+                        }
+                    }
+                    provider.scopes = scopes
+//
+//                    provider.addCustomParameter("client-id","6a5083336c7d6f123131")
                     provider.addCustomParameter("login",email)
-
-                    auth.startActivityForSignInWithProvider( /* activity= */this, provider.build())
-                        .addOnSuccessListener{ authResult ->
-                                auth.signInWithCredential(authResult.credential!!)
-                                    .addOnCompleteListener(this@LoginActivity) { task ->
-                                        if (task.isSuccessful) {
-                                            Toast.makeText(this, "로그인 성공", Toast.LENGTH_LONG).show()
-                                            startActivity(Intent(this, MainActivity::class.java))
-                                            finish()
-                                        } else {
-                                            Toast.makeText(this, "로그인 실패", Toast.LENGTH_LONG).show()
-                                        }
-                                    }
-                            }
-                        .addOnFailureListener{
-                                println(email)
-                                Toast.makeText(this, "Error : $it", Toast.LENGTH_LONG).show()
-                            }
+                    auth
+                        .startActivityForSignInWithProvider( /* activity= */this, provider.build())
+                        .addOnSuccessListener(
+                            OnSuccessListener<AuthResult?> { it ->
+                                    print(it.additionalUserInfo?.profile)
+                                    Toast.makeText(this, "로그인 성공", Toast.LENGTH_LONG).show()
+                                    startActivity(Intent(this, MainActivity::class.java))
+                                    finish()
+                            })
+                        .addOnFailureListener(
+                            OnFailureListener {
+                                Toast.makeText(this, "로그인 실패", Toast.LENGTH_LONG).show()
+                            })
                 }
             }
         }
