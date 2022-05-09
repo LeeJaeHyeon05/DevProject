@@ -30,11 +30,15 @@
         </activity>
 
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.account.LoginActivity"
             android:exported="false" />
 
         <activity
-            android:name=".activity.SignUpActivity"
+            android:name=".activity.account.ProfileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.account.SignUpActivity"
             android:exported="false" />
 
         <activity
@@ -43,6 +47,11 @@
 
         <activity
             android:name=".addConferences.AddConferencesActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.EditConferenceActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
 

@@ -7,10 +7,8 @@ package com.example.devproject.activity
  * volta2030
  */
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -18,13 +16,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.devproject.R
+import com.example.devproject.activity.account.LoginActivity
+import com.example.devproject.activity.account.ProfileActivity
 import com.example.devproject.addConferences.AddConferencesActivity
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import kotlin.Int
 import kotlin.Long
 
 class MainActivity : AppCompatActivity() {
@@ -46,6 +45,11 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+            R.id.profileButton ->{
+                val intent = Intent(this, ProfileActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -59,26 +63,12 @@ class MainActivity : AppCompatActivity() {
         UIHandler.allocateUI(window.decorView.rootView, this)
         UIHandler.activateUI(R.id.conferRecyclerView)
 
-
         val swipeRefreshLayout : SwipeRefreshLayout = findViewById(R.id.swiperRefreshLayout)
 
         swipeRefreshLayout.setOnRefreshListener {
             DataHandler.reload()
             swipeRefreshLayout.isRefreshing = false
         }
-
-        var someList = mutableListOf<Int>()
-        someList.add(0)
-        someList.add(1)
-        someList.add(2)
-        someList.add(3)
-        someList.add(4)
-        someList.add(5)
-
-        val transformedList =  someList.map {
-
-        }
-        Log.d(TAG, "onCreate: $transformedList")
 
         addConferences()
     }
