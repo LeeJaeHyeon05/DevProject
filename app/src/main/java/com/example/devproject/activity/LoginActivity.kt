@@ -13,6 +13,7 @@ import com.example.devproject.util.DataHandler
 import com.example.devproject.util.KeyboardVisibilityUtils
 import com.example.devproject.databinding.ActivityLoginBinding
 import com.example.devproject.databinding.DialogFindPasswordBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -30,6 +31,13 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        FirebaseFirestore.getInstance().collection("conferenceDocument").get().addOnSuccessListener { result ->
+            for (document in result) {
+                println(document.data["title"] as String)
+            }
+
+        }
+
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -43,7 +51,6 @@ class LoginActivity : AppCompatActivity() {
             })
 
         auth = FirebaseAuth.getInstance()
-
 
         getResultLoginInfo = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()){ result ->
@@ -66,21 +73,26 @@ class LoginActivity : AppCompatActivity() {
             getResultLoginInfo.launch(mIntent)
         }
     }
+
+    override fun onBackPressed() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
     override fun onStop() {
         super.onStop()
 
         val savePref = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE)
         savePref.edit().putBoolean("CheckBox", binding.CheckboxAutoLogin.isChecked).apply()
         savePref.edit().putString("Email", binding.EtLoginId.text.toString()).apply()
+        savePref.edit().putString("Password", binding.EtLoginPassword.text.toString()).apply()
     }
-
 
 
     private fun loginProcess(){
         val email = binding.EtLoginId.text.toString()
         val password = binding.EtLoginPassword.text.toString()
         if(email.isNotEmpty()&&password.isNotEmpty()){
-            DataHandler.load()
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this){ task ->
                 if(task.isSuccessful){
                     Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
