@@ -2,6 +2,7 @@ package com.example.devproject.util
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.format.UserInfo
@@ -11,7 +12,9 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
+import java.util.ArrayList
 
 class FirebaseIO {
     companion object {
@@ -48,27 +51,60 @@ class FirebaseIO {
             return success
         }
 
-        fun storageWrite(documentPath : String, mapSnapShotBitmap : Bitmap): Boolean{
+        fun storageWrite(
+            documentPath: String,
+            mapSnapShotBitmap: Bitmap,
+            imageList: ArrayList<Uri>,
+            collectionPath: String,
+            docNumText: String,
+            conference: ConferenceInfo,
+        ): Boolean{
+            val uriList: MutableList<Uri> = mutableListOf()
             var success = false
-            val bitmap = mapSnapShotBitmap
+            var bitmap = mapSnapShotBitmap
             val baos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
 
-            val data = baos.toByteArray()
+            for(i in imageList){
+                uriList.add(i)
+            }
 
-            var uploadTask = storage.getReference(documentPath).child("${documentPath}MapSnapShot.jpeg").putBytes(data)
-            uploadTask
+            val data = baos.toByteArray()
+            var count = 1
+
+            CoroutineScope(Dispatchers.Main).launch {
+                for(i in uriList){ //이미지 올리기
+                    count = imageUpload(documentPath = documentPath, count = count, uri = i, snapshot = data)
+                    count++
+                }
+                db.collection(collectionPath).document(docNumText).set(conference)
+                    .addOnSuccessListener {
+                        Log.d("TAG", "DocumentSnapshot successfully written! ")
+                    }
+                    .addOnFailureListener {
+                        Log.d("TAG", "Error writing document, $it")
+                    }
+            }
+            if(db.collection(collectionPath).document(docNumText).path.isNotEmpty()){
+                success = true
+            }
+            return success
+        }
+
+        private suspend fun imageUpload(documentPath: String, count: Int, uri: Uri, snapshot: ByteArray): Int{
+            val uploadMapSnapShotTask = storage.getReference("documentPost").child(documentPath).child("${documentPath}MapSnapShot.jpeg").putBytes(snapshot)
+            val uploadPostImageTask = storage.getReference("documentPost").child(documentPath)
+
+            uploadPostImageTask.child("$count Image.jpeg").putFile(uri)
+
+            uploadMapSnapShotTask
                 .addOnSuccessListener {
-                Log.d("TAG", "DocumentSnapshot successfully written! ")
+                    Log.d("TAG", "DocumentSnapshot successfully written! ")
                 }
                 .addOnFailureListener {
                     Log.d("TAG", "Error writing document, $it")
                 }
-
-            if(storage.getReference(documentPath).child("${documentPath}MapSnapShot.jpeg").path.isNotEmpty()){
-                success = true
-            }
-            return success
+            return count
         }
 
         fun read(collectionPath : String) : Task<QuerySnapshot> {

@@ -1,5 +1,6 @@
 package com.example.devproject.format
 
+import android.net.Uri
 import com.google.firebase.firestore.GeoPoint
 
 data class ConferenceInfo(
@@ -11,7 +12,8 @@ data class ConferenceInfo(
     var place: GeoPoint? = null,
     var price: Long? = null,
     var title: String? = null,
-    var uploader : String? = null
+    var uploader : String? = null,
+    val image: MutableList<Uri>? = null
 ){
     fun toArray() : Array<Any> {
         val array = arrayOf( uploader,
