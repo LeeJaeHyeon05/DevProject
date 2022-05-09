@@ -159,7 +159,7 @@ class EditConferenceActivity() : AppCompatActivity() {
                             intent.putExtra("position", pos)
                             startActivity(intent)
                             finish()
-                        }, 250)
+                        }, 300)
 
                     }
                 } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
