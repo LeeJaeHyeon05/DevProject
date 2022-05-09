@@ -6,6 +6,7 @@ import android.util.Log
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.format.UserInfo
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -70,12 +71,21 @@ class FirebaseIO {
             return success
         }
 
-        fun read(collectionPath : String) : Task<QuerySnapshot> {
-            return db.collection(collectionPath).get()
-        }
-
         fun read(collectionPath : String, documentPath : String) : Task<DocumentSnapshot> {
             return db.collection(collectionPath).document(documentPath).get()
+        }
+
+        fun readPublic(collectionPath : String) : Task<QuerySnapshot> {
+            return FirebaseFirestore.getInstance().collection(collectionPath).get()
+        }
+
+        fun delete(collectionPath : String, documentPath : String){
+            db.collection(collectionPath).document(documentPath).delete()
+        }
+
+        fun isValidAccount() : Boolean{
+            println(FirebaseAuth.getInstance().currentUser?.email)
+            return FirebaseAuth.getInstance().currentUser?.email != null
         }
     }
 

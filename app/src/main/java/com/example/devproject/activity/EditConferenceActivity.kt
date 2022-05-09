@@ -1,4 +1,4 @@
-package com.example.devproject.addConferences
+package com.example.devproject.activity
 
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -10,57 +10,58 @@ import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.R
-import com.example.devproject.activity.MapActivity
+import com.example.devproject.addConferences.AddConferencesActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.example.devproject.util.UIHandler
 import com.google.firebase.firestore.GeoPoint
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.delay
 import java.util.*
 
-class AddConferencesActivity() : AppCompatActivity() {
+class EditConferenceActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddConferencesBinding
-    private lateinit var uploader: String
-
+    private var pos = 0
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddConferencesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar!!.title = "컨퍼런스 추가"
+        supportActionBar!!.title = "컨퍼런스 편집"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         var latitude: Double = 0.0
         var longitude: Double = 0.0
         val mGeocoder = Geocoder(this, Locale.getDefault())
         var list = mutableListOf<Address>()
-        uploader = ""
+        val position = intent.getIntExtra("position", 0)
+        pos = position
+
+        binding.addConTitle.setText(DataHandler.conferDataSet[position][1] as String)
+        binding.dateTextView.text = DataHandler.conferDataSet[position][2] as String
+        binding.priceTextView.text = DataHandler.conferDataSet[position][3].toString()
+        binding.addConLink.setText(DataHandler.conferDataSet[position][5] as String)
+        binding.addConDetail.setText(DataHandler.conferDataSet[position][6] as String)
+        binding.addConButton.text = "컨퍼런스 편집하기"
 
         getDate()
-
         getPrice()
-
-        //업로더 아이디 가져오기
-        findUploader()
 
         var startMapActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result -> //지도 액티비티 결과값 받아오기
             if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
@@ -105,9 +106,6 @@ class AddConferencesActivity() : AppCompatActivity() {
             } else Integer.parseInt(exceptWon[0]).toLong()
 
             //월 불러오기
-            val id = "document" + ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
-            var uid = FirebaseAuth.getInstance().uid
-            val docNumText = id
             val date = binding.dateTextView.text.toString().replace(",", ".")
 
             val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
@@ -120,9 +118,9 @@ class AddConferencesActivity() : AppCompatActivity() {
                 place = GeoPoint(latitude, longitude),
                 price = price,
                 title = conTitle,
-                documentID = id,
-                uploader = uploader,
-                uid = uid
+                documentID = DataHandler.conferDataSet[position][8] as String,
+                uploader = DataHandler.conferDataSet[position][0] as String,
+                uid = DataHandler.conferDataSet[position][7] as String
             )
 
             val bitmapDrawable: Drawable?
@@ -133,25 +131,41 @@ class AddConferencesActivity() : AppCompatActivity() {
                 bitmap = (bitmapDrawable as BitmapDrawable).bitmap
 
                 if(checkInput(conference)){
-                    if(storageWrite(docNumText, bitmap) && FirebaseIO.write("conferenceDocument", docNumText, conference)){
-                        Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
+                    FirebaseIO.delete("conferenceDocument", DataHandler.conferDataSet[position][8] as String)
+                    if(storageWrite(conference.documentID as String, bitmap) && FirebaseIO.write("conferenceDocument", conference.documentID, conference)){
+                        Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
+
                         DataHandler.reload()
-                        finish()
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            val intent = Intent(this, ShowConferenceDetailActivity::class.java)
+                            intent.putExtra("position", pos)
+                            startActivity(intent)
+                            finish()
+                        }, 250)
                     }
                 } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
             }
             else{
                 if(checkInput(conference)){
-                    if(FirebaseIO.write("conferenceDocument", docNumText, conference)){
-                        Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
+                    FirebaseIO.delete("conferenceDocument", DataHandler.conferDataSet[position][8] as String)
+                    if(FirebaseIO.write("conferenceDocument",conference.documentID as String, conference)){
+                        Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
+
                         DataHandler.reload()
-                        finish()
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            val intent = Intent(this, ShowConferenceDetailActivity::class.java)
+                            intent.putExtra("position", pos)
+                            startActivity(intent)
+                            finish()
+                        }, 300)
+
                     }
                 } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
 
     private fun checkInput(conference: ConferenceInfo): Boolean{
         fun validateString(value: String?): Boolean? {
@@ -182,32 +196,6 @@ class AddConferencesActivity() : AppCompatActivity() {
                 return super.onOptionsItemSelected(item)
         }
     }
-
-    private fun findUploader(){
-        val getEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
-
-        val id = getEmail.split("@")
-
-        uploader = id[0]
-//        var id: String? = null
-//        val mFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-//
-//        mFirestore.collection("UserInfo")
-//            .whereEqualTo("uid", getEmail)
-//            .get()
-//            .addOnCompleteListener {
-//                if(it.isSuccessful){
-//                    for(document in it.result.documents){
-//                        handleUploader(document.id)
-//                    }
-//                }
-//            }
-//        return id
-    }
-//
-//    private fun handleUploader(query: String){
-//        uploader = query
-//    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun getDate() {
@@ -242,5 +230,13 @@ class AddConferencesActivity() : AppCompatActivity() {
             }
             dialog.priceDia()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, ShowConferenceDetailActivity::class.java)
+        intent.putExtra("position", pos)
+        startActivity(intent)
+        finish()
     }
 }
