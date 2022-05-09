@@ -13,7 +13,11 @@ data class ConferenceInfo(
     var price: Long? = null,
     var title: String? = null,
     var uploader : String? = null,
+<<<<<<< HEAD
     val image: MutableList<Uri>? = null
+=======
+    var uid : String? = null
+>>>>>>> 15746a67935de658907d913dcf3f84ed588b4581
 ){
     fun toArray() : Array<Any> {
         val array = arrayOf( uploader,
