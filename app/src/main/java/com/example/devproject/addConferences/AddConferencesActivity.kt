@@ -189,6 +189,7 @@ class AddConferencesActivity() : AppCompatActivity() {
                 })
             }
         }
+        //이 밑에 파트를 갯수 파트로 변경 예정
         chipCountText.text
         val chipList = ArrayList<String>()
         for (i: Int in 1..chipGroup.childCount) {
