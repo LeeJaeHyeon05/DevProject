@@ -1,12 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/showImageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ImageView>
+        android:layout_height="500dp"
+        android:layout_margin="10dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/dialogShowImageDeleteBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="삭제"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showImageView"
+        app:layout_constraintEnd_toStartOf="@id/dialogShowImageOkButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textStyle="bold"
+        android:letterSpacing="-0.03"
+        tools:ignore="ButtonStyle" />
+
+    <Button
+        android:id="@+id/dialogShowImageOkButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="확인"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dialogShowImageDeleteBtn"
+        app:layout_constraintTop_toBottomOf="@+id/showImageView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textStyle="bold"
+        android:letterSpacing="-0.03"
+        tools:ignore="ButtonStyle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

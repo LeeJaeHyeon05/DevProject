@@ -2,10 +2,13 @@ package com.example.devproject.addConferences
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Point
 import android.net.Uri
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -45,13 +48,26 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri>, private val contex
             .into(holder.addConferenceImageView)
         holder.addConferenceImageView.setOnClickListener {
             val dialogBinding: DialogShowImageBinding = DialogShowImageBinding.inflate(LayoutInflater.from(context))
-
-            val builder = androidx.appcompat.app.AlertDialog.Builder(context)
+            val builder = AlertDialog.Builder(context)
             val ad = builder.create()
 
             ad.setView(dialogBinding.root)
-            dialogBinding.showImageView.setImageDrawable(holder.addConferenceImageView.drawable)
             ad.show()
+
+            dialogBinding.showImageView.setImageURI(imageList[position])
+            ad.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT)
+
+            dialogBinding.dialogShowImageOkButton.setOnClickListener {
+                ad.dismiss()
+            }
+
+            dialogBinding.dialogShowImageDeleteBtn.setOnClickListener {
+                imageList.removeAt(position)
+                notifyDataSetChanged()
+                ad.dismiss()
+            }
+
+
         }
     }
 

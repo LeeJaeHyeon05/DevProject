@@ -21,16 +21,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.R
-import com.example.devproject.addConferences.AddConferencesActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
-import com.example.devproject.util.FirebaseIO.Companion.storageWrite
-import com.example.devproject.util.UIHandler
+import com.example.devproject.util.FirebaseIO.Companion.cloudWrite
 import com.google.firebase.firestore.GeoPoint
-import kotlinx.coroutines.delay
 import java.util.*
 
 class EditConferenceActivity() : AppCompatActivity() {
@@ -131,8 +128,8 @@ class EditConferenceActivity() : AppCompatActivity() {
                 bitmap = (bitmapDrawable as BitmapDrawable).bitmap
 
                 if(checkInput(conference)){
-                    FirebaseIO.delete("conferenceDocument", DataHandler.conferDataSet[position][8] as String)
-                    if(storageWrite(conference.documentID as String, bitmap) && FirebaseIO.write("conferenceDocument", conference.documentID, conference)){
+                    FirebaseIO.delete("conferenceDocument", "document${DataHandler.conferDataSet[position][8] as String}")
+                    if(cloudWrite(conference.documentID as String, bitmap, conference) && FirebaseIO.write("conferenceDocument", conference.documentID, conference)){
                         Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
 
                         DataHandler.reload()
