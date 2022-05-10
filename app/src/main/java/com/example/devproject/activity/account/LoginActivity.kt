@@ -30,7 +30,6 @@ class LoginActivity : AppCompatActivity() {
             for (document in result) {
                 println(document.data["title"] as String)
             }
-
         }
 
         binding = ActivityLoginBinding.inflate(layoutInflater)

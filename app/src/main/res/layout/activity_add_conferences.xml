@@ -218,6 +218,28 @@
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/addConImageBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="사진 추가"
+                        android:textStyle="bold"
+                        android:letterSpacing="-0.03"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/addConferenceImageRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+                    </androidx.recyclerview.widget.RecyclerView>
+
 
                 </LinearLayout>
             </LinearLayout>
@@ -225,7 +247,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2">
+                android:layout_weight="3">
 
                 <LinearLayout
                     android:layout_width="match_parent"

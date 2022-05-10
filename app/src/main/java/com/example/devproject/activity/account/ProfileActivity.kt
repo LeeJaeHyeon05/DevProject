@@ -32,4 +32,10 @@ class ProfileActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
+
+    override fun onPause() {
+        super.onPause()
+        val savePref = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE)
+        savePref.edit().putBoolean("CheckBox", false).apply()
+    }
 }
