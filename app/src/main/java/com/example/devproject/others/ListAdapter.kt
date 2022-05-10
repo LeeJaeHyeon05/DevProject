@@ -45,12 +45,7 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
         viewHolder.conferPreImageView.setImageResource(R.drawable.default_image)
         viewHolder.conferPreImageView2.visibility = View.GONE
         if(todayDate > DataHandler.conferDataSet[position][2].toString().replace(". ", "").toInt()){
-            println(DataHandler.conferDataSet[position][2].toString().replace(". ", "").toInt())
-            viewHolder.conferPreCardView.setCardBackgroundColor(Color.argb(50,80,80,80))
             viewHolder.conferPreImageView2.visibility = View.VISIBLE
-            viewHolder.conferPreDateTextView.setTextColor(Color.argb(50,80,80,80))
-            viewHolder.conferPreTitleTextVIew.setTextColor(Color.argb(50,80,80,80))
-            viewHolder.conferPreContentTextView.setTextColor(Color.argb(50,80,80,80))
         }
 
         viewHolder.conferPreImageView.setOnClickListener {

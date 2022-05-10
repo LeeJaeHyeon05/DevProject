@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="주력언어">
+        <item>Go</item>
+        <item>Java</item>
+        <item>JavaScript</item>
+        <item>C</item>
+        <item>C++</item>
+        <item>Kotlin</item>
+    </string-array>
+</resources>
