@@ -1,4 +1,4 @@
-package com.example.devproject.addConferences
+package com.example.devproject.activity
 
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -9,100 +9,58 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
-import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
-import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.R
-import com.example.devproject.activity.MapActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
-import com.example.devproject.util.FirebaseIO.Companion.storageWrite
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.example.devproject.util.FirebaseIO.Companion.cloudWrite
 import com.google.firebase.firestore.GeoPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
-class AddConferencesActivity() : AppCompatActivity() {
+class EditConferenceActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddConferencesBinding
-    private lateinit var uploader: String
-    private lateinit var imageAdapter: ImageViewAdapter
-
+    private var pos = 0
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddConferencesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar!!.title = "컨퍼런스 추가"
+        supportActionBar!!.title = "컨퍼런스 편집"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         var latitude: Double = 0.0
         var longitude: Double = 0.0
         val mGeocoder = Geocoder(this, Locale.getDefault())
         var list = mutableListOf<Address>()
-        val imageList = ArrayList<Uri>()
-        val imageRecyclerView = binding.addConferenceImageRecyclerView
+        val position = intent.getIntExtra("position", 0)
+        pos = position
 
-        uploader = ""
-
-        setDatePrice()
-
-        val startGetImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result-> //사진 불러오기
-            if(result.data != null){
-                val imageData = result.data
-                val size = imageData?.clipData?.itemCount
-                val imageUri = imageData?.clipData
-                if (imageUri != null) {
-                    for(i in 0 until size!!){
-                        imageList.add(result.data!!.clipData!!.getItemAt(i).uri)
-                    }
-                    imageAdapter = ImageViewAdapter(imageList = imageList, this)
-                    imageRecyclerView.adapter = imageAdapter
-                    imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-                }
-            }
-        }
-
-        binding.addConImageBtn.setOnClickListener { //사진 불러오기
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = MediaStore.Images.Media.CONTENT_TYPE
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            startGetImageResult.launch(intent)
-        }
+        binding.addConTitle.setText(DataHandler.conferDataSet[position][1] as String)
+        binding.dateTextView.text = DataHandler.conferDataSet[position][2] as String
+        binding.priceTextView.text = DataHandler.conferDataSet[position][3].toString()
+        binding.addConLink.setText(DataHandler.conferDataSet[position][5] as String)
+        binding.addConDetail.setText(DataHandler.conferDataSet[position][6] as String)
+        binding.addConButton.text = "컨퍼런스 편집하기"
 
         getDate()
-
         getPrice()
 
-        //업로더 아이디 가져오기
-        findUploader()
-
-        val startMapActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result -> //지도 액티비티 결과값 받아오기
+        var startMapActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result -> //지도 액티비티 결과값 받아오기
             if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
                 latitude  = result?.data?.getDoubleExtra("latitude", 0.0)?: 0.0
                 longitude = result?.data?.getDoubleExtra("longitude", 0.0)?: 0.0
@@ -145,9 +103,6 @@ class AddConferencesActivity() : AppCompatActivity() {
             } else Integer.parseInt(exceptWon[0]).toLong()
 
             //월 불러오기
-            val id = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
-            val uid = FirebaseAuth.getInstance().uid
-            val docNumText = id
             val date = binding.dateTextView.text.toString().replace(",", ".")
 
             val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
@@ -160,30 +115,53 @@ class AddConferencesActivity() : AppCompatActivity() {
                 place = GeoPoint(latitude, longitude),
                 price = price,
                 title = conTitle,
-                documentID = id,
-                uploader = uploader,
-                image = imageList,
-                uid = uid
+                documentID = DataHandler.conferDataSet[position][8] as String,
+                uploader = DataHandler.conferDataSet[position][0] as String,
+                uid = DataHandler.conferDataSet[position][7] as String
             )
 
-            if(checkInput(conference)){
-                if(storageWrite(docNumText, snapshotImage, imageList, "conferenceDocument", docNumText, conference)){
-                    Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
-                    DataHandler.reload()
-                    finish()
-                }
-            }else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
+            val bitmapDrawable: Drawable?
+            val bitmap: Bitmap?
+
+            if(latitude != 0.0 && longitude != 0.0){
+                bitmapDrawable = snapshotImage.drawable
+                bitmap = (bitmapDrawable as BitmapDrawable).bitmap
+
+                if(checkInput(conference)){
+                    FirebaseIO.delete("conferenceDocument", "document${DataHandler.conferDataSet[position][8] as String}")
+                    if(cloudWrite(conference.documentID as String, bitmap, conference) && FirebaseIO.write("conferenceDocument", conference.documentID, conference)){
+                        Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
+
+                        DataHandler.reload()
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            val intent = Intent(this, ShowConferenceDetailActivity::class.java)
+                            intent.putExtra("position", pos)
+                            startActivity(intent)
+                            finish()
+                        }, 250)
+                    }
+                } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                if(checkInput(conference)){
+                    FirebaseIO.delete("conferenceDocument", DataHandler.conferDataSet[position][8] as String)
+                    if(FirebaseIO.write("conferenceDocument",conference.documentID as String, conference)){
+                        Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
+
+                        DataHandler.reload()
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            val intent = Intent(this, ShowConferenceDetailActivity::class.java)
+                            intent.putExtra("position", pos)
+                            startActivity(intent)
+                            finish()
+                        }, 300)
+
+                    }
+                } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
-
-    private fun setDatePrice(){
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-
-        binding.dateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
-        binding.priceTextView.text = "무료"
     }
 
     private fun checkInput(conference: ConferenceInfo): Boolean{
@@ -200,39 +178,19 @@ class AddConferencesActivity() : AppCompatActivity() {
                 validateString(conference.content) == true &&
                 validateString(conference.date) == true &&
                 validateString(conference.title) == true &&
-                validateString(conference.uploader) == true && validateLong(conference.price) && validateString(conference.image.toString()) == true
+                validateString(conference.uploader) == true && validateLong(conference.price)
     }
 
     private fun checkOffline(image: ImageView) = image.drawable == null
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when(item?.itemId){
             android.R.id.home -> {
                 finish()
                 return true
             }
             else ->
                 return super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun findUploader(){
-        val getEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
-        val mFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-
-        CoroutineScope(Dispatchers.Main).launch {
-            mFirestore.collection("UserInfo")
-                .whereEqualTo("email", getEmail)
-                .get()
-                .addOnSuccessListener {
-                    for(document in it){
-                        val string = document["id"] as String
-                        uploader = string
-                    }
-                }
-                .addOnFailureListener{
-                    Log.d("TAG", "findUploader: ${it.stackTrace}")
-                }
         }
     }
 
@@ -269,5 +227,13 @@ class AddConferencesActivity() : AppCompatActivity() {
             }
             dialog.priceDia()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, ShowConferenceDetailActivity::class.java)
+        intent.putExtra("position", pos)
+        startActivity(intent)
+        finish()
     }
 }

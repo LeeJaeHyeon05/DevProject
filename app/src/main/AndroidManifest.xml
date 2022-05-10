@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.devproject">
-
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_main"
@@ -12,13 +9,10 @@
         android:roundIcon="@mipmap/ic_main_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DevProject">
-        <activity
-            android:name=".activity.LoginActivity"
-            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA_ppNk6FfxhQVmU59Ic5zmaS_9KEbeipk"/>
+            android:value="${googleMapApiKey}"/>
 
         <activity
             android:name=".activity.SplashActivity"
@@ -26,26 +20,45 @@
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.MainActivity"
-            android:exported="false" />
+            android:exported="false" >
+        </activity>
+
         <activity
-            android:name=".activity.SignUpActivity"
+            android:name=".activity.account.LoginActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".activity.account.ProfileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.account.SignUpActivity"
+            android:exported="false" />
+
         <activity
             android:name=".activity.ShowConferenceDetailActivity"
             android:exported="false" />
+
         <activity
             android:name=".addConferences.AddConferencesActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
+
+        <activity
+            android:name=".activity.EditConferenceActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
+
         <activity
             android:name=".activity.MapActivity"
             android:exported="false" />
+
         <activity
             android:name=".activity.ShowWebViewActivity"
             android:exported="false" />
