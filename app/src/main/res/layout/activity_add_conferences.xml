@@ -83,7 +83,6 @@
             android:layout_marginBottom="10dp"
             android:maxHeight="200dp"
             android:textColorHint="#9A9A9A"
-            app:layout_constraintBottom_toTopOf="@+id/TextLayoutConferenceGeo"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
             app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
             app:layout_constraintTop_toBottomOf="@id/detailTextInput">
@@ -102,6 +101,61 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/conferPreClip"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:maxHeight="200dp"
+            android:textColorHint="#9A9A9A"
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@id/conferenceLinkInput">
+
+            <EditText
+                android:id="@+id/addClip"
+                style="@style/TextInputEditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|start"
+                android:hint="태그 추가하기"
+                android:inputType="text|textMultiLine"
+                android:maxHeight="200dp"
+                android:scrollbars="vertical" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/addChipButton"
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            app:layout_constraintStart_toEndOf="@+id/conferPreClip"
+            app:layout_constraintBottom_toBottomOf="@+id/conferPreClip"
+            app:layout_constraintTop_toTopOf="@+id/conferPreClip"
+            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
+            android:text="추가하기"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:id="@+id/tagNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@+id/conferPreClip"
+            android:text="현재 태그 갯수 : 0"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp"/>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/conferChipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            app:layout_constraintTop_toBottomOf="@+id/tagNumberTextView"
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/TextLayoutConferenceGeo"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
@@ -114,7 +168,7 @@
             app:layout_constraintBottom_toTopOf="@id/showMapSnapShotLayout"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
             app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
-            app:layout_constraintTop_toBottomOf="@id/conferenceLinkInput">
+            app:layout_constraintTop_toBottomOf="@id/conferChipGroup">
 
             <EditText
                 android:id="@+id/ETConferenceGeo"
@@ -137,11 +191,12 @@
             app:animationDuration="300"
             app:expandOnClick="true"
             app:inner_view="@layout/expandable_second_map_snapshot"
-            app:layout_constraintBottom_toTopOf="@id/LinearLayout"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
             app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
             app:layout_constraintTop_toBottomOf="@+id/TextLayoutConferenceGeo"
             app:title="지도 보이기" />
+
+
 
         <LinearLayout
             android:id="@+id/LinearLayout"
@@ -273,5 +328,7 @@
             </LinearLayout>
 
         </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
