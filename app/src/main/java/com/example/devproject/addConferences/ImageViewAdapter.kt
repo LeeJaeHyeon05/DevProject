@@ -66,8 +66,6 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri>, private val contex
                 notifyDataSetChanged()
                 ad.dismiss()
             }
-
-
         }
     }
 
