@@ -51,7 +51,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
                 val dialog = DeleteDialog(this)
                 dialog.deleteDialog()
                 dialog.okButton?.setOnClickListener {
-                    FirebaseIO.delete("conferenceDocument", conferDataSet[intent.getIntExtra("position", 0)][8] as String)
+                    FirebaseIO.delete("conferenceDocument", "document${conferDataSet[intent.getIntExtra("position", 0)][8] as String}")
                     Toast.makeText(this, "삭제 되었습니다", Toast.LENGTH_SHORT).show()
                     DataHandler.reload()
                     finish()
@@ -85,7 +85,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         //DummyImage
         conferImageView?.setImageResource(R.drawable.ic_launcher_foreground)
         conferDateTextView?.text = conferDataSet[position][2].toString()
-        conferPriceTextView?.text = if(conferDataSet[position][3].toString().toInt() == 0) "무료" else conferDataSet[position][3].toString()
+        conferPriceTextView?.text = if(conferDataSet[position][3].toString().toInt() == 0) "무료" else "${conferDataSet[position][3]}원"
         conferOfflineTextView?.text = if(conferDataSet[position][4].toString() == "false") "온라인" else "오프라인"
         conferURLImageView?.setImageResource(R.drawable.link)
 
