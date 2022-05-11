@@ -1,13 +1,9 @@
 package com.example.devproject.util
 
-import android.content.Intent
+import android.net.Uri
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.annotation.RequiresApi
-import com.example.devproject.activity.LoginActivity
-import com.example.devproject.format.ConferenceInfo
+import com.example.devproject.R
 import java.io.File
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -24,7 +20,7 @@ class DataHandler {
 
         //firebase load
         fun load() {
-            FirebaseIO.read("conferenceDocument").addOnSuccessListener { result ->
+            FirebaseIO.readPublic("conferenceDocument").addOnSuccessListener { result ->
                 run {
                     conferDataSet.clear()
                     for (document in result) {
@@ -35,7 +31,10 @@ class DataHandler {
                             document.data["price"] as Long,           //3
                             document.data["offline"] as Boolean,     //4
                             document.data["conferenceURL"] as String,//5
-                            document.data["content"] as String       //6
+                            document.data["content"] as String,       //6
+                            document.data["uid"] as String,
+                            document.data["documentID"] as String,
+                            document.data["image"] as MutableList<*>
                         )
                         )
                     }
@@ -45,7 +44,7 @@ class DataHandler {
 
         fun reload(){
             delete()
-            FirebaseIO.read("conferenceDocument").addOnSuccessListener { result ->
+            FirebaseIO.readPublic("conferenceDocument").addOnSuccessListener { result ->
                 run {
                     for (document in result) {
                         conferDataSet.add(arrayOf(                   //index
@@ -55,23 +54,23 @@ class DataHandler {
                             document.data["price"] as Long,           //3
                             document.data["offline"] as Boolean,     //4
                             document.data["conferenceURL"] as String,//5
-                            document.data["content"] as String       //6
-                        )
+                            document.data["content"] as String,       //6
+                            document.data["uid"] as String,
+                            document.data["documentID"] as String,
+                            document.data["image"] as MutableList<*>
+                            )
                         )
                     }
                 }.run {
                     UIHandler.adapter!!.notifyDataSetChanged()
+                    UIHandler.activateUI(R.id.conferRecyclerView)
                 }
             }
         }
 
         fun delete(){
-            imageDataSet = emptyList<Array<File>>().toMutableList()
-            conferDataSet = emptyList<Array<Any>>().toMutableList()
-        }
-
-        fun updateConferDataSet(conferenceInfo: ConferenceInfo){
-
+            imageDataSet.clear()
+            conferDataSet.clear()
         }
     }
 

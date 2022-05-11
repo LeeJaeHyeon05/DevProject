@@ -18,4 +18,8 @@
     <color name="textInputHintColor">#6C6C6C</color>
     <color name="textInputErrorColor">#D03939</color>
     <color name="buttonColor">#FDF0A2</color>
+    <color name="darkGrayColor">#373737</color>
+    <color name="brightGrayColor">#787878</color>
+
+
 </resources>
