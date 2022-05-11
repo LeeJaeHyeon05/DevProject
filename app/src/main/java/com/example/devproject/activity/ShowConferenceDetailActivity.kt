@@ -85,7 +85,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         //DummyImage
         conferImageView?.setImageResource(R.drawable.ic_launcher_foreground)
         conferDateTextView?.text = conferDataSet[position][2].toString()
-        conferPriceTextView?.text = if(conferDataSet[position][3].toString().toInt() == 0) "무료" else conferDataSet[position][3].toString()
+        conferPriceTextView?.text = if(conferDataSet[position][3].toString().toInt() == 0) "무료" else "${conferDataSet[position][3]}원"
         conferOfflineTextView?.text = if(conferDataSet[position][4].toString() == "false") "온라인" else "오프라인"
         conferURLImageView?.setImageResource(R.drawable.link)
 
