@@ -8,4 +8,5 @@
     <string name="addConferenceText">컨퍼런스 등록하기</string>
     <string name="cancelText">취소</string>
     <string name="addPriceText">금액 추가</string>
+    <string name="getAlarmText">알람 받기</string>
 </resources>
