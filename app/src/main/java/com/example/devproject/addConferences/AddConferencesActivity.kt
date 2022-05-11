@@ -16,9 +16,14 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.util.Log
+import android.view.KeyEvent
+import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -32,6 +37,7 @@ import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
+import com.google.android.material.chip.Chip
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
@@ -39,7 +45,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
+import kotlinx.android.synthetic.main.activity_login.*
+import org.w3c.dom.Text
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -99,6 +106,9 @@ class AddConferencesActivity() : AppCompatActivity() {
 
         getPrice()
 
+        //칩
+        tagClip()
+
         //업로더 아이디 가져오기
         findUploader()
 
@@ -144,6 +154,8 @@ class AddConferencesActivity() : AppCompatActivity() {
                 0
             } else Integer.parseInt(exceptWon[0]).toLong()
 
+            val tag = binding.conferChipGroup.toString()
+
             //월 불러오기
             val id = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
             val uid = FirebaseAuth.getInstance().uid
@@ -164,6 +176,7 @@ class AddConferencesActivity() : AppCompatActivity() {
                 uploader = uploader,
                 image = imageList,
                 uid = uid
+
             )
 
             if(checkInput(conference)){
@@ -185,6 +198,52 @@ class AddConferencesActivity() : AppCompatActivity() {
         binding.dateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
         binding.priceTextView.text = "무료"
     }
+
+    private fun tagClip() {
+        val chipEdiText = binding.addClip
+        val chipAddButton = binding.addChipButton
+        val chipGroup = binding.conferChipGroup
+        val chipCountText = binding.tagNumberTextView
+
+        //만약 editText 없다면
+        chipAddButton.setOnClickListener {
+            val editString = chipEdiText.text.toString()
+            if (editString.isEmpty()) {
+                Toast.makeText(this, "내용을 추가해주세요", Toast.LENGTH_SHORT).show()
+                chipAddButton.isEnabled
+            } else {
+                chipGroup.addView(Chip(this).apply {
+                    text = editString
+                    isCloseIconVisible = true
+                    setChipIconResource(R.drawable.ic_baseline_code_24)
+                    setOnCloseIconClickListener {
+                        chipGroup.removeView(this)
+                    }
+                })
+            }
+        }
+        //이 밑에 파트를 갯수 파트로 변경 예정
+        chipCountText.text
+        val chipList = ArrayList<String>()
+        for (i: Int in 1..chipGroup.childCount) {
+            val chip: Chip = chipGroup.getChildAt(i - 1) as Chip
+            chipList.add(chip.text.toString())
+        }
+
+        var output = "count: ${chipList.size}\n"
+        for (i in chipList) {
+            output += "$i / "
+        }
+        showToast(output)
+
+    }
+    private fun showToast(message: String) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+    }
+
+
+
+
 
     private fun checkInput(conference: ConferenceInfo): Boolean{
         fun validateString(value: String?): Boolean? {
