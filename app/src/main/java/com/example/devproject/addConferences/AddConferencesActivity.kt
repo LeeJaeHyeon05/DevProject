@@ -27,6 +27,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.R
@@ -95,10 +96,9 @@ class AddConferencesActivity() : AppCompatActivity() {
         }
 
         binding.addConImageBtn.setOnClickListener { //사진 불러오기
-            val intent = Intent(Intent.ACTION_PICK)
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             startGetImageResult.launch(intent)
         }
 
@@ -182,7 +182,9 @@ class AddConferencesActivity() : AppCompatActivity() {
             if(checkInput(conference)){
                 if(storageWrite(docNumText, snapshotImage, imageList, "conferenceDocument", docNumText, conference)){
                     Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
-                    DataHandler.reload()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        DataHandler.reload()
+                    }
                     finish()
                 }
             }else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()

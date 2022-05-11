@@ -1,6 +1,7 @@
 package com.example.devproject.util
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -102,9 +103,15 @@ class FirebaseIO {
                                 uriList.add(i)
                             }
                             CoroutineScope(Dispatchers.Main).launch {
+                                val uploadPostImageTask = storage.getReference("documentPost").child("document$documentPath")
                                 for(i in uriList){ //이미지 올리기
-                                    val uploadPostImageTask = storage.getReference("documentPost").child("document$documentPath")
                                     uploadPostImageTask.child("$count Image.jpeg").putFile(i)
+                                    count++
+                                }
+                                count = 1
+                                conference.image?.clear()
+                                for(i in uriList){
+                                    conference.image?.add(Uri.parse("documentPost/document$documentPath/$count Image.jpeg"))
                                     count++
                                 }
                                 db.collection(collectionPath).document("document$docNumText").set(conference)
@@ -114,6 +121,7 @@ class FirebaseIO {
                                     .addOnFailureListener {
                                         Log.d("TAG", "Error writing document, $it")
                                     }
+                                uriList.clear()
                             }
                         }
                     }
@@ -140,9 +148,15 @@ class FirebaseIO {
                             for(i in imageList){
                                 uriList.add(i)
                             }
+                            val uploadPostImageTask = storage.getReference("documentPost").child("document$documentPath")
                             for(i in uriList){ //이미지 올리기
-                                val uploadPostImageTask = storage.getReference("documentPost").child("document$documentPath")
                                 uploadPostImageTask.child("$count Image.jpeg").putFile(i)
+                                count++
+                            }
+                            count = 1
+                            conference.image?.clear()
+                            for(i in uriList){
+                                conference.image?.add(Uri.parse("documentPost/document$documentPath/$count Image.jpeg"))
                                 count++
                             }
                             storage.getReference("documentPost").child("document$documentPath").child("MapSnapShot.jpeg").putBytes(data)
@@ -153,6 +167,7 @@ class FirebaseIO {
                                 .addOnFailureListener {
                                     Log.d("TAG", "Error writing document, $it")
                                 }
+                            uriList.clear()
                         }
                     }
 

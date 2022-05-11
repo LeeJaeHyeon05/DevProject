@@ -1,7 +1,9 @@
 package com.example.devproject.util
 
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.devproject.R
 import java.io.File
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -31,7 +33,8 @@ class DataHandler {
                             document.data["conferenceURL"] as String,//5
                             document.data["content"] as String,       //6
                             document.data["uid"] as String,
-                            document.data["documentID"] as String
+                            document.data["documentID"] as String,
+                            document.data["image"] as MutableList<*>
                         )
                         )
                     }
@@ -53,12 +56,14 @@ class DataHandler {
                             document.data["conferenceURL"] as String,//5
                             document.data["content"] as String,       //6
                             document.data["uid"] as String,
-                            document.data["documentID"] as String
+                            document.data["documentID"] as String,
+                            document.data["image"] as MutableList<*>
                             )
                         )
                     }
                 }.run {
                     UIHandler.adapter!!.notifyDataSetChanged()
+                    UIHandler.activateUI(R.id.conferRecyclerView)
                 }
             }
         }
