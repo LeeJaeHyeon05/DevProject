@@ -45,7 +45,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import kotlinx.android.synthetic.main.activity_login.*
 import org.w3c.dom.Text
 import java.time.ZoneId
