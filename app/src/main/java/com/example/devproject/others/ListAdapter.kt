@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.devproject.R
+import com.example.devproject.activity.MainActivity
 import com.example.devproject.activity.ShowConferenceDetailActivity
 import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.util.DataHandler
@@ -41,6 +42,7 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
+
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.conference_list_item, viewGroup, false)
         context = view.context
@@ -65,7 +67,6 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
         viewHolder.conferPreTitleTextVIew.text = DataHandler.conferDataSet[position][1].toString()
         viewHolder.conferPreDateTextView.text = DataHandler.conferDataSet[position][2].toString()// date
         viewHolder.conferPreContentTextView.text = DataHandler.conferDataSet[position][6].toString()
-
         viewHolder.conferPreCardView.setOnClickListener {
             val intent = Intent(UIHandler.rootView?.context, ShowConferenceDetailActivity::class.java)
             intent.putExtra("position", position)

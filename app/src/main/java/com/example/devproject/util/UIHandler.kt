@@ -9,6 +9,9 @@ import com.example.devproject.addConferences.AddConferencesActivity
 import com.example.devproject.others.ListAdapter
 import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
+import com.example.devproject.activity.ShowConferenceDetailActivity
+import com.google.api.Distribution
+
 class UIHandler {
 
     companion object{
