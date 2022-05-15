@@ -45,16 +45,16 @@
             android:exported="false" />
 
         <activity
-            android:name=".activity.ShowConferenceDetailActivity"
+            android:name=".activity.conference.ShowConferenceDetailActivity"
             android:exported="false" />
 
         <activity
-            android:name=".addConferences.AddConferencesActivity"
+            android:name=".activity.conference.AddConferencesActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
 
         <activity
-            android:name=".activity.EditConferenceActivity"
+            android:name=".activity.conference.EditConferenceActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
 

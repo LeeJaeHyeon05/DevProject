@@ -77,6 +77,9 @@ class LoginActivity : AppCompatActivity() {
         savePref.edit().putString("Password", binding.EtLoginPassword.text.toString()).apply()
     }
 
+    override fun onBackPressed() {
+        finish()
+    }
 
     private fun loginProcess(){
         val email = binding.EtLoginId.text.toString()

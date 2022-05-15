@@ -1,9 +1,8 @@
-package com.example.devproject.activity
+package com.example.devproject.activity.conference
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
@@ -13,19 +12,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.devproject.util.DataHandler
 import com.example.devproject.R
-import com.example.devproject.addConferences.ImageViewAdapter
+import com.example.devproject.activity.ShowWebViewActivity
+import com.example.devproject.others.ImageViewAdapter
 import com.example.devproject.dialog.DeleteDialog
 import com.example.devproject.util.DataHandler.Companion.conferDataSet
 import com.example.devproject.util.FirebaseIO
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.StorageReference
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 
 class ShowConferenceDetailActivity : AppCompatActivity() {
 

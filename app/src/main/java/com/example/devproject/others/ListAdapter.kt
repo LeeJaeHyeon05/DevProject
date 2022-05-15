@@ -3,7 +3,6 @@ package com.example.devproject.others
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +12,11 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.devproject.R
-import com.example.devproject.activity.MainActivity
-import com.example.devproject.activity.ShowConferenceDetailActivity
+import com.example.devproject.activity.conference.ShowConferenceDetailActivity
 import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.util.DataHandler
-import com.example.devproject.util.FirebaseIO.Companion.storage
 import com.example.devproject.util.UIHandler
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.android.synthetic.main.conference_list_item.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

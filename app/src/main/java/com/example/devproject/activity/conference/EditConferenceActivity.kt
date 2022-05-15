@@ -1,4 +1,4 @@
-package com.example.devproject.activity
+package com.example.devproject.activity.conference
 
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.R
+import com.example.devproject.activity.MapActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo

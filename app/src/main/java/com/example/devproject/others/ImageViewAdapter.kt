@@ -1,32 +1,21 @@
-package com.example.devproject.addConferences
+package com.example.devproject.others
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Point
 import android.net.Uri
-import android.os.Build
-import android.text.Layout
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.example.devproject.R
-import com.example.devproject.activity.ShowConferenceDetailActivity
-import com.example.devproject.addConferences.ImageViewAdapter.ViewHolder
+import com.example.devproject.activity.conference.AddConferencesActivity
+import com.example.devproject.activity.conference.ShowConferenceDetailActivity
+import com.example.devproject.others.ImageViewAdapter.ViewHolder
 import com.example.devproject.databinding.DialogShowImageBinding
-import com.example.devproject.util.DataHandler
-import com.example.devproject.util.FirebaseIO.Companion.storage
-import com.google.firebase.storage.StorageReference
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class ImageViewAdapter(private val imageList: ArrayList<Uri>, private val context: Context): RecyclerView.Adapter<ViewHolder>() {
     inner class ViewHolder (view: View): RecyclerView.ViewHolder(view){

@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.devproject.addConferences.AddConferencesActivity
+import com.example.devproject.activity.conference.AddConferencesActivity
 import com.example.devproject.databinding.FragmentHomeBinding
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO

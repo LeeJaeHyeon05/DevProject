@@ -8,21 +8,15 @@ package com.example.devproject.activity
  */
 
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.devproject.R
 import com.example.devproject.activity.account.LoginActivity
 import com.example.devproject.activity.account.ProfileActivity
-import com.example.devproject.addConferences.AddConferencesActivity
 import com.example.devproject.databinding.ActivityMainBinding
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
@@ -54,7 +48,6 @@ class MainActivity : AppCompatActivity() {
             R.id.profileButton ->{
                 val intent = Intent(this, ProfileActivity::class.java)
                 startActivity(intent)
-                finish()
             }
         }
 
