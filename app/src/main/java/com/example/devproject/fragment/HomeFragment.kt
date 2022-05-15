@@ -1,4 +1,4 @@
-package fragment
+package com.example.devproject.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -23,14 +23,14 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val swipeRefreshLayout : SwipeRefreshLayout? = mBinding?.swiperRefreshLayout
 
+
+        mBinding = binding
+        val swipeRefreshLayout= mBinding?.swiperRefreshLayout
         swipeRefreshLayout?.setOnRefreshListener {
             DataHandler.reload()
             swipeRefreshLayout.isRefreshing = false
         }
-
-        mBinding = binding
         UIHandler.allocateUI(mBinding?.root!!.rootView)
         UIHandler.activateUI(mBinding?.conferRecyclerView!!.id)
         addConferences()

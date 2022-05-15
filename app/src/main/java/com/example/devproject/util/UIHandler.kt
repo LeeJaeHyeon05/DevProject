@@ -11,7 +11,7 @@ import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
 import com.example.devproject.activity.ShowConferenceDetailActivity
 import com.google.api.Distribution
-import fragment.HomeFragment
+import com.example.devproject.fragment.HomeFragment
 
 class UIHandler {
 
