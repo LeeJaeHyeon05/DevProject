@@ -11,6 +11,7 @@ import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
 import com.example.devproject.activity.ShowConferenceDetailActivity
 import com.google.api.Distribution
+import fragment.HomeFragment
 
 class UIHandler {
 
@@ -25,7 +26,10 @@ class UIHandler {
             Companion.rootView = rootView
             Companion.mainActivity = mainActivity
             conferAddButton = rootView.findViewById(R.id.conferAddButton)
-            conferRecyclerView = rootView.findViewById(R.id.conferRecyclerView)
+        }
+
+        fun allocateUI(view : View){
+            conferRecyclerView = view.findViewById(R.id.conferRecyclerView)
         }
 
         fun activateUI(id: Int) {
