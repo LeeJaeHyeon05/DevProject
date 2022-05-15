@@ -13,6 +13,7 @@ import com.example.devproject.util.DataHandler
 import com.example.devproject.util.KeyboardVisibilityUtils
 import com.example.devproject.databinding.ActivityLoginBinding
 import com.example.devproject.databinding.DialogFindPasswordBinding
+import com.example.devproject.others.DBType
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -97,7 +98,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         else{
-            DataHandler.delete()
+            DataHandler.delete(DBType.CONFERENCE)
             Toast.makeText(this, "이메일 또는 비밀번호가 입력되지 않았습니다", Toast.LENGTH_SHORT).show()
         }
     }

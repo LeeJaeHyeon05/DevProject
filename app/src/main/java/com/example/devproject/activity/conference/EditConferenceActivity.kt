@@ -25,6 +25,7 @@ import com.example.devproject.activity.MapActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
+import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.FirebaseIO.Companion.cloudWrite
@@ -133,7 +134,7 @@ class EditConferenceActivity() : AppCompatActivity() {
                     if(cloudWrite(conference.documentID as String, bitmap, conference) && FirebaseIO.write("conferenceDocument", conference.documentID, conference)){
                         Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
 
-                        DataHandler.reload()
+                        DataHandler.reload(DBType.CONFERENCE)
 
                         Handler(Looper.getMainLooper()).postDelayed({
                             val intent = Intent(this, ShowConferenceDetailActivity::class.java)
@@ -150,7 +151,7 @@ class EditConferenceActivity() : AppCompatActivity() {
                     if(FirebaseIO.write("conferenceDocument",conference.documentID as String, conference)){
                         Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
 
-                        DataHandler.reload()
+                        DataHandler.reload(DBType.CONFERENCE)
 
                         Handler(Looper.getMainLooper()).postDelayed({
                             val intent = Intent(this, ShowConferenceDetailActivity::class.java)

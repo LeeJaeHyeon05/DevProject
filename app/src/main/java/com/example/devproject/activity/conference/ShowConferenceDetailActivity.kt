@@ -17,6 +17,7 @@ import com.example.devproject.R
 import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.others.ImageViewAdapter
 import com.example.devproject.dialog.DeleteDialog
+import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler.Companion.conferDataSet
 import com.example.devproject.util.FirebaseIO
 import com.google.firebase.auth.FirebaseAuth
@@ -60,7 +61,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
                 dialog.okButton?.setOnClickListener {
                     FirebaseIO.delete("conferenceDocument", "document${conferDataSet[intent.getIntExtra("position", 0)][8] as String}")
                     Toast.makeText(this, "삭제 되었습니다", Toast.LENGTH_SHORT).show()
-                    DataHandler.reload()
+                    DataHandler.reload(DBType.CONFERENCE)
                     finish()
                 }
             }

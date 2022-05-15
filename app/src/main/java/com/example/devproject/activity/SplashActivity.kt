@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.devproject.R
+import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.UIHandler
 import com.google.firebase.auth.FirebaseAuth
@@ -23,7 +24,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DataHandler.load()
+        DataHandler.load(DBType.CONFERENCE)
 
         setContentView(R.layout.activity_splash)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) //나이트모드 적용 해제

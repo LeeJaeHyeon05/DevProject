@@ -26,6 +26,7 @@ import com.example.devproject.others.ImageViewAdapter
 import com.example.devproject.databinding.ActivityAddConferencesBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
+import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
 import com.google.android.material.chip.Chip
@@ -170,7 +171,7 @@ class AddConferencesActivity() : AppCompatActivity() {
                 if(storageWrite(docNumText, snapshotImage, imageList, "conferenceDocument", docNumText, conference)){
                     Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
                     CoroutineScope(Dispatchers.Main).launch {
-                        DataHandler.reload()
+                        DataHandler.reload(DBType.CONFERENCE)
                     }
                     finish()
                 }

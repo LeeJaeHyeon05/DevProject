@@ -18,6 +18,7 @@ import com.example.devproject.R
 import com.example.devproject.activity.account.LoginActivity
 import com.example.devproject.activity.account.ProfileActivity
 import com.example.devproject.databinding.ActivityMainBinding
+import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             backPressedTime = System.currentTimeMillis()
             Snackbar.make(window.decorView.rootView, "한번 더 눌러 종료합니다." , Snackbar.LENGTH_LONG).show()
         }else{
-            DataHandler.delete()
+            DataHandler.delete(DBType.CONFERENCE)
             FirebaseAuth.getInstance().signOut()
             finish()
         }

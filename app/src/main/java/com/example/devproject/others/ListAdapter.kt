@@ -67,7 +67,6 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
             val intent = Intent(UIHandler.rootView?.context, ShowConferenceDetailActivity::class.java)
             intent.putExtra("position", position)
             UIHandler.rootView?.context?.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK))
-
         }
         viewHolder.conferPreCardView.setOnLongClickListener {
             //TO DO Somethinmg

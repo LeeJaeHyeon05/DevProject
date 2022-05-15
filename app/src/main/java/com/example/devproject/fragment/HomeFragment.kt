@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.devproject.activity.conference.AddConferencesActivity
 import com.example.devproject.databinding.FragmentHomeBinding
+import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler
@@ -23,11 +24,10 @@ class HomeFragment : Fragment() {
     ): View? {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-
         mBinding = binding
-        val swipeRefreshLayout= mBinding?.swiperRefreshLayout
+        val swipeRefreshLayout= mBinding?.swiperConferRefreshLayout
         swipeRefreshLayout?.setOnRefreshListener {
-            DataHandler.reload()
+            DataHandler.reload(DBType.CONFERENCE)
             swipeRefreshLayout.isRefreshing = false
         }
         UIHandler.allocateUI(mBinding?.root!!.rootView)
