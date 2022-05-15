@@ -8,22 +8,17 @@ package com.example.devproject.activity
  */
 
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.devproject.R
 import com.example.devproject.activity.account.LoginActivity
 import com.example.devproject.activity.account.ProfileActivity
-import com.example.devproject.addConferences.AddConferencesActivity
 import com.example.devproject.databinding.ActivityMainBinding
+import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler
@@ -50,11 +45,11 @@ class MainActivity : AppCompatActivity() {
             R.id.loginButton -> {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
+                finish()
             }
             R.id.profileButton ->{
                 val intent = Intent(this, ProfileActivity::class.java)
                 startActivity(intent)
-                finish()
             }
         }
 
@@ -81,8 +76,7 @@ class MainActivity : AppCompatActivity() {
             backPressedTime = System.currentTimeMillis()
             Snackbar.make(window.decorView.rootView, "한번 더 눌러 종료합니다." , Snackbar.LENGTH_LONG).show()
         }else{
-            DataHandler.delete()
-            FirebaseAuth.getInstance().signOut()
+            DataHandler.delete(DBType.CONFERENCE)
             finish()
         }
     }

@@ -22,7 +22,6 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 
@@ -33,9 +32,4 @@ class ProfileActivity : AppCompatActivity() {
         finish()
     }
 
-    override fun onPause() {
-        super.onPause()
-        val savePref = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE)
-        savePref.edit().putBoolean("CheckBox", false).apply()
-    }
 }

@@ -1,4 +1,4 @@
-package fragment
+package com.example.devproject.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.devproject.addConferences.AddConferencesActivity
+import com.example.devproject.activity.conference.AddConferencesActivity
 import com.example.devproject.databinding.FragmentHomeBinding
+import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler
@@ -23,14 +23,13 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val swipeRefreshLayout : SwipeRefreshLayout? = mBinding?.swiperRefreshLayout
-
-        swipeRefreshLayout?.setOnRefreshListener {
-            DataHandler.reload()
-            swipeRefreshLayout.isRefreshing = false
-        }
 
         mBinding = binding
+        val swipeRefreshLayout= mBinding?.swiperConferRefreshLayout
+        swipeRefreshLayout?.setOnRefreshListener {
+            DataHandler.reload(DBType.CONFERENCE)
+            swipeRefreshLayout.isRefreshing = false
+        }
         UIHandler.allocateUI(mBinding?.root!!.rootView)
         UIHandler.activateUI(mBinding?.conferRecyclerView!!.id)
         addConferences()

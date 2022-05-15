@@ -1,4 +1,4 @@
-package fragment
+package com.example.devproject.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
