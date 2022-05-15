@@ -31,10 +31,11 @@ import kotlinx.coroutines.launch
 class ImageViewAdapter(private val imageList: ArrayList<Uri>, private val context: Context): RecyclerView.Adapter<ViewHolder>() {
     inner class ViewHolder (view: View): RecyclerView.ViewHolder(view){
         var addConferenceImageView: ImageView? = null
-        var conferDetailImageView: ImageView = view.findViewById(R.id.conferenceDetailItemImage)
+        var conferDetailImageView: ImageView? = null
         init {
             when(view.context){
                 is AddConferencesActivity -> {
+                    addConferenceImageView = view.findViewById(R.id.IvAddConferenceListImageView)
                     view.setOnClickListener {
                         val dialogBinding: DialogShowImageBinding = DialogShowImageBinding.inflate(LayoutInflater.from(view.context))
 
@@ -47,7 +48,7 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri>, private val contex
                 }
 
                 is ShowConferenceDetailActivity -> {
-
+                    conferDetailImageView = view.findViewById(R.id.conferenceDetailItemImage)
                 }
 
             }
@@ -102,10 +103,12 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri>, private val contex
             }
 
             is ShowConferenceDetailActivity -> {
-                Glide.with(holder.itemView.context)
-                    .load(imageList[position])
-                    .fitCenter()
-                    .into(holder.conferDetailImageView)
+                holder.conferDetailImageView?.let {
+                    Glide.with(holder.itemView.context)
+                        .load(imageList[position])
+                        .fitCenter()
+                        .into(it)
+                }
             }
         }
     }
