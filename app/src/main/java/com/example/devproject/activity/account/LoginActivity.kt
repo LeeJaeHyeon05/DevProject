@@ -69,16 +69,9 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-
-        val savePref = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE)
-        savePref.edit().putBoolean("CheckBox", binding.CheckboxAutoLogin.isChecked).apply()
-        savePref.edit().putString("Email", binding.EtLoginId.text.toString()).apply()
-        savePref.edit().putString("Password", binding.EtLoginPassword.text.toString()).apply()
-    }
-
     override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
         finish()
     }
 

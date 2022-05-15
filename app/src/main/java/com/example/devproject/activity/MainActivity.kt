@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
             R.id.loginButton -> {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
+                finish()
             }
             R.id.profileButton ->{
                 val intent = Intent(this, ProfileActivity::class.java)
@@ -76,7 +77,6 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(window.decorView.rootView, "한번 더 눌러 종료합니다." , Snackbar.LENGTH_LONG).show()
         }else{
             DataHandler.delete(DBType.CONFERENCE)
-            FirebaseAuth.getInstance().signOut()
             finish()
         }
     }

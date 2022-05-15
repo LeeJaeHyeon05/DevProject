@@ -120,28 +120,6 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <CheckBox
-            android:id="@+id/CheckboxAutoLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            app:layout_constraintBottom_toBottomOf="@id/GuidelineAutoLoginBottom"
-            app:layout_constraintEnd_toStartOf="@id/TvAutoLogin"
-            app:layout_constraintStart_toStartOf="@id/loginGuidelineLeft"
-            app:layout_constraintTop_toTopOf="@id/GuidelineAutoLoginTop" />
-
-        <TextView
-            android:id="@+id/TvAutoLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:text="자동로그인"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@id/GuidelineAutoLoginBottom"
-            app:layout_constraintEnd_toEndOf="@id/loginGuidelineVerticalMiddle"
-            app:layout_constraintStart_toStartOf="@id/CheckboxAutoLogin"
-            app:layout_constraintTop_toTopOf="@id/GuidelineAutoLoginTop" />
-
         <Button
             android:id="@+id/BtnSignUp"
             android:layout_width="wrap_content"
