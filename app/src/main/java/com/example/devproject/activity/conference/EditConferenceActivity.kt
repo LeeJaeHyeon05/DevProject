@@ -9,10 +9,12 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
 import android.text.Editable
 import android.view.MenuItem
 import android.widget.ImageView
@@ -20,22 +22,33 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.others.DBType
+import com.example.devproject.others.ImageViewAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.FirebaseIO.Companion.cloudWrite
 import com.google.firebase.firestore.GeoPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 class EditConferenceActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddConferencesBinding
     private var pos = 0
+    private lateinit var imageAdapter: ImageViewAdapter
+    val originalImageList: ArrayList<Uri> = ArrayList()
+    val editImageList: ArrayList<Uri> = ArrayList()
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +63,7 @@ class EditConferenceActivity() : AppCompatActivity() {
         val mGeocoder = Geocoder(this, Locale.getDefault())
         var list = mutableListOf<Address>()
         val position = intent.getIntExtra("position", 0)
+        val imageRecyclerView = binding.addConferenceImageRecyclerView
         pos = position
 
         binding.addConTitle.setText(DataHandler.conferDataSet[position][1] as String)
@@ -61,6 +75,7 @@ class EditConferenceActivity() : AppCompatActivity() {
 
         getDate()
         getPrice()
+        showImage(position, this)
 
         var startMapActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result -> //지도 액티비티 결과값 받아오기
             if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
@@ -92,6 +107,34 @@ class EditConferenceActivity() : AppCompatActivity() {
             startMapActivityResult.launch(intent)
         }
 
+        val startGetImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result-> //사진 불러오기
+            if(result.data != null){
+                val imageData = result.data
+                val size = imageData?.clipData?.itemCount
+                val imageUri = imageData?.clipData
+                if (imageUri != null) {
+                    for(i in 0 until size!!){
+                        editImageList.add(result.data!!.clipData!!.getItemAt(i).uri)
+                    }
+                    if(originalImageList.isNotEmpty()){
+                        for(i in originalImageList){
+                            editImageList.add(i)
+                        }
+                    }
+                    imageAdapter = ImageViewAdapter(imageList = editImageList, this)
+                    imageRecyclerView.adapter = imageAdapter
+                    imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+                }
+            }
+        }
+
+        binding.addConImageBtn.setOnClickListener { //사진 불러오기
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intent.type = MediaStore.Images.Media.CONTENT_TYPE
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            startGetImageResult.launch(intent)
+        }
+
         binding.addConButton.setOnClickListener {
             //editText 불러오기
             val conTitle = binding.addConTitle.text.toString()
@@ -119,50 +162,31 @@ class EditConferenceActivity() : AppCompatActivity() {
                 title = conTitle,
                 documentID = DataHandler.conferDataSet[position][8] as String,
                 uploader = DataHandler.conferDataSet[position][0] as String,
-                uid = DataHandler.conferDataSet[position][7] as String
+                uid = DataHandler.conferDataSet[position][7] as String,
+                image = DataHandler.conferDataSet[position][9] as ArrayList<Uri>
             )
 
-            val bitmapDrawable: Drawable?
-            val bitmap: Bitmap?
-
-            if(latitude != 0.0 && longitude != 0.0){
-                bitmapDrawable = snapshotImage.drawable
-                bitmap = (bitmapDrawable as BitmapDrawable).bitmap
-
-                if(checkInput(conference)){
-                    FirebaseIO.delete("conferenceDocument", "document${DataHandler.conferDataSet[position][8] as String}")
-                    if(cloudWrite(conference.documentID as String, bitmap, conference) && FirebaseIO.write("conferenceDocument", conference.documentID, conference)){
-                        Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
-
-                        DataHandler.reload(DBType.CONFERENCE)
-
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            val intent = Intent(this, ShowConferenceDetailActivity::class.java)
-                            intent.putExtra("position", pos)
-                            startActivity(intent)
-                            finish()
-                        }, 250)
-                    }
-                } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
+            if(originalImageList != editImageList){
+                var list = originalImageList
             }
-            else{
-                if(checkInput(conference)){
-                    FirebaseIO.delete("conferenceDocument", DataHandler.conferDataSet[position][8] as String)
-                    if(FirebaseIO.write("conferenceDocument",conference.documentID as String, conference)){
-                        Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
 
+            if(checkInput(conference)){
+                if(FirebaseIO.storageWrite(
+                        DataHandler.conferDataSet[position][8] as String,
+                        snapshotImage,
+                        editImageList,
+                        "conferenceDocument",
+                        DataHandler.conferDataSet[position][8] as String,
+                        conference
+                    )
+                ){
+                    Toast.makeText(this, "수정하였습니다", Toast.LENGTH_SHORT).show()
+                    CoroutineScope(Dispatchers.Main).launch {
                         DataHandler.reload(DBType.CONFERENCE)
-
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            val intent = Intent(this, ShowConferenceDetailActivity::class.java)
-                            intent.putExtra("position", pos)
-                            startActivity(intent)
-                            finish()
-                        }, 300)
-
                     }
-                } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
-            }
+                    finish()
+                }
+            }else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -237,5 +261,30 @@ class EditConferenceActivity() : AppCompatActivity() {
         intent.putExtra("position", pos)
         startActivity(intent)
         finish()
+    }
+
+    private fun showImage(position: Int, editConferenceActivity: EditConferenceActivity) {
+        val list: ArrayList<Uri> = DataHandler.conferDataSet[position][9] as ArrayList<Uri>
+        if(list.isEmpty()){
+            val imageUri = "android.resource://${packageName}/"+R.drawable.dev
+            originalImageList.add(imageUri.toUri())
+            imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext)
+            binding.addConferenceImageRecyclerView.adapter = imageAdapter
+            binding.addConferenceImageRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+            return
+        }
+        else{
+            for(i in list.indices){
+                val storageRef = FirebaseIO.storage.reference.child("${list[i]}")
+                storageRef.downloadUrl.addOnSuccessListener { image->
+                    originalImageList.add(image)
+                }.addOnSuccessListener {
+                    originalImageList.sort()
+                    imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext)
+                    binding.addConferenceImageRecyclerView.adapter = imageAdapter
+                    binding.addConferenceImageRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+                }
+            }
+        }
     }
 }

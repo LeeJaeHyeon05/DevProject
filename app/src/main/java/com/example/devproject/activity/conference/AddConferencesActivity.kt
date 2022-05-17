@@ -164,7 +164,6 @@ class AddConferencesActivity() : AppCompatActivity() {
                 uploader = uploader,
                 image = imageList,
                 uid = uid
-
             )
 
             if(checkInput(conference)){

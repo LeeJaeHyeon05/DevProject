@@ -89,6 +89,12 @@ class FirebaseIO {
                 true -> {
                     when(imageList.isEmpty()){
                         true -> { //지도사진 x, 이미지 x
+                            val uploadPostImageTask = storage.getReference("documentPost").child("document$documentPath")
+                            if(uploadPostImageTask.path.isNotEmpty()){ //수정하기 전에 이미지가 있었으나 수정후에 이미지를 모두 지운경우 storage데이터도 삭제해야함
+                                uploadPostImageTask.delete().addOnSuccessListener {
+                                    Log.d("TAG", "storageWrite: $it")
+                                }
+                            }
                             db.collection(collectionPath).document("document$docNumText").set(conference)
                                 .addOnSuccessListener {
                                     Log.d("TAG", "DocumentSnapshot successfully written! ")

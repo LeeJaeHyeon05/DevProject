@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.example.devproject.R
 import com.example.devproject.activity.conference.AddConferencesActivity
+import com.example.devproject.activity.conference.EditConferenceActivity
 import com.example.devproject.activity.conference.ShowConferenceDetailActivity
 import com.example.devproject.others.ImageViewAdapter.ViewHolder
 import com.example.devproject.databinding.DialogShowImageBinding
@@ -38,6 +39,19 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri>, private val contex
 
                 is ShowConferenceDetailActivity -> {
                     conferDetailImageView = view.findViewById(R.id.conferenceDetailItemImage)
+                }
+
+                is EditConferenceActivity -> {
+                    addConferenceImageView = view.findViewById(R.id.IvAddConferenceListImageView)
+                    view.setOnClickListener {
+                        val dialogBinding: DialogShowImageBinding = DialogShowImageBinding.inflate(LayoutInflater.from(view.context))
+
+                        var builder = androidx.appcompat.app.AlertDialog.Builder(view.context)
+                        var ad = builder.create()
+
+                        ad.setView(dialogBinding.root)
+                        dialogBinding.showImageView.setImageDrawable(addConferenceImageView?.drawable)
+                    }
                 }
 
             }
@@ -97,6 +111,43 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri>, private val contex
                         .load(imageList[position])
                         .fitCenter()
                         .into(it)
+                }
+            }
+
+            is EditConferenceActivity -> {
+                val item = imageList[position]
+                holder.addConferenceImageView?.let {
+                    Glide.with(context)
+                        .load(item)
+                        .override(SIZE_ORIGINAL)
+                        .into(it)
+                }
+                holder.addConferenceImageView?.setOnClickListener {
+                    val dialogBinding: DialogShowImageBinding = DialogShowImageBinding.inflate(LayoutInflater.from(it.context))
+                    val builder = AlertDialog.Builder(it.context)
+                    val ad = builder.create()
+
+                    ad.setView(dialogBinding.root)
+                    ad.show()
+
+                    dialogBinding.showImageView.let { image ->
+                        Glide.with(context)
+                            .load(imageList[position])
+                            .override(SIZE_ORIGINAL)
+                            .into(image)
+                    }
+
+                    ad.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT)
+
+                    dialogBinding.dialogShowImageOkButton.setOnClickListener {
+                        ad.dismiss()
+                    }
+
+                    dialogBinding.dialogShowImageDeleteBtn.setOnClickListener {
+                        imageList.removeAt(position)
+                        notifyDataSetChanged()
+                        ad.dismiss()
+                    }
                 }
             }
         }
