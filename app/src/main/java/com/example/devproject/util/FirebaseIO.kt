@@ -178,6 +178,7 @@ class FirebaseIO {
                     }
 
                 }
+
             }
             if(db.collection(collectionPath).document("document$docNumText").path.isNotEmpty()){
                 success = true
@@ -192,6 +193,17 @@ class FirebaseIO {
         fun readPublic(collectionPath : String) : Task<QuerySnapshot> {
             return FirebaseFirestore.getInstance().collection(collectionPath).get()
         }
+
+        fun readPublic(collectionPath : String, filterSet : MutableList<Any>) : Task<QuerySnapshot> {
+            return if (DataHandler.filterList[0] == 0) {
+                FirebaseFirestore.getInstance().collection(collectionPath)
+                    .whereEqualTo("price", 0).get()
+            } else {
+                FirebaseFirestore.getInstance().collection(collectionPath)
+                    .whereGreaterThanOrEqualTo("price", filterSet[0]).get()
+            }
+        }
+
 
         fun delete(collectionPath : String, documentPath : String){
             db.collection(collectionPath).document(documentPath).delete()

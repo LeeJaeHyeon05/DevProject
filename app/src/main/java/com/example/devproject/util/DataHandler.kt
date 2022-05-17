@@ -17,6 +17,8 @@ class DataHandler {
         var conferDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
         var studyDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
 
+        val filterList : MutableList<Any> = mutableListOf(0)
+
         @RequiresApi(Build.VERSION_CODES.O)
         var currentDate = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(
             DateTimeFormatter.ofPattern("yyyyMMdd")).toString()
@@ -81,9 +83,39 @@ class DataHandler {
                     }
                 }
                 DBType.STUDY->{
-
                 }
-                else->{}
+            }
+        }
+
+        fun reload(type : DBType, filterList : MutableList<Any>){
+            delete(type)
+            when(type){
+                DBType.CONFERENCE -> {
+                    FirebaseIO.readPublic("conferenceDocument", filterList).addOnSuccessListener { result ->
+                        run {
+                            for (document in result) {
+                                conferDataSet.add(arrayOf(                   //index
+                                    document.data["uploader"] as String,     //0
+                                    document.data["title"] as String,        //1
+                                    document.data["date"] as String,         //2
+                                    document.data["price"] as Long,           //3
+                                    document.data["offline"] as Boolean,     //4
+                                    document.data["conferenceURL"] as String,//5
+                                    document.data["content"] as String,       //6
+                                    document.data["uid"] as String,
+                                    document.data["documentID"] as String,
+                                    document.data["image"] as MutableList<*>
+                                )
+                                )
+                            }
+                        }.run {
+                            UIHandler.adapter!!.notifyDataSetChanged()
+                            UIHandler.activateUI(R.id.conferRecyclerView)
+                        }
+                    }
+                }
+                DBType.STUDY->{
+                }
             }
         }
 
