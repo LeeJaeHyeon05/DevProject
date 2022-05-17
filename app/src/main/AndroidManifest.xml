@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.devproject">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
@@ -10,9 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DevProject">
 
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${googleMapApiKey}"/>
+            android:value="AIzaSyA_ppNk6FfxhQVmU59Ic5zmaS_9KEbeipk"/>
+
 
         <activity
             android:name=".activity.SplashActivity"
@@ -30,19 +33,28 @@
         </activity>
 
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.account.LoginActivity"
             android:exported="false" />
 
         <activity
-            android:name=".activity.SignUpActivity"
+            android:name=".activity.account.ProfileActivity"
             android:exported="false" />
 
         <activity
-            android:name=".activity.ShowConferenceDetailActivity"
+            android:name=".activity.account.SignUpActivity"
             android:exported="false" />
 
         <activity
-            android:name=".addConferences.AddConferencesActivity"
+            android:name=".activity.conference.ShowConferenceDetailActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.conference.AddConferencesActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.conference.EditConferenceActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
 

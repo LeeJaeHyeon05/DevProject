@@ -4,72 +4,146 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/conferPreCardView"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="130dp"
     android:layout_marginLeft="5dp"
     android:layout_marginTop="5dp"
     android:layout_marginRight="5dp"
     android:layout_marginBottom="5dp"
     app:cardCornerRadius="5dp">
 
-    <TableRow
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="3dp">
+        android:layout_height="wrap_content">
 
-        <FrameLayout
+        <ImageView
+            android:id="@+id/conferPreImageView"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/conferPreTitleTextView"
+            android:layout_marginStart="10dp"/>
+
+        <ImageView
+            android:id="@+id/imageView2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/conferPreImageView"
+            app:layout_constraintTop_toTopOf="@+id/conferPreImageView"
+            app:srcCompat="@drawable/ic_baseline_free_cancellation_24"
+            tools:visibility="gone" />
 
-            <ImageView
-                android:id="@+id/conferPreImageView"
-                android:layout_width="90dp"
-                android:layout_height="wrap_content"
-                tools:srcCompat="@drawable/default_image" />
+        <TextView
+            android:id="@+id/conferPreTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="18dp"
+            android:ellipsize="marquee"
+            android:text="네이버 컨퍼런스"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:autoSizeTextType="uniform"
+            app:layout_constraintStart_toEndOf="@+id/conferPreImageView"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_baseline_free_cancellation_24"
-                tools:visibility="gone" />
-        </FrameLayout>
+        <TextView
+            android:id="@+id/conferPreContentTextView"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:text="The Conference for Java,Architecture and Software Innovation"
+            android:letterSpacing="-0.035"
+            android:textColor="@color/darkGrayColor"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/conferPreTitleTextView"
+            app:layout_constraintTop_toBottomOf="@+id/conferPreTitleTextView"
+            android:maxLines="1"
+            />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="3">
+        <TextView
+            android:id="@+id/conferPreDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2022. 05. 02"
+            android:textColor="@color/brightGrayColor"
+            app:layout_constraintStart_toStartOf="@+id/conferPreTitleTextView"
+            app:layout_constraintTop_toBottomOf="@+id/conferPreContentTextView" />
 
-            <TextView
-                android:id="@+id/conferPreTitleTextView"
-                style="@style/TextInputEditTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="컨퍼런스 제목"
-                android:textSize="20sp" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/languageChip"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@color/buttonColor"
+            android:text="코틀린"
+            app:chipBackgroundColor="@color/buttonColor"
+            app:layout_constraintStart_toStartOf="@+id/conferPreTitleTextView"
+            app:layout_constraintTop_toBottomOf="@+id/conferPreDateTextView" />
 
-            <TextView
-                android:id="@+id/conferPreDateTextView"
-                style="@style/TextInputEditTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="컨퍼런스 날짜"
-                android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/conferPreContentTextView"
-                style="@style/TextInputEditTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="컨퍼런스 내용 요약"
-                android:textSize="20sp" />
-        </LinearLayout>
-    </TableRow>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.cardview.widget.CardView>
+
+    <!--<TableRow-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:padding="3dp">-->
+
+    <!--<FrameLayout-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content">-->
+
+    <!--    <ImageView-->
+    <!--        android:id="@+id/conferPreImageView"-->
+    <!--        android:layout_width="90dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        tools:srcCompat="@drawable/default_image" />-->
+
+    <!--    <ImageView-->
+    <!--        android:id="@+id/imageView2"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:srcCompat="@drawable/ic_baseline_free_cancellation_24"-->
+    <!--        tools:visibility="gone" />-->
+    <!--</FrameLayout>-->
+
+    <!--<LinearLayout-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    android:orientation="vertical"-->
+    <!--    android:weightSum="3">-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/conferPreTitleTextView"-->
+    <!--        style="@style/TextInputEditTextStyle"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_weight="1"-->
+    <!--        android:gravity="center"-->
+    <!--        android:text="컨퍼런스 제목"-->
+    <!--        android:textSize="20sp" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/conferPreDateTextView"-->
+    <!--        style="@style/TextInputEditTextStyle"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_weight="1"-->
+    <!--        android:gravity="center"-->
+    <!--        android:text="컨퍼런스 날짜"-->
+    <!--        android:textSize="20sp" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/conferPreContentTextView"-->
+    <!--        style="@style/TextInputEditTextStyle"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_weight="1"-->
+    <!--        android:gravity="center"-->
+    <!--        android:text="컨퍼런스 내용 요약"-->
+    <!--        android:textSize="20sp" />-->
+    <!--</LinearLayout>-->
+    <!--</TableRow>-->
+

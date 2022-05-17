@@ -5,28 +5,20 @@
     android:layout_height="match_parent"
     android:padding="20dp">
 
-    <com.google.android.material.textfield.TextInputLayout
+    <TextView
         android:id="@+id/defaultDialogTextView"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="정말 삭제하시겠습니까?"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <EditText
-            android:id="@+id/addPrice"
-            style="@style/TextInputEditTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="number"
-            android:hint="금액 추가하기" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/cancelBtn"
+        android:id="@+id/defaultDialogCancelButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,21 +26,21 @@
         android:text="@string/cancelText"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/addBtn"
+        app:layout_constraintEnd_toStartOf="@+id/defaultDialogOkButton"
         app:layout_constraintStart_toStartOf="@+id/defaultDialogTextView"
-        app:layout_constraintTop_toBottomOf="@+id/defaultDialogTextView" />
+        app:layout_constraintTop_toBottomOf="@id/defaultDialogTextView" />
 
     <Button
-        android:id="@+id/addBtn"
+        android:id="@+id/defaultDialogOkButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="@string/addPriceText"
+        android:text="@string/ok"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/defaultDialogTextView"
-        app:layout_constraintStart_toEndOf="@+id/cancelBtn"
+        app:layout_constraintStart_toEndOf="@+id/defaultDialogCancelButton"
         app:layout_constraintTop_toBottomOf="@+id/defaultDialogTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

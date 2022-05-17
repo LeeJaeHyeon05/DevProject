@@ -1,4 +1,6 @@
 <resources>
+    <string name="ok">확인</string>
+    <string name="cancel">취소</string>
     <string name="app_name">데버런스</string>
     <string name="locationText">위치 추가하기</string>
     <string name="priceText">금액 추가하기</string>
@@ -6,4 +8,5 @@
     <string name="addConferenceText">컨퍼런스 등록하기</string>
     <string name="cancelText">취소</string>
     <string name="addPriceText">금액 추가</string>
+    <string name="getAlarmText">알람 받기</string>
 </resources>

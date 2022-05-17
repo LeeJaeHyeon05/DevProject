@@ -5,10 +5,11 @@ import android.view.View
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.devproject.addConferences.AddConferencesActivity
+import com.example.devproject.activity.conference.AddConferencesActivity
 import com.example.devproject.others.ListAdapter
 import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
+
 class UIHandler {
 
     companion object{
@@ -22,7 +23,10 @@ class UIHandler {
             Companion.rootView = rootView
             Companion.mainActivity = mainActivity
             conferAddButton = rootView.findViewById(R.id.conferAddButton)
-            conferRecyclerView = rootView.findViewById(R.id.conferRecyclerView)
+        }
+
+        fun allocateUI(view : View){
+            conferRecyclerView = view.findViewById(R.id.conferRecyclerView)
         }
 
         fun activateUI(id: Int) {

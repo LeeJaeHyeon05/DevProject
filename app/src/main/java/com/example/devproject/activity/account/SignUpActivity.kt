@@ -1,4 +1,4 @@
-package com.example.devproject.activity
+package com.example.devproject.activity.account
 
 import android.app.Activity
 import android.content.Intent
@@ -6,11 +6,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Patterns
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
+import com.example.devproject.R
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.KeyboardVisibilityUtils
 import com.example.devproject.format.UserInfo
 import com.example.devproject.databinding.ActivitySignUpAcitivtyBinding
+import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -20,7 +26,8 @@ class SignUpActivity : AppCompatActivity() {
     lateinit var binding: ActivitySignUpAcitivtyBinding
     private lateinit var  auth: FirebaseAuth
     private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
-
+    private val languages = listOf<String>("Kotlin" , "Java", "JavaScript" , "C++", "C")
+    private var pos = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,6 +41,20 @@ class SignUpActivity : AppCompatActivity() {
                     smoothScrollBy(scrollX, scrollY)
                 }
             })
+
+
+       var languageAdpater = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, languages)
+        binding.languageSpinner.adapter = languageAdpater
+        binding.languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+               pos = position
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+        }
 
         binding.TvFieldInputId.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -59,7 +80,7 @@ class SignUpActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val email = s.toString()
-                val isValid = android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+                val isValid = Patterns.EMAIL_ADDRESS.matcher(email).matches()
                 if(!isValid){
                     binding.TextLayoutEmail.helperText = "올바른 이메일은 형식은 abc@example.com 입니다"
                 }
@@ -75,7 +96,7 @@ class SignUpActivity : AppCompatActivity() {
                 else if(InputString.toString().contains(" ")){
                     binding.TextLayoutEmail.helperText = "띄어쓰기는 허용되지 않습니다"
                 }
-                else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(InputString).matches()){
+                else if(!Patterns.EMAIL_ADDRESS.matcher(InputString).matches()){
                     binding.TextLayoutEmail.helperText = "올바른 이메일은 형식은 abc@example.com 입니다"
                 }
                 else{
@@ -162,7 +183,7 @@ class SignUpActivity : AppCompatActivity() {
                                         val mIntent = Intent(this, LoginActivity::class.java)
                                         mIntent.putExtra("LoginId", binding.TvFieldInputEmail.text.toString())
                                         mIntent.putExtra("LoginPassword", binding.TvFieldInputPassword.text.toString())
-                                        setResult(Activity.RESULT_OK, mIntent)
+                                        setResult(RESULT_OK, mIntent)
                                         finish()
                                     }
                                     else{
@@ -197,6 +218,7 @@ class SignUpActivity : AppCompatActivity() {
         userInfo.uid = auth.uid
         userInfo.Id = binding.TvFieldInputId.text.toString()
         userInfo.Email = binding.TvFieldInputEmail.text.toString()
+        userInfo.mainLanguage = languages[pos]
 
         FirebaseIO.write("UserInfo", binding.TvFieldInputId.text.toString(), userInfo)
 

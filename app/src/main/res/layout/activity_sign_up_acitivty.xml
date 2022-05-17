@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:id="@+id/signUpScrollView"
-    tools:context=".SignUpActivity">
+    tools:context=".activity.account.SignUpActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -158,6 +158,25 @@
                 android:hint="비밀번호 재입력"
                 />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/languageTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="주력 언어 선택"
+            app:layout_constraintStart_toStartOf="@+id/GuidelineLeft"
+            app:layout_constraintTop_toBottomOf="@+id/TextLayoutPasswordConfirm" />
+
+        <Spinner
+            android:id="@+id/languageSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            app:layout_constraintEnd_toStartOf="@+id/GuidelineRight"
+            app:layout_constraintStart_toStartOf="@+id/GuidelineLeft"
+            app:layout_constraintTop_toBottomOf="@+id/languageTextView" />
 
         <Button
             android:id="@+id/BtnSinUp"
