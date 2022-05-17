@@ -15,11 +15,11 @@ android {
         applicationId "com.develop.devproject"
         minSdk 21
         targetSdk 32
-        versionCode 3
-        versionName "v1.0.2"
+        versionCode 4
+        versionName "v1.0.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [googleMapApiKey:googleMapApiKey]
+        //manifestPlaceholders = [googleMapApiKey:googleMapApiKey]
     }
 
     buildTypes {
@@ -83,6 +83,7 @@ dependencies {
 
     //storage
     implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
 
     //glide
     implementation 'com.github.bumptech.glide:glide:4.13.0'

@@ -5,16 +5,16 @@ import android.content.Context
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
-import com.example.devproject.databinding.ActivityDialogDefaultBinding
+import com.example.devproject.databinding.DialogDefaultBinding
 
 class DeleteDialog(context: Context) {
 
     private val dialog = Dialog(context)
     var okButton : Button?= null
-    private lateinit var binding: ActivityDialogDefaultBinding
+    private lateinit var binding: DialogDefaultBinding
 
-    fun deleteDialog() {
-        binding = ActivityDialogDefaultBinding.inflate(dialog.layoutInflater)
+    fun activate() {
+        binding = DialogDefaultBinding.inflate(dialog.layoutInflater)
         dialog.show()
         dialog.setContentView(binding.root)
         dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)

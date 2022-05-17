@@ -13,6 +13,7 @@ import com.example.devproject.util.DataHandler
 import com.example.devproject.util.KeyboardVisibilityUtils
 import com.example.devproject.databinding.ActivityLoginBinding
 import com.example.devproject.databinding.DialogFindPasswordBinding
+import com.example.devproject.others.DBType
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -69,19 +70,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        startActivity(Intent(this, MainActivity::class.java))
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
         finish()
     }
-
-    override fun onStop() {
-        super.onStop()
-
-        val savePref = getSharedPreferences("saveAutoLoginChecked", MODE_PRIVATE)
-        savePref.edit().putBoolean("CheckBox", binding.CheckboxAutoLogin.isChecked).apply()
-        savePref.edit().putString("Email", binding.EtLoginId.text.toString()).apply()
-        savePref.edit().putString("Password", binding.EtLoginPassword.text.toString()).apply()
-    }
-
 
     private fun loginProcess(){
         val email = binding.EtLoginId.text.toString()
@@ -99,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         else{
-            DataHandler.delete()
+            DataHandler.delete(DBType.CONFERENCE)
             Toast.makeText(this, "이메일 또는 비밀번호가 입력되지 않았습니다", Toast.LENGTH_SHORT).show()
         }
     }
