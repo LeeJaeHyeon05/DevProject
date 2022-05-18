@@ -28,7 +28,8 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
     var conferUploaderTextView : TextView? = null
     var conferTitleTextView : TextView? = null
     var conferRecyclerView : RecyclerView? = null
-    var conferDateTextView : TextView? = null
+    var conferStartDateTextView : TextView? = null
+    var conferFinishDateTextView : TextView? = null
     var conferPriceTextView : TextView? = null
     var conferOfflineTextView : TextView? = null
     var conferURLImageView : ImageView? = null
@@ -73,15 +74,16 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_page)
-
         val position = intent.getIntExtra("position", 0)
         pos = position
 
+        supportActionBar?.title = conferDataSet[position][1].toString()
+
         conferUploaderIconImageView = findViewById(R.id.conferUploadeIconImageView)
         conferUploaderTextView  = findViewById(R.id.conferUploaderTextView)
-        conferTitleTextView = findViewById(R.id.conferTitleTextView)
         conferRecyclerView= findViewById(R.id.conferDetailRecyclerView)
-        conferDateTextView = findViewById(R.id.conferDateTextView)
+        conferStartDateTextView = findViewById(R.id.conferStartDateTextView)
+        conferFinishDateTextView = findViewById(R.id.conferFinishDateTextView)
         conferPriceTextView = findViewById(R.id.conferPriceTextView)
         conferOfflineTextView = findViewById(R.id.conferOfflineTextView)
         conferURLImageView = findViewById(R.id.conferURLImageView)
@@ -92,7 +94,8 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         conferTitleTextView?.text = conferDataSet[position][1].toString()
         //DummyImage
         //conferImageView?.setImageResource(R.drawable.ic_launcher_foreground)
-        conferDateTextView?.text = conferDataSet[position][2].toString()
+        conferStartDateTextView?.text = conferDataSet[position][10].toString().subSequence(5,12).toString() + " 부터"
+        conferFinishDateTextView?.text = conferDataSet[position][11].toString().subSequence(5,12).toString() + " 까지"
         conferPriceTextView?.text = if(conferDataSet[position][3].toString().toInt() == 0) "무료" else "${conferDataSet[position][3]}원"
         conferOfflineTextView?.text = if(conferDataSet[position][4].toString() == "false") "온라인" else "오프라인"
         conferURLImageView?.setImageResource(R.drawable.link)

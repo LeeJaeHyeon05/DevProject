@@ -145,30 +145,30 @@ class AddConferencesActivity() : AppCompatActivity() {
             val tag = binding.conferChipGroup.toString()
 
             //월 불러오기
-            val id = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
+            val documentId = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
             val uid = FirebaseAuth.getInstance().uid
-            val docNumText = id
-            val date = binding.dateTextView.text.toString().replace(",", ".")
 
             val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
 
             val conference = ConferenceInfo(
                 conferenceURL = link,
                 content = conContent,
-                date = date,
+                date = "",
                 offline = checkOffline(snapshotImage),
                 place = GeoPoint(latitude, longitude),
                 price = price,
                 title = conTitle,
-                documentID = id,
+                documentID = documentId,
                 uploader = uploader,
                 image = imageList,
-                uid = uid
+                uid = uid,
+                startDate =  binding.startDateTextView.text.toString().replace(",", "."),
+                finishDate =  binding.finishDateTextView.text.toString().replace(",", ".")
 
             )
 
             if(checkInput(conference)){
-                if(storageWrite(docNumText, snapshotImage, imageList, "conferenceDocument", docNumText, conference)){
+                if(storageWrite(documentId, snapshotImage, imageList, "conferenceDocument", documentId, conference)){
                     Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
                     CoroutineScope(Dispatchers.Main).launch {
                         DataHandler.reload(DBType.CONFERENCE)
@@ -185,7 +185,7 @@ class AddConferencesActivity() : AppCompatActivity() {
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
-        binding.dateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
+        binding.startDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
         binding.priceTextView.text = "무료"
     }
 
@@ -247,7 +247,8 @@ class AddConferencesActivity() : AppCompatActivity() {
         return validateString(conference.documentID) == true &&
                 validateString(conference.conferenceURL) == true &&
                 validateString(conference.content) == true &&
-                validateString(conference.date) == true &&
+                validateString(conference.startDate) == true &&
+                validateString(conference.finishDate) == true &&
                 validateString(conference.title) == true &&
                 validateString(conference.uploader) == true && validateLong(conference.price) && validateString(conference.image.toString()) == true
     }
@@ -287,21 +288,29 @@ class AddConferencesActivity() : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun getDate() {
-        val dateBtn = binding.datePickButton
 
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
-
-        dateBtn.setOnClickListener {
+        binding.startDateTextView.setOnClickListener {
             val dig = DatePickerDialog(this,
                 { p0, year, month, day ->
-                    binding.dateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
+                    binding.startDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
+                    binding.finishDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
                 }, year, month, day)
             dig.show()
         }
+
+        binding.finishDateTextView.setOnClickListener{
+            val datePickerDialog = DatePickerDialog(this,
+                { p0, year, month, day ->
+                    binding.finishDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
+                }, year, month, day)
+           datePickerDialog.show()
+        }
+
     }
 
     private fun getPrice() {
