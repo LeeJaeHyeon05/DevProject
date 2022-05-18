@@ -167,8 +167,7 @@
             app:endIconMode="custom"
             app:layout_constraintBottom_toTopOf="@id/showMapSnapShotLayout"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
-            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
-            app:layout_constraintTop_toBottomOf="@id/conferChipGroup">
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft">
 
             <EditText
                 android:id="@+id/ETConferenceGeo"
@@ -181,6 +180,16 @@
                 android:scrollbars="vertical"
                 android:textColorHint="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/conferOnlineCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="온라인 입니다"
+            app:layout_constraintBottom_toTopOf="@+id/TextLayoutConferenceGeo"
+            app:layout_constraintStart_toStartOf="@+id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@+id/conferChipGroup"
+            app:layout_constraintVertical_bias="1.0" />
 
         <com.alespero.expandablecardview.ExpandableCardView
             android:id="@+id/showMapSnapShotLayout"
@@ -197,12 +206,11 @@
             app:title="지도 보이기" />
 
 
-
         <LinearLayout
             android:id="@+id/LinearLayout"
             android:layout_width="0dp"
             android:layout_height="300dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
@@ -219,17 +227,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:weightSum="7"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="7">
 
                     <TextView
                         android:id="@+id/startDateTextView"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="3"
+                        android:background="@drawable/con_round"
                         android:padding="5dp"
                         android:text="시작일 추가"
-                        android:background="@drawable/con_round"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
@@ -249,9 +257,9 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="3"
+                        android:background="@drawable/con_round"
                         android:padding="5dp"
                         android:text="종료일 추가"
-                        android:background="@drawable/con_round"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
@@ -296,16 +304,15 @@
                         android:id="@+id/addConImageBtn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:letterSpacing="-0.03"
                         android:text="사진 추가"
-                        android:textStyle="bold"
-                        android:letterSpacing="-0.03"/>
+                        android:textStyle="bold" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/addConferenceImageRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal">
-                    </androidx.recyclerview.widget.RecyclerView>
+                        android:orientation="horizontal"></androidx.recyclerview.widget.RecyclerView>
 
 
                 </LinearLayout>

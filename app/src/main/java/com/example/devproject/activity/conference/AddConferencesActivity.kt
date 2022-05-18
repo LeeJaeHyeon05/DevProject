@@ -14,6 +14,7 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -91,9 +92,7 @@ class AddConferencesActivity() : AppCompatActivity() {
         }
 
         getDate()
-
         getPrice()
-
         //칩
         tagClip()
 
@@ -130,6 +129,16 @@ class AddConferencesActivity() : AppCompatActivity() {
             startMapActivityResult.launch(intent)
         }
 
+        binding.conferOnlineCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked){
+                binding.TextLayoutConferenceGeo.visibility = View.GONE
+                binding.showMapSnapShotLayout.visibility = View.GONE
+            }else{
+                binding.TextLayoutConferenceGeo.visibility = View.VISIBLE
+                binding.showMapSnapShotLayout.visibility = View.VISIBLE
+            }
+        }
+
         binding.addConButton.setOnClickListener {
             //editText 불러오기
             val conTitle = binding.addConTitle.text.toString()
@@ -143,6 +152,7 @@ class AddConferencesActivity() : AppCompatActivity() {
             } else Integer.parseInt(exceptWon[0]).toLong()
 
             val tag = binding.conferChipGroup.toString()
+            var offline = !binding.conferOnlineCheckBox.isChecked
 
             //월 불러오기
             val documentId = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
@@ -154,7 +164,7 @@ class AddConferencesActivity() : AppCompatActivity() {
                 conferenceURL = link,
                 content = conContent,
                 date = "",
-                offline = checkOffline(snapshotImage),
+                offline = offline,
                 place = GeoPoint(latitude, longitude),
                 price = price,
                 title = conTitle,
@@ -164,7 +174,6 @@ class AddConferencesActivity() : AppCompatActivity() {
                 uid = uid,
                 startDate =  binding.startDateTextView.text.toString().replace(",", "."),
                 finishDate =  binding.finishDateTextView.text.toString().replace(",", ".")
-
             )
 
             if(checkInput(conference)){
@@ -231,10 +240,6 @@ class AddConferencesActivity() : AppCompatActivity() {
         Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
     }
 
-
-
-
-
     private fun checkInput(conference: ConferenceInfo): Boolean{
         fun validateString(value: String?): Boolean? {
             return value?.isNotEmpty()
@@ -252,8 +257,6 @@ class AddConferencesActivity() : AppCompatActivity() {
                 validateString(conference.title) == true &&
                 validateString(conference.uploader) == true && validateLong(conference.price) && validateString(conference.image.toString()) == true
     }
-
-    private fun checkOffline(image: ImageView) = image.drawable == null
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
