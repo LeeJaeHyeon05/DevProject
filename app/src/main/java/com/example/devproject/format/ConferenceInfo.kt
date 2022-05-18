@@ -7,12 +7,14 @@ data class ConferenceInfo(
     val documentID : String? = null,
     var conferenceURL: String? = null,
     var content: String? = null,
-    var date: String? = null,
+    var date: String? = "",
     var offline: Boolean? = null,
     var place: GeoPoint? = null,
     var price: Long? = null,
     var title: String? = null,
     var uploader : String? = null,
     val image: MutableList<Uri>? = null,
-    var uid : String? = null
+    var uid : String? = null,
+    var startDate : String? = null,
+    var finishDate : String?  = null,
 )

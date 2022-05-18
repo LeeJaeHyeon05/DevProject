@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -53,7 +54,8 @@ class EditConferenceActivity() : AppCompatActivity() {
         pos = position
 
         binding.addConTitle.setText(DataHandler.conferDataSet[position][1] as String)
-        binding.dateTextView.text = DataHandler.conferDataSet[position][2] as String
+        binding.startDateTextView.text = DataHandler.conferDataSet[position][10] as String
+        binding.finishDateTextView.text = DataHandler.conferDataSet[position][11] as String
         binding.priceTextView.text = DataHandler.conferDataSet[position][3].toString()
         binding.addConLink.setText(DataHandler.conferDataSet[position][5] as String)
         binding.addConDetail.setText(DataHandler.conferDataSet[position][6] as String)
@@ -104,22 +106,23 @@ class EditConferenceActivity() : AppCompatActivity() {
                 0
             } else Integer.parseInt(exceptWon[0]).toLong()
 
-            //월 불러오기
-            val date = binding.dateTextView.text.toString().replace(",", ".")
-
             val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
 
             val conference = ConferenceInfo(
                 conferenceURL = link,
                 content = conContent,
-                date = date,
+                date = "",
                 offline = checkOffline(snapshotImage),
                 place = GeoPoint(latitude, longitude),
                 price = price,
                 title = conTitle,
                 documentID = DataHandler.conferDataSet[position][8] as String,
                 uploader = DataHandler.conferDataSet[position][0] as String,
-                uid = DataHandler.conferDataSet[position][7] as String
+                image = ArrayList<Uri>(),
+                uid = DataHandler.conferDataSet[position][7] as String,
+                startDate = binding.startDateTextView.text.toString().replace(",", "."),
+                finishDate = binding.finishDateTextView.text.toString().replace(",", ".")
+
             )
 
             val bitmapDrawable: Drawable?
@@ -178,7 +181,8 @@ class EditConferenceActivity() : AppCompatActivity() {
         return validateString(conference.documentID) == true &&
                 validateString(conference.conferenceURL) == true &&
                 validateString(conference.content) == true &&
-                validateString(conference.date) == true &&
+                validateString(conference.startDate) == true &&
+                validateString(conference.finishDate) == true &&
                 validateString(conference.title) == true &&
                 validateString(conference.uploader) == true && validateLong(conference.price)
     }
@@ -198,7 +202,6 @@ class EditConferenceActivity() : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun getDate() {
-        val dateBtn = binding.datePickButton
 
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
@@ -206,10 +209,18 @@ class EditConferenceActivity() : AppCompatActivity() {
         val day = c.get(Calendar.DAY_OF_MONTH)
 
 
-        dateBtn.setOnClickListener {
+        binding.startDateTextView.setOnClickListener{
             val dig = DatePickerDialog(this,
                 { p0, year, month, day ->
-                    binding.dateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
+                    binding.startDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
+                }, year, month, day)
+            dig.show()
+        }
+
+        binding.finishDateTextView.setOnClickListener{
+            val dig = DatePickerDialog(this,
+                { p0, year, month, day ->
+                    binding.finishDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
                 }, year, month, day)
             dig.show()
         }
