@@ -36,6 +36,10 @@ class StudyFragment : Fragment() {
         studyRecyclerView?.layoutManager = GridLayoutManager(this.context,2)
         studyRecyclerView?.adapter = StudyListAdapter()
 
+        val addStudyButton = mBinding?.floatingActionButton
+        addStudyButton?.setOnClickListener {
+
+        }
 
         return mBinding?.root
     }
