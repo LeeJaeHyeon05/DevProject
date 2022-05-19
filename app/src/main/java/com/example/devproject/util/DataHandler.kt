@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.devproject.R
+import com.example.devproject.fragment.HomeFragment
 import com.example.devproject.others.DBType
 import java.io.File
 import java.time.ZoneId
@@ -81,8 +82,7 @@ class DataHandler {
                                 )
                             }
                         }.run {
-                            UIHandler.adapter!!.notifyDataSetChanged()
-                            UIHandler.activateUI(R.id.conferRecyclerView)
+                              HomeFragment.adapter!!.notifyDataSetChanged()
                         }
                     }
                 }

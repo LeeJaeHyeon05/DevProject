@@ -112,7 +112,7 @@ class EditConferenceActivity() : AppCompatActivity() {
                 conferenceURL = link,
                 content = conContent,
                 date = "",
-                offline = checkOffline(snapshotImage),
+                offline = !binding.conferOnlineCheckBox.isChecked,
                 place = GeoPoint(latitude, longitude),
                 price = price,
                 title = conTitle,
@@ -186,8 +186,6 @@ class EditConferenceActivity() : AppCompatActivity() {
                 validateString(conference.title) == true &&
                 validateString(conference.uploader) == true && validateLong(conference.price)
     }
-
-    private fun checkOffline(image: ImageView) = image.drawable == null
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item?.itemId){
