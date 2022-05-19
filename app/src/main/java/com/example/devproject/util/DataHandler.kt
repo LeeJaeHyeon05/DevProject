@@ -41,7 +41,9 @@ class DataHandler {
                                     document.data["content"] as String,       //6
                                     document.data["uid"] as String,
                                     document.data["documentID"] as String,
-                                    document.data["image"] as MutableList<*>
+                                    document.data["image"] as MutableList<*>,
+                                    document.data["startDate"] as String,   //10
+                                    document.data["finishDate"] as String   //11
                                 )
                                 )
                             }
@@ -72,7 +74,9 @@ class DataHandler {
                                     document.data["content"] as String,       //6
                                     document.data["uid"] as String,
                                     document.data["documentID"] as String,
-                                    document.data["image"] as MutableList<*>
+                                    document.data["image"] as MutableList<*>,
+                                    document.data["startDate"] as String,   //10
+                                    document.data["finishDate"] as String   //11
                                 )
                                 )
                             }
