@@ -28,7 +28,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
-
         mBinding = binding
 
         var conferRecyclerView = mBinding?.conferRecyclerView
