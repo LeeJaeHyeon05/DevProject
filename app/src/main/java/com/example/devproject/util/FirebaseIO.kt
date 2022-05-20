@@ -40,9 +40,8 @@ class FirebaseIO {
                 }
         }
 
-        fun write(collectionPath: String, documentPath: String, information: ConferenceInfo): Boolean{
-            var success = false
-            db.collection(collectionPath).document("document$documentPath").set(information)
+        fun write(collectionPath: String, documentPath: String, information: Any): Boolean{
+            db.collection(collectionPath).document(documentPath).set(information)
                 .addOnSuccessListener {
                     Log.d("TAG", "DocumentSnapshot successfully written! ")
                 }
@@ -76,11 +75,9 @@ class FirebaseIO {
         }
 
         fun storageWrite(
-            documentPath: String,
             snapshotImage: ImageView,
             imageList: ArrayList<Uri>,
             collectionPath: String,
-            docNumText: String,
             conference: ConferenceInfo,
         ): Boolean{
             val bitmapDrawable = snapshotImage.drawable
@@ -89,7 +86,7 @@ class FirebaseIO {
                 true -> {
                     when(imageList.isEmpty()){
                         true -> { //지도사진 x, 이미지 x
-                            db.collection(collectionPath).document("document$docNumText").set(conference)
+                            db.collection(collectionPath).document(conference.documentID as String).set(conference)
                                 .addOnSuccessListener {
                                     Log.d("TAG", "DocumentSnapshot successfully written! ")
                                 }
@@ -103,7 +100,7 @@ class FirebaseIO {
                                 uriList.add(i)
                             }
                             CoroutineScope(Dispatchers.Main).launch {
-                                val uploadPostImageTask = storage.getReference("documentPost").child("document$documentPath")
+                                val uploadPostImageTask = storage.getReference("documentPost").child("document${conference.documentID}")
                                 for(i in uriList){ //이미지 올리기
                                     uploadPostImageTask.child("$count Image.jpeg").putFile(i)
                                     count++
@@ -111,10 +108,10 @@ class FirebaseIO {
                                 count = 1
                                 conference.image?.clear()
                                 for(i in uriList){
-                                    conference.image?.add(Uri.parse("documentPost/document$documentPath/$count Image.jpeg"))
+                                    conference.image?.add(Uri.parse("documentPost/document${conference.documentID}/$count Image.jpeg"))
                                     count++
                                 }
-                                db.collection(collectionPath).document("document$docNumText").set(conference)
+                                db.collection(collectionPath).document(conference.documentID as String).set(conference)
                                     .addOnSuccessListener {
                                         Log.d("TAG", "DocumentSnapshot successfully written! ")
                                     }
@@ -134,8 +131,8 @@ class FirebaseIO {
 
                     when(imageList.isEmpty()){
                         true -> { //지도 o, 이미지 x
-                            storage.getReference("documentPost").child("document$documentPath").child("MapSnapShot.jpeg").putBytes(data)
-                            db.collection(collectionPath).document("document$docNumText").set(conference)
+                            storage.getReference("documentPost").child(conference.documentID as String).child("MapSnapShot.jpeg").putBytes(data)
+                            db.collection(collectionPath).document(conference.documentID).set(conference)
                                 .addOnSuccessListener {
                                     Log.d("TAG", "DocumentSnapshot successfully written! ")
                                 }
@@ -148,7 +145,7 @@ class FirebaseIO {
                             for(i in imageList){
                                 uriList.add(i)
                             }
-                            val uploadPostImageTask = storage.getReference("documentPost").child("document$documentPath")
+                            val uploadPostImageTask = storage.getReference("documentPost").child("document${conference.documentID}")
                             for(i in uriList){ //이미지 올리기
                                 uploadPostImageTask.child("$count Image.jpeg").putFile(i)
                                 count++
@@ -156,11 +153,11 @@ class FirebaseIO {
                             count = 1
                             conference.image?.clear()
                             for(i in uriList){
-                                conference.image?.add(Uri.parse("documentPost/document$documentPath/$count Image.jpeg"))
+                                conference.image?.add(Uri.parse("documentPost/document${conference.documentID}/$count Image.jpeg"))
                                 count++
                             }
-                            storage.getReference("documentPost").child("document$documentPath").child("MapSnapShot.jpeg").putBytes(data)
-                            db.collection(collectionPath).document("document$docNumText").set(conference)
+                            storage.getReference("documentPost").child(conference.documentID as String).child("MapSnapShot.jpeg").putBytes(data)
+                            db.collection(collectionPath).document(conference.documentID).set(conference)
                                 .addOnSuccessListener {
                                     Log.d("TAG", "DocumentSnapshot successfully written! ")
                                 }
@@ -174,7 +171,7 @@ class FirebaseIO {
                 }
 
             }
-            if(db.collection(collectionPath).document("document$docNumText").path.isNotEmpty()){
+            if(db.collection(collectionPath).document(conference.documentID.toString()).path.isNotEmpty()){
                 success = true
             }
             return success

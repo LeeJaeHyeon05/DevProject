@@ -122,7 +122,6 @@ class EditConferenceActivity() : AppCompatActivity() {
                 uid = DataHandler.conferDataSet[position][7] as String,
                 startDate = binding.startDateTextView.text.toString().replace(",", "."),
                 finishDate = binding.finishDateTextView.text.toString().replace(",", ".")
-
             )
 
             val bitmapDrawable: Drawable?
@@ -133,7 +132,7 @@ class EditConferenceActivity() : AppCompatActivity() {
                 bitmap = (bitmapDrawable as BitmapDrawable).bitmap
 
                 if(checkInput(conference)){
-                    FirebaseIO.delete("conferenceDocument", "document${DataHandler.conferDataSet[position][8] as String}")
+                    FirebaseIO.delete("conferenceDocument", DataHandler.conferDataSet[position][8] as String)
                     if(cloudWrite(conference.documentID as String, bitmap, conference) && FirebaseIO.write("conferenceDocument", conference.documentID, conference)){
                         Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
 
@@ -151,7 +150,7 @@ class EditConferenceActivity() : AppCompatActivity() {
             else{
                 if(checkInput(conference)){
                     FirebaseIO.delete("conferenceDocument", DataHandler.conferDataSet[position][8] as String)
-                    if(FirebaseIO.write("conferenceDocument",conference.documentID as String, conference)){
+                    if(FirebaseIO.write("conferenceDocument", conference.documentID as String, conference)){
                         Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
 
                         DataHandler.reload(DBType.CONFERENCE)
