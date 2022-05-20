@@ -155,7 +155,7 @@ class AddConferencesActivity() : AppCompatActivity() {
             var offline = !binding.conferOnlineCheckBox.isChecked
 
             //월 불러오기
-            val documentId = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
+            val documentId = "document" + ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS")).toString()
             val uid = FirebaseAuth.getInstance().uid
 
             val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
@@ -163,7 +163,7 @@ class AddConferencesActivity() : AppCompatActivity() {
             val conference = ConferenceInfo(
                 conferenceURL = link,
                 content = conContent,
-                date = "",
+                date = binding.startDateTextView.text.toString().replace(",", "."),
                 offline = offline,
                 place = GeoPoint(latitude, longitude),
                 price = price,
@@ -177,7 +177,7 @@ class AddConferencesActivity() : AppCompatActivity() {
             )
 
             if(checkInput(conference)){
-                if(storageWrite(documentId, snapshotImage, imageList, "conferenceDocument", documentId, conference)){
+                if(storageWrite(snapshotImage, imageList, "conferenceDocument",conference)){
                     Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
                     CoroutineScope(Dispatchers.Main).launch {
                         DataHandler.reload(DBType.CONFERENCE)

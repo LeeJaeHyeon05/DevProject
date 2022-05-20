@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.devproject.R
 import com.example.devproject.fragment.HomeFragment
+import com.example.devproject.fragment.StudyFragment
 import com.example.devproject.others.DBType
 import java.io.File
 import java.time.ZoneId
@@ -51,8 +52,24 @@ class DataHandler {
                         }
                     }
                 }
-                DBType.STUDY -> {}
-                else -> {
+                DBType.STUDY -> {
+                    FirebaseIO.readPublic("groupstudyDocument").addOnSuccessListener { result ->
+                        studyDataSet.clear()
+                        for (document in result) {
+                            studyDataSet.add(arrayOf(
+                                document.data["ongoing"] as Boolean,
+                                document.data["uploader"] as String,
+                                document.data["title"] as String,
+                                document.data["offline"] as Boolean,
+                                document.data["studyURL"] as String,
+                                document.data["totalMember"] as Long,
+                                document.data["remainingMemeber"] as Long,
+                                document.data["documentID"] as String,
+                                document.data["uid"] as String
+                            )
+                            )
+                        }
+                    }
 
                 }
             }
@@ -87,6 +104,28 @@ class DataHandler {
                     }
                 }
                 DBType.STUDY->{
+                    FirebaseIO.readPublic("groupstudyDocument").addOnSuccessListener { result ->
+                        run {
+                            studyDataSet.clear()
+                            for (document in result) {
+                                studyDataSet.add(
+                                    arrayOf(
+                                        document.data["ongoing"] as Boolean,
+                                        document.data["uploader"] as String,
+                                        document.data["title"] as String,
+                                        document.data["offline"] as Boolean,
+                                        document.data["studyURL"] as String,
+                                        document.data["totalMember"] as Long,
+                                        document.data["remainingMemeber"] as Long,
+                                        document.data["documentID"] as String,
+                                        document.data["uid"] as String
+                                    )
+                                )
+                            }
+                        }.run {
+                            StudyFragment.adapter!!.notifyDataSetChanged()
+                        }
+                    }
                 }
             }
         }

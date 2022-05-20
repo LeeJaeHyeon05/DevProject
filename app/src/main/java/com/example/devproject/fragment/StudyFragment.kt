@@ -18,11 +18,17 @@ import com.example.devproject.util.FirebaseIO
 class StudyFragment : Fragment() {
     private var mBinding : FragmentStudyBinding? = null
 
+    companion object{
+        var adapter : StudyListAdapter? = null
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        DataHandler.load(DBType.STUDY)
+
         val binding = FragmentStudyBinding.inflate(inflater, container, false)
         mBinding = binding
 
@@ -34,7 +40,8 @@ class StudyFragment : Fragment() {
 
         var studyRecyclerView = mBinding?.studyRecyclerView
         studyRecyclerView?.layoutManager = GridLayoutManager(this.context,2)
-        studyRecyclerView?.adapter = StudyListAdapter()
+        adapter = StudyListAdapter()
+        studyRecyclerView?.adapter = adapter
 
         val addStudyButton = mBinding?.floatingActionButton
         addStudyButton?.setOnClickListener {
