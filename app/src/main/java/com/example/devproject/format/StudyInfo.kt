@@ -10,4 +10,5 @@ data class StudyInfo (
     var totalMember : Long? = 0,
     var remainingMemeber : Long? = 0,
     var uid : String? = null,
+    var uploader : String? = null
 )

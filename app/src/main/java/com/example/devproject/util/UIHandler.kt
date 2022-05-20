@@ -25,10 +25,6 @@ class UIHandler {
             conferAddButton = rootView.findViewById(R.id.conferAddButton)
         }
 
-        fun allocateUI(view : View){
-            conferRecyclerView = view.findViewById(R.id.conferRecyclerView)
-        }
-
         fun activateUI(id: Int) {
             when (id) {
                 R.id.conferRecyclerView ->{
