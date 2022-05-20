@@ -11,5 +11,16 @@ class AddStudyActivity : AppCompatActivity() {
         binding = ActivityAddStudyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-    }
+        var memberNumberPicker = binding.memberNumberPicker
+        val data: Array<String> = Array(100){
+                i -> (i+1).toString()
+        }
+        memberNumberPicker.minValue = 1
+        memberNumberPicker.maxValue = data.size-1
+        memberNumberPicker.wrapSelectorWheel = false
+        memberNumberPicker.displayedValues = data
+        
+        memberNumberPicker.setOnValueChangedListener { picker, oldVal, newVal ->  }
+        }
+
 }

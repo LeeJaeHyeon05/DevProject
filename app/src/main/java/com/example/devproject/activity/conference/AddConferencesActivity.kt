@@ -163,7 +163,7 @@ class AddConferencesActivity() : AppCompatActivity() {
             val conference = ConferenceInfo(
                 conferenceURL = link,
                 content = conContent,
-                date = "",
+                date = binding.startDateTextView.text.toString().replace(",", "."),
                 offline = offline,
                 place = GeoPoint(latitude, longitude),
                 price = price,
