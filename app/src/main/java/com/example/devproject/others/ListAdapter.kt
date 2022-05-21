@@ -50,7 +50,7 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
         //Binding Image & Text data Set trough firebase
         //이미지가 들어가야함
         getImage(viewHolder, position)
-        viewHolder.conferPreImageView.setImageResource(R.drawable.default_image)
+        viewHolder.conferPreImageView.setImageResource(R.drawable.ic_main)
         viewHolder.conferPreImageView2.visibility = View.GONE
         if(todayDate > DataHandler.conferDataSet[position][11].toString().replace(". ", "").toInt()){
             viewHolder.conferPreImageView2.visibility = View.VISIBLE

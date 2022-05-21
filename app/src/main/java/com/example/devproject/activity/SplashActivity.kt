@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.example.devproject.R
 import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler
+import com.example.devproject.util.FirebaseIO
 import com.google.firebase.auth.FirebaseAuth
 
 class SplashActivity : AppCompatActivity() {
@@ -20,6 +21,10 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         DataHandler.load(DBType.CONFERENCE)
         DataHandler.load(DBType.STUDY)
+
+        if(FirebaseIO.isValidAccount()){
+            DataHandler.updateUserInfo()
+        }
 
         setContentView(R.layout.activity_splash)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) //나이트모드 적용 해제

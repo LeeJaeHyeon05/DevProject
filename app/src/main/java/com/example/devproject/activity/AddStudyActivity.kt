@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.databinding.ActivityAddStudyBinding
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.format.StudyInfo
+import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -30,8 +31,6 @@ class AddStudyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddStudyBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        findUploader()
 
         var memberNumberPicker = binding.memberNumberPicker
         val data: Array<String> = Array(100){
@@ -64,7 +63,7 @@ class AddStudyActivity : AppCompatActivity() {
                 totalMember = totalMember,
                 remainingMemeber = totalMember,
                 uid = FirebaseAuth.getInstance().uid,
-                uploader=uploader
+                uploader= DataHandler.userInfo.id
             )
 
             if(FirebaseIO.write("groupstudyDocument", documentID, studyInfo)){
@@ -73,25 +72,4 @@ class AddStudyActivity : AppCompatActivity() {
             finish()
         }
     }
-
-    private fun findUploader(){
-        val getEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
-        val mFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-
-        CoroutineScope(Dispatchers.Main).launch {
-            mFirestore.collection("UserInfo")
-                .whereEqualTo("email", getEmail)
-                .get()
-                .addOnSuccessListener {
-                    for(document in it){
-                        val string = document["id"] as String
-                        uploader = string
-                    }
-                }
-                .addOnFailureListener{
-                    Log.d("TAG", "findUploader: ${it.stackTrace}")
-                }
-        }
-    }
-
 }
