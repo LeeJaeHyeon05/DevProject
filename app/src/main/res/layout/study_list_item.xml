@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="진행중" />
+            android:text="모집중" />
 
         <TextView
             android:id="@+id/studyPreTitleTextView"

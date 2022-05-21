@@ -30,7 +30,9 @@ class AddStudyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddStudyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         findUploader()
+
         var memberNumberPicker = binding.memberNumberPicker
         val data: Array<String> = Array(100){
                 i -> (i+1).toString()
@@ -45,10 +47,9 @@ class AddStudyActivity : AppCompatActivity() {
         totalMember = 1
 
         memberNumberPicker.setOnValueChangedListener { picker, oldVal, newVal ->
-            totalMember =  picker.value.toLong()
+            totalMember = picker.value.toLong()
 
         }
-
         var addStudyButton = binding.addStudyButton
         val documentID = "study${ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))}"
 
