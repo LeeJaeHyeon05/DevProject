@@ -24,7 +24,7 @@ class StudyListAdapter() : RecyclerView.Adapter<StudyListAdapter.ViewHolder>() {
         val studyPreTitleTextView = view.findViewById<TextView>(R.id.studyPreTitleTextView)
         val studyPreContentView = view.findViewById<TextView>(R.id.studyPreContentView)
         val studyOfflineTextView = view.findViewById<TextView>(R.id.studyOfflineTextView)
-        val studyLineImageView = view.findViewById<ImageView>(R.id.studyLinkImageView)
+        val studyLinkImageView = view.findViewById<ImageView>(R.id.studyLinkImageView)
         val remainingMemeberTextView = view.findViewById<TextView>(R.id.remainingMemberTextView)
     }
 
@@ -43,12 +43,13 @@ class StudyListAdapter() : RecyclerView.Adapter<StudyListAdapter.ViewHolder>() {
         viewHolder.studyPreTitleTextView.text = studyDataSet[position][2].toString()
         viewHolder.studyPreContentView.text =studyDataSet[position][3].toString()
         viewHolder.studyOfflineTextView.text = if(studyDataSet[position][4] as Boolean) "온라인" else "오프라인"
-        viewHolder.studyLineImageView.setOnClickListener {
+        viewHolder.studyLinkImageView.setImageResource(R.drawable.link)
+        viewHolder.studyLinkImageView.setOnClickListener {
             val intent = Intent(UIHandler.rootView?.context, ShowWebViewActivity::class.java)
             intent.putExtra("conferenceURL", studyDataSet[position][4].toString())
             UIHandler.rootView?.context?.startActivity(intent)
         }
-        viewHolder.remainingMemeberTextView.text = studyDataSet[position][7].toString()
+        viewHolder.remainingMemeberTextView.text = studyDataSet[position][7].toString() +"명 남음!"
     }
 
     override fun getItemCount() = DataHandler.conferDataSet.size
