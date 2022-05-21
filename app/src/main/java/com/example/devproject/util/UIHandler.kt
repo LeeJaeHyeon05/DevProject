@@ -24,24 +24,5 @@ class UIHandler {
             Companion.mainActivity = mainActivity
             conferAddButton = rootView.findViewById(R.id.conferAddButton)
         }
-
-        fun activateUI(id: Int) {
-            when (id) {
-                R.id.conferRecyclerView ->{
-                    conferRecyclerView?.layoutManager = LinearLayoutManager(rootView?.context)
-                    adapter = ListAdapter()
-                    conferRecyclerView?.adapter = adapter
-                }
-                R.id.conferAddButton ->{
-                    conferAddButton?.setOnClickListener {
-                        mainActivity?.startActivity(Intent(rootView?.context, AddConferencesActivity::class.java))
-                    }
-                }
-                else ->{
-
-                }
-            }
-        }
-
     }
 }

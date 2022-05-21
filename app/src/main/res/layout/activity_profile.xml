@@ -5,13 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:layout_width="match_parent"
+    <TableRow
+        android:id="@+id/tableRow3"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    </FrameLayout>
+        <ImageView
+            android:id="@+id/profileImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            tools:srcCompat="@drawable/ic_main" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/profilleIDTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </LinearLayout>
+    </TableRow>
 
     <Button
         android:id="@+id/logoutButton"
@@ -21,5 +40,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tableRow3" />
 </androidx.constraintlayout.widget.ConstraintLayout>
