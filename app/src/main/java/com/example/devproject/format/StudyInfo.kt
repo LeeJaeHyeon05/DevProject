@@ -1,7 +1,7 @@
 package com.example.devproject.format
 
 data class StudyInfo (
-    var documentId : String? = null,
+    var documentID : String? = null,
     var ongoing : Boolean? = null,
     var title : String? = null,
     var content : String? = null,

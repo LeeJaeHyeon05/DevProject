@@ -60,6 +60,7 @@ class DataHandler {
                                 document.data["ongoing"] as Boolean,
                                 document.data["uploader"] as String,
                                 document.data["title"] as String,
+                                document.data["content"] as String,
                                 document.data["offline"] as Boolean,
                                 document.data["studyURL"] as String,
                                 document.data["totalMember"] as Long,
@@ -113,6 +114,7 @@ class DataHandler {
                                         document.data["ongoing"] as Boolean,
                                         document.data["uploader"] as String,
                                         document.data["title"] as String,
+                                        document.data["content"] as String,
                                         document.data["offline"] as Boolean,
                                         document.data["studyURL"] as String,
                                         document.data["totalMember"] as Long,
@@ -152,12 +154,33 @@ class DataHandler {
                                 )
                             }
                         }.run {
-                            UIHandler.adapter!!.notifyDataSetChanged()
-                            UIHandler.activateUI(R.id.conferRecyclerView)
+                            HomeFragment.adapter!!.notifyDataSetChanged()
                         }
                     }
                 }
                 DBType.STUDY->{
+                    FirebaseIO.readPublic("groupstudyDocument").addOnSuccessListener { result ->
+                        run {
+                            studyDataSet.clear()
+                            for (document in result) {
+                                studyDataSet.add(
+                                    arrayOf(
+                                        document.data["ongoing"] as Boolean,
+                                        document.data["uploader"] as String,
+                                        document.data["title"] as String,
+                                        document.data["offline"] as Boolean,
+                                        document.data["studyURL"] as String,
+                                        document.data["totalMember"] as Long,
+                                        document.data["remainingMemeber"] as Long,
+                                        document.data["documentID"] as String,
+                                        document.data["uid"] as String
+                                    )
+                                )
+                            }
+                        }.run {
+                            StudyFragment.adapter!!.notifyDataSetChanged()
+                        }
+                    }
                 }
             }
         }
