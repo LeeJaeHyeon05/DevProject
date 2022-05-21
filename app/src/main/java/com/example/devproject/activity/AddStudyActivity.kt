@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.databinding.ActivityAddStudyBinding
@@ -34,23 +35,26 @@ class AddStudyActivity : AppCompatActivity() {
         val data: Array<String> = Array(100){
                 i -> (i+1).toString()
         }
+
         var totalMember : Long? = 0
 
         memberNumberPicker.minValue = 1
         memberNumberPicker.maxValue = data.size-1
         memberNumberPicker.wrapSelectorWheel = false
         memberNumberPicker.displayedValues = data
-        
+        totalMember = 1
+
         memberNumberPicker.setOnValueChangedListener { picker, oldVal, newVal ->
-            totalMember = picker.value.toLong()
+            totalMember =  picker.value.toLong()
+
         }
 
         var addStudyButton = binding.addStudyButton
-        val documentId = "study" + ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS")).toString()
+        val documentID = "study${ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))}"
 
         addStudyButton.setOnClickListener {
             val studyInfo = StudyInfo(
-                documentId = documentId,
+                documentID = documentID,
                 ongoing = true,
                 title = binding.addStudyTitle.text.toString(),
                 content = binding.addStudyContent.text.toString(),
@@ -62,7 +66,9 @@ class AddStudyActivity : AppCompatActivity() {
                 uploader=uploader
             )
 
-            FirebaseIO.write("groupstudyDocument", documentId, studyInfo)
+            if(FirebaseIO.write("groupstudyDocument", documentID, studyInfo)){
+                Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
+            }
             finish()
         }
     }
