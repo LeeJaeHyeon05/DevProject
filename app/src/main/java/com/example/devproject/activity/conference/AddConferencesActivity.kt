@@ -153,7 +153,7 @@ class AddConferencesActivity() : AppCompatActivity() {
             var offline = !binding.conferOnlineCheckBox.isChecked
 
             //월 불러오기
-            val documentId = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS")).toString()
+            val documentId = "document" + ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS")).toString()
             val uid = FirebaseAuth.getInstance().uid
 
             val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
@@ -163,7 +163,7 @@ class AddConferencesActivity() : AppCompatActivity() {
                 content = conContent,
                 date = binding.startDateTextView.text.toString().replace(",", "."),
                 offline = offline,
-                place = binding.ETConferenceGeo.text.toString(),
+                place = GeoPoint(latitude, longitude),
                 price = price,
                 title = conTitle,
                 documentID = documentId,
@@ -175,7 +175,7 @@ class AddConferencesActivity() : AppCompatActivity() {
             )
 
             if(checkInput(conference)){
-                if(storageWrite(documentId,snapshotImage, imageList, "conferenceDocument",documentId,conference)){
+                if(storageWrite("conferenceDocument", documentId, snapshotImage, imageList, conference)){
                     Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
                     CoroutineScope(Dispatchers.Main).launch {
                         DataHandler.reload(DBType.CONFERENCE)
@@ -239,6 +239,10 @@ class AddConferencesActivity() : AppCompatActivity() {
     }
 
     private fun checkInput(conference: ConferenceInfo): Boolean{
+        fun validateDateString(value : String?) : Boolean? {
+            return (value?.isNotEmpty() == true && value?.length!=6)
+        }
+
         fun validateString(value: String?): Boolean? {
             return value?.isNotEmpty()
         }
@@ -250,8 +254,8 @@ class AddConferencesActivity() : AppCompatActivity() {
         return validateString(conference.documentID) == true &&
                 validateString(conference.conferenceURL) == true &&
                 validateString(conference.content) == true &&
-                validateString(conference.startDate) == true &&
-                validateString(conference.finishDate) == true &&
+                validateDateString(conference.startDate) == true &&
+                validateDateString(conference.finishDate) == true &&
                 validateString(conference.title) == true &&
                 validateString(conference.uploader) == true && validateLong(conference.price) && validateString(conference.image.toString()) == true
     }
