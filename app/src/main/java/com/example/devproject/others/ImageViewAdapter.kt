@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +18,12 @@ import com.example.devproject.activity.conference.EditConferenceActivity
 import com.example.devproject.activity.conference.ShowConferenceDetailActivity
 import com.example.devproject.others.ImageViewAdapter.ViewHolder
 import com.example.devproject.databinding.DialogShowImageBinding
+import com.example.devproject.util.FirebaseIO
 
-class ImageViewAdapter(private val imageList: ArrayList<Uri>, private val context: Context): RecyclerView.Adapter<ViewHolder>() {
+class ImageViewAdapter(private val imageList: ArrayList<Uri> = ArrayList<Uri>(), private val context: Context, private val deleteImageList: ArrayList<Uri> = ArrayList<Uri>()): RecyclerView.Adapter<ViewHolder>() {
+
+    private var deleteReturnList = ArrayList<Uri>()
+
     inner class ViewHolder (view: View): RecyclerView.ViewHolder(view){
         var addConferenceImageView: ImageView? = null
         var conferDetailImageView: ImageView? = null
@@ -72,7 +77,6 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri>, private val contex
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         when(holder.itemView.context){
             is AddConferencesActivity -> {
                 val item = imageList[position]
@@ -144,13 +148,26 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri>, private val contex
                     }
 
                     dialogBinding.dialogShowImageDeleteBtn.setOnClickListener {
-                        imageList.removeAt(position)
-                        notifyDataSetChanged()
-                        ad.dismiss()
+                        if(deleteImageList.isEmpty()){
+                            imageList.removeAt(position)
+                            notifyDataSetChanged()
+                            ad.dismiss()
+                        }
+                        else{
+                            deleteReturnList.add(deleteImageList[position])
+                            imageList.removeAt(position)
+                            deleteImageList.removeAt(position)
+                            notifyDataSetChanged()
+                            ad.dismiss()
+                        }
                     }
                 }
             }
         }
+    }
+
+    fun getDeleteImage(): ArrayList<Uri> {
+        return deleteReturnList
     }
 
     override fun getItemCount(): Int {
