@@ -77,6 +77,7 @@ class AddConferencesActivity() : AppCompatActivity() {
                     for(i in 0 until size!!){
                         imageList.add(result.data!!.clipData!!.getItemAt(i).uri)
                     }
+                    imageList.sort()
                     imageAdapter = ImageViewAdapter(imageList = imageList, this)
                     imageRecyclerView.adapter = imageAdapter
                     imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)

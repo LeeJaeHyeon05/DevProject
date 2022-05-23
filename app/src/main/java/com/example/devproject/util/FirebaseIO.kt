@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
+import androidx.core.net.toUri
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.format.UserInfo
 import com.google.android.gms.tasks.Task
@@ -40,8 +41,9 @@ class FirebaseIO {
                 }
         }
 
-        fun write(collectionPath: String, documentPath: String, information: Any): Boolean{
-            db.collection(collectionPath).document(documentPath).set(information)
+        fun write(collectionPath: String, documentPath: String, information: ConferenceInfo): Boolean{
+            var success = false
+            db.collection(collectionPath).document("document$documentPath").set(information)
                 .addOnSuccessListener {
                     Log.d("TAG", "DocumentSnapshot successfully written! ")
                 }
@@ -75,9 +77,11 @@ class FirebaseIO {
         }
 
         fun storageWrite(
+            documentPath: String,
             snapshotImage: ImageView,
             imageList: ArrayList<Uri>,
             collectionPath: String,
+            docNumText: String,
             conference: ConferenceInfo,
         ): Boolean{
             val bitmapDrawable = snapshotImage.drawable
@@ -86,7 +90,7 @@ class FirebaseIO {
                 true -> {
                     when(imageList.isEmpty()){
                         true -> { //지도사진 x, 이미지 x
-                            db.collection(collectionPath).document(conference.documentID as String).set(conference)
+                            db.collection(collectionPath).document("document$docNumText").set(conference)
                                 .addOnSuccessListener {
                                     Log.d("TAG", "DocumentSnapshot successfully written! ")
                                 }
@@ -95,23 +99,20 @@ class FirebaseIO {
                                 }
                         }
                         false -> { //지도사진 x, 이미지 o
-                            var count = 1
                             for(i in imageList){
                                 uriList.add(i)
                             }
                             CoroutineScope(Dispatchers.Main).launch {
-                                val uploadPostImageTask = storage.getReference("documentPost").child("document${conference.documentID}")
+                                val uploadPostImageTask = storage.getReference("documentPost").child("document$documentPath")
                                 for(i in uriList){ //이미지 올리기
-                                    uploadPostImageTask.child("$count Image.jpeg").putFile(i)
-                                    count++
+                                    uploadPostImageTask.child("${i.path?.substring(i.path!!.length-4, i.path!!.length)}").putFile(i)
                                 }
-                                count = 1
                                 conference.image?.clear()
                                 for(i in uriList){
-                                    conference.image?.add(Uri.parse("documentPost/document${conference.documentID}/$count Image.jpeg"))
-                                    count++
+                                    conference.image?.add(Uri.parse("documentPost/document$documentPath/${i.path?.substring(i.path!!.length-4, i.path!!.length)}"))
                                 }
-                                db.collection(collectionPath).document(conference.documentID as String).set(conference)
+                                conference.image?.sort()
+                                db.collection(collectionPath).document("document$docNumText").set(conference)
                                     .addOnSuccessListener {
                                         Log.d("TAG", "DocumentSnapshot successfully written! ")
                                     }
@@ -131,8 +132,8 @@ class FirebaseIO {
 
                     when(imageList.isEmpty()){
                         true -> { //지도 o, 이미지 x
-                            storage.getReference("documentPost").child(conference.documentID as String).child("MapSnapShot.jpeg").putBytes(data)
-                            db.collection(collectionPath).document(conference.documentID).set(conference)
+                            storage.getReference("documentPost").child("document$documentPath").child("MapSnapShot.jpeg").putBytes(data)
+                            db.collection(collectionPath).document("document$docNumText").set(conference)
                                 .addOnSuccessListener {
                                     Log.d("TAG", "DocumentSnapshot successfully written! ")
                                 }
@@ -141,23 +142,23 @@ class FirebaseIO {
                                 }
                         }
                         false -> { //지도 o, 이미지 o
-                            var count = 1
                             for(i in imageList){
                                 uriList.add(i)
                             }
-                            val uploadPostImageTask = storage.getReference("documentPost").child("document${conference.documentID}")
+                            val uploadPostImageTask = storage.getReference("documentPost").child("document$documentPath")
                             for(i in uriList){ //이미지 올리기
-                                uploadPostImageTask.child("$count Image.jpeg").putFile(i)
-                                count++
+                                uploadPostImageTask.child("${i.path?.substring(i.path!!.length-4, i.path!!.length)}").putFile(i).addOnSuccessListener {
+                                    Log.d("TAG", "storageWrite: ${it.uploadSessionUri}")
+                                }
                             }
-                            count = 1
+                            storage.getReference("documentPost").child("document$documentPath").child("MapSnapShot.jpeg").putBytes(data)
                             conference.image?.clear()
                             for(i in uriList){
-                                conference.image?.add(Uri.parse("documentPost/document${conference.documentID}/$count Image.jpeg"))
-                                count++
+                                conference.image?.add(Uri.parse("documentPost/document$documentPath/${i.path?.substring(i.path!!.length-4, i.path!!.length)}"))
                             }
-                            storage.getReference("documentPost").child(conference.documentID as String).child("MapSnapShot.jpeg").putBytes(data)
-                            db.collection(collectionPath).document(conference.documentID).set(conference)
+                            conference.image?.sort()
+
+                            db.collection(collectionPath).document("document$docNumText").set(conference)
                                 .addOnSuccessListener {
                                     Log.d("TAG", "DocumentSnapshot successfully written! ")
                                 }
@@ -171,7 +172,7 @@ class FirebaseIO {
                 }
 
             }
-            if(db.collection(collectionPath).document(conference.documentID.toString()).path.isNotEmpty()){
+            if(db.collection(collectionPath).document("document$docNumText").path.isNotEmpty()){
                 success = true
             }
             return success

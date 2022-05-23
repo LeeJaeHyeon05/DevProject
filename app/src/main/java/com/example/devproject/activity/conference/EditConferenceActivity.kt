@@ -14,29 +14,47 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.ContactsContract
+import android.provider.MediaStore
 import android.text.Editable
+import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.others.DBType
+import com.example.devproject.others.ImageViewAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.FirebaseIO.Companion.cloudWrite
 import com.google.firebase.firestore.GeoPoint
+import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.math.log
 
 class EditConferenceActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddConferencesBinding
     private var pos = 0
+    private lateinit var imageAdapter: ImageViewAdapter
+    private var originalImageList: ArrayList<Uri> = ArrayList()
+    private var editImageList: ArrayList<Uri> = ArrayList()
+    private var deleteImageList = ArrayList<Uri>()
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +68,9 @@ class EditConferenceActivity() : AppCompatActivity() {
         var longitude: Double = 0.0
         val mGeocoder = Geocoder(this, Locale.getDefault())
         var list = mutableListOf<Address>()
-        val position = intent.getIntExtra("position", 0)
+        var position = intent.getIntExtra("position", 0)
         pos = position
+        val imageRecyclerView = binding.addConferenceImageRecyclerView
 
         binding.addConTitle.setText(DataHandler.conferDataSet[position][1] as String)
         binding.startDateTextView.text = DataHandler.conferDataSet[position][10] as String
@@ -60,9 +79,12 @@ class EditConferenceActivity() : AppCompatActivity() {
         binding.addConLink.setText(DataHandler.conferDataSet[position][5] as String)
         binding.addConDetail.setText(DataHandler.conferDataSet[position][6] as String)
         binding.addConButton.text = "컨퍼런스 편집하기"
-
+        val imagelist: ArrayList<Uri> = DataHandler.conferDataSet[position][9] as ArrayList<Uri>
+        var snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
+        
         getDate()
         getPrice()
+        showImage(position, this)
 
         var startMapActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result -> //지도 액티비티 결과값 받아오기
             if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
@@ -94,6 +116,41 @@ class EditConferenceActivity() : AppCompatActivity() {
             startMapActivityResult.launch(intent)
         }
 
+        val startGetImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result-> //사진 불러오기
+            if(result.data != null){
+                val imageData = result.data
+                var size: Int = imageData?.clipData?.itemCount!!
+                val imageUri = imageData?.clipData
+                if (imageUri != null) {
+                    for(i in 0 until size){
+                        editImageList.add(result.data!!.clipData!!.getItemAt(i).uri)
+                    }
+                    if(originalImageList.isNotEmpty()){
+                        for(i in originalImageList){
+                            if(editImageList.contains(i)){
+                                continue
+                            }
+                            else{
+                                editImageList.add(i)
+                            }
+                        }
+                    }
+                    editImageList.sortDescending()
+                    imageAdapter = ImageViewAdapter(imageList = editImageList, this, deleteImageList = imagelist)
+                    imageRecyclerView.adapter = imageAdapter
+                    imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+                }
+
+            }
+        }
+
+        binding.addConImageBtn.setOnClickListener { //사진 불러오기
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            intent.type = MediaStore.Images.Media.CONTENT_TYPE
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            startGetImageResult.launch(intent)
+        }
+
         binding.addConButton.setOnClickListener {
             //editText 불러오기
             val conTitle = binding.addConTitle.text.toString()
@@ -106,64 +163,103 @@ class EditConferenceActivity() : AppCompatActivity() {
                 0
             } else Integer.parseInt(exceptWon[0]).toLong()
 
-            val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
+            this.deleteImageList = imageAdapter.getDeleteImage()
 
             val conference = ConferenceInfo(
                 conferenceURL = link,
                 content = conContent,
                 date = "",
-                offline = !binding.conferOnlineCheckBox.isChecked,
+                offline = checkOffline(snapshotImage),
                 place = GeoPoint(latitude, longitude),
                 price = price,
                 title = conTitle,
                 documentID = DataHandler.conferDataSet[position][8] as String,
                 uploader = DataHandler.conferDataSet[position][0] as String,
-                image = ArrayList<Uri>(),
+                image = DataHandler.conferDataSet[position][9] as ArrayList<Uri>,
                 uid = DataHandler.conferDataSet[position][7] as String,
                 startDate = binding.startDateTextView.text.toString().replace(",", "."),
                 finishDate = binding.finishDateTextView.text.toString().replace(",", ".")
+
             )
 
-            val bitmapDrawable: Drawable?
-            val bitmap: Bitmap?
-
             if(latitude != 0.0 && longitude != 0.0){
-                bitmapDrawable = snapshotImage.drawable
-                bitmap = (bitmapDrawable as BitmapDrawable).bitmap
-
                 if(checkInput(conference)){
-                    FirebaseIO.delete("conferenceDocument", DataHandler.conferDataSet[position][8] as String)
-                    if(cloudWrite(conference.documentID as String, bitmap, conference) && FirebaseIO.write("conferenceDocument", conference.documentID, conference)){
-                        Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
-
-                        DataHandler.reload(DBType.CONFERENCE)
-
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            val intent = Intent(this, ShowConferenceDetailActivity::class.java)
-                            intent.putExtra("position", pos)
-                            startActivity(intent)
-                            finish()
-                        }, 250)
-                    }
+                    editConference(conference, position, snapshotImage)
                 } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
             }
             else{
                 if(checkInput(conference)){
-                    FirebaseIO.delete("conferenceDocument", DataHandler.conferDataSet[position][8] as String)
-                    if(FirebaseIO.write("conferenceDocument", conference.documentID as String, conference)){
-                        Toast.makeText(this, "편집 완료!", Toast.LENGTH_SHORT).show()
-
-                        DataHandler.reload(DBType.CONFERENCE)
-
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            val intent = Intent(this, ShowConferenceDetailActivity::class.java)
-                            intent.putExtra("position", pos)
-                            startActivity(intent)
-                            finish()
-                        }, 300)
-
-                    }
+                    editConference(conference, position, snapshotImage)
                 } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun editConference(conference: ConferenceInfo, position: Int, snapshotImage: ImageView){
+        FirebaseIO.delete("conferenceDocument", "document${DataHandler.conferDataSet[position][8] as String}")
+        if(deleteImageList.isNotEmpty()){
+            for(i in deleteImageList.indices){
+                Log.d("TAG", "onCreate: ${deleteImageList[i]}")
+                val storageRef = FirebaseIO.storage.reference.child("${deleteImageList[i]}")
+                storageRef.delete().addOnCompleteListener {
+                    Log.d("TAG", "delete: ${it.isComplete}")
+                }
+            }
+        }
+        if(FirebaseIO.storageWrite(
+                DataHandler.conferDataSet[position][8] as String,
+                snapshotImage,
+                editImageList,
+                "conferenceDocument",
+                DataHandler.conferDataSet[position][8] as String,
+                conference
+            )
+        ) {
+            Toast.makeText(this, "수정하였습니다", Toast.LENGTH_SHORT).show()
+            CoroutineScope(Dispatchers.Main).launch {
+                DataHandler.reload(DBType.CONFERENCE)
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    val intent = Intent(
+                        applicationContext,
+                        ShowConferenceDetailActivity::class.java
+                    )
+                    intent.putExtra("position", pos)
+                    startActivity(intent)
+                    finish()
+                }, 300)
+
+            }
+            finish()
+        }
+    }
+
+    private fun showImage(position: Int, editConferenceActivity: EditConferenceActivity) {
+        val list: ArrayList<Uri> = DataHandler.conferDataSet[position][9] as ArrayList<Uri>
+        if(list.isEmpty()){
+            val imageUri = "android.resource://${packageName}/"+R.drawable.dev
+            originalImageList.add(imageUri.toUri())
+            imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, DataHandler.conferDataSet[position][9] as ArrayList<Uri>)
+            binding.addConferenceImageRecyclerView.adapter = imageAdapter
+            binding.addConferenceImageRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+            return
+        }
+        else{
+            for(i in list.indices){
+                val storageRef = FirebaseIO.storage.reference.child("${list[i]}")
+                storageRef.listAll().addOnSuccessListener {
+                    it.items.forEach { ref->
+                        Log.d("TAG", "showImage: ${ref.name}")
+                    }
+                }
+                storageRef.downloadUrl.addOnSuccessListener { image->
+                    originalImageList.add(image)
+                }.addOnSuccessListener {
+                    originalImageList.sort()
+                    imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, deleteImageList = DataHandler.conferDataSet[position][9] as ArrayList<Uri>)
+                    binding.addConferenceImageRecyclerView.adapter = imageAdapter
+                    binding.addConferenceImageRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+                }
             }
         }
     }
@@ -185,6 +281,8 @@ class EditConferenceActivity() : AppCompatActivity() {
                 validateString(conference.title) == true &&
                 validateString(conference.uploader) == true && validateLong(conference.price)
     }
+
+    private fun checkOffline(image: ImageView) = image.drawable == null
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item?.itemId){
