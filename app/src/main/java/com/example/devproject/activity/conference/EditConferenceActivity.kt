@@ -207,11 +207,10 @@ class EditConferenceActivity() : AppCompatActivity() {
             }
         }
         if(FirebaseIO.storageWrite(
+                "conferenceDocument",
                 DataHandler.conferDataSet[position][8] as String,
                 snapshotImage,
                 editImageList,
-                "conferenceDocument",
-                DataHandler.conferDataSet[position][8] as String,
                 conference
             )
         ) {
