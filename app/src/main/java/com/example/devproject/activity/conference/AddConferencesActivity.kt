@@ -239,6 +239,10 @@ class AddConferencesActivity() : AppCompatActivity() {
     }
 
     private fun checkInput(conference: ConferenceInfo): Boolean{
+        fun validateDateString(value : String?) : Boolean? {
+            return (value?.isNotEmpty() == true && value?.length!=6)
+        }
+
         fun validateString(value: String?): Boolean? {
             return value?.isNotEmpty()
         }
@@ -250,8 +254,8 @@ class AddConferencesActivity() : AppCompatActivity() {
         return validateString(conference.documentID) == true &&
                 validateString(conference.conferenceURL) == true &&
                 validateString(conference.content) == true &&
-                validateString(conference.startDate) == true &&
-                validateString(conference.finishDate) == true &&
+                validateDateString(conference.startDate) == true &&
+                validateDateString(conference.finishDate) == true &&
                 validateString(conference.title) == true &&
                 validateString(conference.uploader) == true && validateLong(conference.price) && validateString(conference.image.toString()) == true
     }
