@@ -216,7 +216,7 @@ class SignUpActivity : AppCompatActivity() {
     private fun storeUserId(){
         var userInfo = UserInfo()
         userInfo.uid = auth.uid
-        userInfo.Id = binding.TvFieldInputId.text.toString()
+        userInfo.id = binding.TvFieldInputId.text.toString()
         userInfo.Email = binding.TvFieldInputEmail.text.toString()
         userInfo.mainLanguage = languages[pos]
 

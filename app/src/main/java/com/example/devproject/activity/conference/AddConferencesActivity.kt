@@ -97,9 +97,6 @@ class AddConferencesActivity() : AppCompatActivity() {
         //칩
         tagClip()
 
-        //업로더 아이디 가져오기
-        findUploader()
-
         val startMapActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result -> //지도 액티비티 결과값 받아오기
             if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
                 latitude  = result?.data?.getDoubleExtra("latitude", 0.0)?: 0.0
@@ -156,7 +153,7 @@ class AddConferencesActivity() : AppCompatActivity() {
             var offline = !binding.conferOnlineCheckBox.isChecked
 
             //월 불러오기
-            val documentId = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
+            val documentId = "document" + ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS")).toString()
             val uid = FirebaseAuth.getInstance().uid
 
             val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
@@ -164,13 +161,13 @@ class AddConferencesActivity() : AppCompatActivity() {
             val conference = ConferenceInfo(
                 conferenceURL = link,
                 content = conContent,
-                date = "",
+                date = binding.startDateTextView.text.toString().replace(",", "."),
                 offline = offline,
                 place = GeoPoint(latitude, longitude),
                 price = price,
                 title = conTitle,
                 documentID = documentId,
-                uploader = uploader,
+                uploader = DataHandler.userInfo.id,
                 image = imageList,
                 uid = uid,
                 startDate =  binding.startDateTextView.text.toString().replace(",", "."),
@@ -178,7 +175,7 @@ class AddConferencesActivity() : AppCompatActivity() {
             )
 
             if(checkInput(conference)){
-                if(storageWrite(documentId, snapshotImage, imageList, "conferenceDocument", documentId, conference)){
+                if(storageWrite(snapshotImage, imageList, "conferenceDocument",conference)){
                     Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
                     CoroutineScope(Dispatchers.Main).launch {
                         DataHandler.reload(DBType.CONFERENCE)
@@ -267,26 +264,6 @@ class AddConferencesActivity() : AppCompatActivity() {
             }
             else ->
                 return super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun findUploader(){
-        val getEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
-        val mFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-
-        CoroutineScope(Dispatchers.Main).launch {
-            mFirestore.collection("UserInfo")
-                .whereEqualTo("email", getEmail)
-                .get()
-                .addOnSuccessListener {
-                    for(document in it){
-                        val string = document["id"] as String
-                        uploader = string
-                    }
-                }
-                .addOnFailureListener{
-                    Log.d("TAG", "findUploader: ${it.stackTrace}")
-                }
         }
     }
 

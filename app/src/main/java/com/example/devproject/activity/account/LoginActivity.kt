@@ -82,6 +82,7 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this){ task ->
                 if(task.isSuccessful){
                     Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_SHORT).show()
+                    DataHandler.updateUserInfo()
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }
