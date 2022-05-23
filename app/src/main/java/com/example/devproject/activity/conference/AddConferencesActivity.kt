@@ -175,7 +175,7 @@ class AddConferencesActivity() : AppCompatActivity() {
             )
 
             if(checkInput(conference)){
-                if(storageWrite(snapshotImage, imageList, "conferenceDocument",conference)){
+                if(storageWrite("conferenceDocument", documentId, snapshotImage, imageList, conference)){
                     Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
                     CoroutineScope(Dispatchers.Main).launch {
                         DataHandler.reload(DBType.CONFERENCE)
