@@ -30,17 +30,6 @@ class FirebaseIO {
         private val uriList: MutableList<Uri> = mutableListOf()
         var success = false
 
-        fun write(collectionPath : String, documentPath : String, information : UserInfo) {
-
-            db.collection(collectionPath).document(documentPath).set(information)
-                .addOnSuccessListener {
-                    Log.d("TAG", "DocumentSnapshot successfully written! ")
-                }
-                .addOnFailureListener {
-                    Log.d("TAG", "Error writing document, $it")
-                }
-        }
-
         fun write(collectionPath: String, documentPath: String, information: Any): Boolean{
             var success = false
             db.collection(collectionPath).document(documentPath).set(information)
