@@ -2,9 +2,11 @@ package com.example.devproject.activity.conference
 
 import android.content.Intent
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -12,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alespero.expandablecardview.ExpandableCardView
+import com.bumptech.glide.Glide
 import com.example.devproject.util.DataHandler
 import com.example.devproject.R
 import com.example.devproject.activity.ShowWebViewActivity
@@ -34,6 +38,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
     var conferOfflineTextView : TextView? = null
     var conferURLImageView : ImageView? = null
     var conferContentTextView : TextView? = null
+    var confershowNoImage: ImageView? = null
     private lateinit var imageAdapter: ImageViewAdapter
 
     var link : String? = null
@@ -88,6 +93,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         conferOfflineTextView = findViewById(R.id.conferOfflineTextView)
         conferURLImageView = findViewById(R.id.conferURLImageView)
         conferContentTextView = findViewById(R.id.conferConetentTextView)
+        confershowNoImage = findViewById(R.id.conferDetailImageView)
 
         conferUploaderIconImageView?.setImageResource(R.drawable.dev)
         conferUploaderTextView?.text = conferDataSet[position][0].toString()
@@ -115,24 +121,65 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
     private fun showImage(position: Int, showConferenceDetailActivity: ShowConferenceDetailActivity) {
         val list: ArrayList<Uri> = conferDataSet[position][9] as ArrayList<Uri>
         val imageList: ArrayList<Uri> = ArrayList()
+        val confershowNoImage = findViewById<ImageView>(R.id.conferDetailImageView)
         if(list.isEmpty()){
-            val imageUri = "android.resource://${packageName}/"+R.drawable.dev
-            imageList.add(imageUri.toUri())
-            imageAdapter = ImageViewAdapter(imageList = imageList, showConferenceDetailActivity.applicationContext)
-            conferRecyclerView?.adapter = imageAdapter
-            conferRecyclerView?.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+            //val imageUri = "android.resource://${packageName}/"+R.drawable.dev
+            confershowNoImage.visibility = View.VISIBLE
+            //imageList.add(imageUri.toUri())
+            //imageAdapter = ImageViewAdapter(imageList = imageList, showConferenceDetailActivity.applicationContext)
+            //conferRecyclerView?.adapter = imageAdapter
+            //conferRecyclerView?.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
             return
         }
         else{
             for(i in list.indices){
-                val storageRef = FirebaseIO.storage.reference.child("${list[i]}")
-                storageRef.downloadUrl.addOnSuccessListener { image->
-                    imageList.add(image)
-                }.addOnSuccessListener {
-                    imageList.sort()
-                    imageAdapter = ImageViewAdapter(imageList = imageList, showConferenceDetailActivity.applicationContext)
-                    conferRecyclerView?.adapter = imageAdapter
-                    conferRecyclerView?.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+                if(list.size == 1 && conferDataSet[position][9].toString().contains("MapSnapShot.jpeg")){
+                    confershowNoImage.visibility = View.VISIBLE
+                    //imageList.add(imageUri.toUri())
+                    //imageAdapter = ImageViewAdapter(imageList = imageList, showConferenceDetailActivity.applicationContext)
+                    //conferRecyclerView?.adapter = imageAdapter
+                    //conferRecyclerView?.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+
+                    val storageRef = FirebaseIO.storage.reference.child("${list[0]}")
+                    storageRef.downloadUrl.addOnSuccessListener { image ->
+                        var mapLayout = findViewById<ExpandableCardView>(R.id.detailPageMapSnapShot)
+                        mapLayout.setTitle(conferDataSet[position][12].toString())
+                        mapLayout.setOnExpandedListener { view, isExpanded ->
+                            Glide.with(view)
+                                .load(image)
+                                .fitCenter()
+                                .into(view.findViewById(R.id.IvMapSnapshot))
+                        }
+                        mapLayout.visibility = View.VISIBLE
+                        mapLayout.expand()
+                    }
+                }
+                else {
+                    conferRecyclerView?.visibility = View.VISIBLE
+                    confershowNoImage.visibility = View.INVISIBLE
+                    val storageRef = FirebaseIO.storage.reference.child("${list[i]}")
+                    storageRef.downloadUrl.addOnSuccessListener { image->
+                        if(image.path!!.contains("MapSnapShot.jpeg")){
+                            var mapLayout = findViewById<ExpandableCardView>(R.id.detailPageMapSnapShot)
+                            mapLayout.setTitle(conferDataSet[position][12].toString())
+                            mapLayout.setOnExpandedListener { view, isExpanded ->
+                                Glide.with(view)
+                                    .load(image)
+                                    .fitCenter()
+                                    .into(view.findViewById(R.id.IvMapSnapshot))
+                            }
+                            mapLayout.visibility = View.VISIBLE
+                            mapLayout.expand()
+                        }
+                        else{
+                            imageList.add(image)
+                        }
+                    }.addOnSuccessListener {
+                        imageList.sort()
+                        imageAdapter = ImageViewAdapter(imageList = imageList, showConferenceDetailActivity.applicationContext)
+                        conferRecyclerView?.adapter = imageAdapter
+                        conferRecyclerView?.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+                    }
                 }
             }
         }

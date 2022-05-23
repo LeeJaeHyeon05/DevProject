@@ -19,6 +19,7 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,6 +28,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alespero.expandablecardview.ExpandableCardView
+import com.bumptech.glide.Glide
 import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
@@ -170,7 +173,13 @@ class EditConferenceActivity() : AppCompatActivity() {
                 content = conContent,
                 date = "",
                 offline = checkOffline(snapshotImage),
-                place = GeoPoint(latitude, longitude),
+                place =
+                if(DataHandler.conferDataSet[position][12] == ""){
+                    binding.ETConferenceGeo.text.toString()
+                }
+                else{
+                    DataHandler.conferDataSet[position][12] as String
+                },
                 price = price,
                 title = conTitle,
                 documentID = DataHandler.conferDataSet[position][8] as String,
@@ -182,20 +191,18 @@ class EditConferenceActivity() : AppCompatActivity() {
 
             )
 
-            if(latitude != 0.0 && longitude != 0.0){
-                if(checkInput(conference)){
-                    editConference(conference, position, snapshotImage)
-                } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
-            }
-            else{
-                if(checkInput(conference)){
-                    editConference(conference, position, snapshotImage)
-                } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
-            }
+            if(checkInput(conference)){
+                editConference(conference, position, snapshotImage)
+            } else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun editConference(conference: ConferenceInfo, position: Int, snapshotImage: ImageView){
+        if(editImageList.isEmpty()){
+            editImageList = DataHandler.conferDataSet[position][9] as ArrayList<Uri>
+        }
+
+
         FirebaseIO.delete("conferenceDocument", "document${DataHandler.conferDataSet[position][8] as String}")
         if(deleteImageList.isNotEmpty()){
             for(i in deleteImageList.indices){
@@ -236,24 +243,30 @@ class EditConferenceActivity() : AppCompatActivity() {
 
     private fun showImage(position: Int, editConferenceActivity: EditConferenceActivity) {
         val list: ArrayList<Uri> = DataHandler.conferDataSet[position][9] as ArrayList<Uri>
+        val confershowNoImage = findViewById<ImageView>(R.id.conferDetailImageView)
         if(list.isEmpty()){
-            val imageUri = "android.resource://${packageName}/"+R.drawable.dev
-            originalImageList.add(imageUri.toUri())
-            imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, DataHandler.conferDataSet[position][9] as ArrayList<Uri>)
-            binding.addConferenceImageRecyclerView.adapter = imageAdapter
-            binding.addConferenceImageRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+
             return
         }
         else{
             for(i in list.indices){
                 val storageRef = FirebaseIO.storage.reference.child("${list[i]}")
-                storageRef.listAll().addOnSuccessListener {
-                    it.items.forEach { ref->
-                        Log.d("TAG", "showImage: ${ref.name}")
-                    }
-                }
                 storageRef.downloadUrl.addOnSuccessListener { image->
-                    originalImageList.add(image)
+                    if(image.path!!.contains("MapSnapShot.jpeg")){
+                        var mapLayout = findViewById<ExpandableCardView>(R.id.showMapSnapShotLayout)
+                        mapLayout.setTitle(DataHandler.conferDataSet[position][12].toString())
+                        mapLayout.setOnExpandedListener { view, isExpanded ->
+                            Glide.with(view)
+                                .load(image)
+                                .fitCenter()
+                                .into(view.findViewById(R.id.IvMapSnapshot))
+                        }
+                        mapLayout.visibility = View.VISIBLE
+                        mapLayout.expand()
+                    }
+                    else{
+                        originalImageList.add(image)
+                    }
                 }.addOnSuccessListener {
                     originalImageList.sort()
                     imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, deleteImageList = DataHandler.conferDataSet[position][9] as ArrayList<Uri>)

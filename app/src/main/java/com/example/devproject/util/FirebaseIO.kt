@@ -27,7 +27,7 @@ class FirebaseIO {
         @SuppressLint("StaticFieldLeak")
         var db = FirebaseFirestore.getInstance()
         var storage = FirebaseStorage.getInstance()
-        private val uriList: MutableList<Uri> = mutableListOf()
+        private var uriList: MutableList<Uri> = mutableListOf()
         var success = false
 
         fun write(collectionPath : String, documentPath : String, information : UserInfo) {
@@ -41,7 +41,7 @@ class FirebaseIO {
                 }
         }
 
-        fun write(collectionPath: String, documentPath: String, information: ConferenceInfo): Boolean{
+        fun write(collectionPath: String, documentPath: String, information: Any): Boolean{
             var success = false
             db.collection(collectionPath).document("document$documentPath").set(information)
                 .addOnSuccessListener {
@@ -132,7 +132,9 @@ class FirebaseIO {
 
                     when(imageList.isEmpty()){
                         true -> { //지도 o, 이미지 x
-                            storage.getReference("documentPost").child("document$documentPath").child("MapSnapShot.jpeg").putBytes(data)
+                            storage.getReference("documentPost").child("document$documentPath/Map").child("MapSnapShot.jpeg").putBytes(data)
+                            conference.image?.clear()
+                            conference.image?.add(Uri.parse("documentPost/document$documentPath/Map/MapSnapShot.jpeg"))
                             db.collection(collectionPath).document("document$docNumText").set(conference)
                                 .addOnSuccessListener {
                                     Log.d("TAG", "DocumentSnapshot successfully written! ")
@@ -142,19 +144,19 @@ class FirebaseIO {
                                 }
                         }
                         false -> { //지도 o, 이미지 o
-                            for(i in imageList){
-                                uriList.add(i)
-                            }
+                            uriList = imageList
+
                             val uploadPostImageTask = storage.getReference("documentPost").child("document$documentPath")
-                            for(i in uriList){ //이미지 올리기
-                                uploadPostImageTask.child("${i.path?.substring(i.path!!.length-4, i.path!!.length)}").putFile(i).addOnSuccessListener {
+                            for(i in uriList.indices){ //이미지 올리기
+                                uploadPostImageTask.child("${uriList[i].toString().substring(uriList[i].toString().length-4, uriList[i].toString().length)}").putFile(uriList[i]).addOnSuccessListener {
                                     Log.d("TAG", "storageWrite: ${it.uploadSessionUri}")
                                 }
                             }
-                            storage.getReference("documentPost").child("document$documentPath").child("MapSnapShot.jpeg").putBytes(data)
+                            storage.getReference("documentPost").child("document$documentPath/Map").child("MapSnapShot.jpeg").putBytes(data)
                             conference.image?.clear()
-                            for(i in uriList){
-                                conference.image?.add(Uri.parse("documentPost/document$documentPath/${i.path?.substring(i.path!!.length-4, i.path!!.length)}"))
+                            conference.image?.add(Uri.parse("documentPost/document$documentPath/Map/MapSnapShot.jpeg"))
+                            for(i in uriList.indices){
+                                conference.image?.add(Uri.parse("documentPost/document$documentPath/${uriList[i].toString().substring(uriList[i].toString().length-4, uriList[i].toString().length)}"))
                             }
                             conference.image?.sort()
 

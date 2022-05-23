@@ -83,13 +83,15 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
             val list: MutableList<*> = DataHandler.conferDataSet[position][9] as MutableList<*>
             if(list.isNotEmpty()){
                 val path = list[0].toString()
-                val storageRef = storage.reference.child(path)
+                if(!path.contains("MapSnapShot.jpeg")){
+                    val storageRef = storage.reference.child(path)
 
-                storageRef.downloadUrl.addOnSuccessListener {
-                    Glide.with(viewHolder.itemView.context)
-                        .load(it)
-                        .fitCenter()
-                        .into(viewHolder.conferPreImageView)
+                    storageRef.downloadUrl.addOnSuccessListener {
+                        Glide.with(viewHolder.itemView.context)
+                            .load(it)
+                            .fitCenter()
+                            .into(viewHolder.conferPreImageView)
+                    }
                 }
             }
         }
