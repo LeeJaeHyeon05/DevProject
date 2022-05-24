@@ -33,6 +33,7 @@ class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<Lang
     private var context : Context? = null
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var languageImageView : ImageView = view.findViewById(R.id.languageImageView)
+        var languageNumberTextView : TextView = view.findViewById(R.id.languageNumberTextView)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -55,10 +56,17 @@ class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<Lang
                 arr[position] = false
             }
 
+            viewHolder.languageNumberTextView.text = updateLanguageSelectedNumber().toString()
 
         }
     }
 
 
     override fun getItemCount() = languageArray.length()
+
+    fun updateLanguageSelectedNumber() : Int {
+        var count : Int = 0
+        arr.forEach { if(it) count++ }
+        return count
+    }
 }
