@@ -50,7 +50,8 @@ class DataHandler {
                                     document.data["documentID"] as String,
                                     document.data["image"] as MutableList<*>,
                                     document.data["startDate"] as String,   //10
-                                    document.data["finishDate"] as String   //11
+                                    document.data["finishDate"] as String,   //11
+                                    document.data["place"] as String //12
                                 )
                                 )
                             }
@@ -100,7 +101,8 @@ class DataHandler {
                                     document.data["documentID"] as String,
                                     document.data["image"] as MutableList<*>,
                                     document.data["startDate"] as String,   //10
-                                    document.data["finishDate"] as String   //11
+                                    document.data["finishDate"] as String,   //11
+                                    document.data["place"] as String //12
                                 )
                                 )
                             }

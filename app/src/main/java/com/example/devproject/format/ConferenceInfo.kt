@@ -9,7 +9,7 @@ data class ConferenceInfo(
     var content: String? = null,
     var date: String? = "",
     var offline: Boolean? = null,
-    var place: GeoPoint? = null,
+    var place: String? = "",
     var price: Long? = null,
     var title: String? = null,
     var uploader : String? = null,
