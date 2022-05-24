@@ -25,10 +25,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:backgroundTint="@color/yellow_500"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/yellow_500"
         android:clickable="true"
+        android:tint="@color/yellow_500"
         app:srcCompat="@drawable/ic_baseline_add_24" />
 
 </FrameLayout>

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.databinding.ActivityAddStudyBinding
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.format.StudyInfo
+import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.google.firebase.auth.FirebaseAuth
@@ -67,6 +68,7 @@ class AddStudyActivity : AppCompatActivity() {
             )
 
             if(FirebaseIO.write("groupstudyDocument", documentID, studyInfo)){
+                DataHandler.reload(DBType.STUDY)
                 Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
             }
             finish()

@@ -28,28 +28,27 @@ class StudyFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        DataHandler.load(DBType.STUDY)
-
         val binding = FragmentStudyBinding.inflate(inflater, container, false)
         mBinding = binding
 
-        val swipeRefreshLayout= mBinding?.swiperStudyRefreshLayout
+        val swipeRefreshLayout = mBinding?.swiperStudyRefreshLayout
         swipeRefreshLayout?.setOnRefreshListener {
             DataHandler.reload(DBType.STUDY)
             swipeRefreshLayout.isRefreshing = false
         }
 
         var studyRecyclerView = mBinding?.studyRecyclerView
-        studyRecyclerView?.layoutManager = GridLayoutManager(this.context, 2, RecyclerView.VERTICAL, false)
+        studyRecyclerView?.layoutManager =
+            GridLayoutManager(this.context, 2, RecyclerView.VERTICAL, false)
         adapter = StudyListAdapter()
         studyRecyclerView?.adapter = adapter
 
         val addStudyButton = mBinding?.floatingActionButton
         addStudyButton?.setOnClickListener {
-            if(FirebaseIO.isValidAccount()){
+            if (FirebaseIO.isValidAccount()) {
                 val intent = Intent(activity, AddStudyActivity::class.java)
                 startActivity(intent)
-            }else {
+            } else {
                 Toast.makeText(this.context, "로그인이 필요합니다", Toast.LENGTH_SHORT).show()
             }
         }
