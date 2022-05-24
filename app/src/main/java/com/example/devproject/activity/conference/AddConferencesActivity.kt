@@ -47,6 +47,8 @@ class AddConferencesActivity() : AppCompatActivity() {
     private lateinit var binding: ActivityAddConferencesBinding
     private lateinit var uploader: String
     private lateinit var imageAdapter: ImageViewAdapter
+    private var checkOffline = false
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -131,9 +133,11 @@ class AddConferencesActivity() : AppCompatActivity() {
             if(isChecked){
                 binding.TextLayoutConferenceGeo.visibility = View.GONE
                 binding.showMapSnapShotLayout.visibility = View.GONE
+                checkOffline = true
             }else{
                 binding.TextLayoutConferenceGeo.visibility = View.VISIBLE
                 binding.showMapSnapShotLayout.visibility = View.VISIBLE
+                checkOffline = false
             }
         }
 
@@ -163,7 +167,7 @@ class AddConferencesActivity() : AppCompatActivity() {
                 content = conContent,
                 date = binding.startDateTextView.text.toString().replace(",", "."),
                 offline = offline,
-                place = GeoPoint(latitude, longitude),
+                place = binding.ETConferenceGeo.text.toString(),
                 price = price,
                 title = conTitle,
                 documentID = documentId,

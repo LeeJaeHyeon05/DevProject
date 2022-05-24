@@ -27,7 +27,7 @@ class FirebaseIO {
         @SuppressLint("StaticFieldLeak")
         var db = FirebaseFirestore.getInstance()
         var storage = FirebaseStorage.getInstance()
-        private val uriList: MutableList<Uri> = mutableListOf()
+        private var uriList: MutableList<Uri> = mutableListOf()
         var success = false
 
         fun write(collectionPath: String, documentPath: String, information: Any): Boolean{
@@ -90,25 +90,21 @@ class FirebaseIO {
                             for(i in imageList){
                                 uriList.add(i)
                             }
-                            CoroutineScope(Dispatchers.Main).launch {
-                                val uploadPostImageTask = storage.getReference("documentPost").child(documentPath)
-                                for(i in uriList){ //이미지 올리기
-                                    uploadPostImageTask.child("${i.path?.substring(i.path!!.length-4, i.path!!.length)}").putFile(i)
-                                }
-                                conference.image?.clear()
-                                for(i in uriList){
-                                    conference.image?.add(Uri.parse("documentPost/$documentPath/${i.path?.substring(i.path!!.length-4, i.path!!.length)}"))
-                                }
-                                conference.image?.sort()
-                                db.collection(collectionPath).document(documentPath).set(conference)
-                                    .addOnSuccessListener {
-                                        Log.d("TAG", "DocumentSnapshot successfully written! ")
-                                    }
-                                    .addOnFailureListener {
-                                        Log.d("TAG", "Error writing document, $it")
-                                    }
-                                uriList.clear()
+                            val uploadPostImageTask = storage.getReference("documentPost").child(documentPath)
+                            conference.image?.clear()
+                            for(i in uriList){ //이미지 올리기
+                                uploadPostImageTask.child("${i.toString().substring(i.toString().length-4, i.toString().length)}").putFile(i)
+                                conference.image?.add(Uri.parse("documentPost/$documentPath/${i.toString().substring(i.toString().length-4, i.toString().length)}"))
                             }
+                            conference.image?.sort()
+                            db.collection(collectionPath).document(documentPath).set(conference)
+                                .addOnSuccessListener {
+                                    Log.d("TAG", "DocumentSnapshot successfully written! ")
+                                }
+                                .addOnFailureListener {
+                                    Log.d("TAG", "Error writing document, $it")
+                                }
+                            uriList.clear()
                         }
                     }
                 }
@@ -120,30 +116,65 @@ class FirebaseIO {
 
                     when(imageList.isEmpty()){
                         true -> { //지도 o, 이미지 x
-                            storage.getReference("documentPost").child(documentPath).child("MapSnapShot.jpeg").putBytes(data)
-                            db.collection(collectionPath).document(documentPath).set(conference)
-                                .addOnSuccessListener {
-                                    Log.d("TAG", "DocumentSnapshot successfully written! ")
-                                }
-                                .addOnFailureListener {
-                                    Log.d("TAG", "Error writing document, $it")
-                                }
+                            if(conference.offline == false){
+                                storage.getReference("documentPost").child("$documentPath/Map").child("MapSnapShot.jpeg").delete()
+                                conference.image?.clear()
+
+                                db.collection(collectionPath).document(documentPath).set(conference)
+                                    .addOnSuccessListener {
+                                        Log.d("TAG", "DocumentSnapshot successfully written! ")
+                                    }
+                                    .addOnFailureListener {
+                                        Log.d("TAG", "Error writing document, $it")
+                                    }
+                            }
+                            else{
+                                storage.getReference("documentPost").child("$documentPath/Map").child("MapSnapShot.jpeg").putBytes(data)
+                                conference.image?.clear()
+                                conference.image?.add(Uri.parse("documentPost/$documentPath/Map/MapSnapShot.jpeg"))
+                                db.collection(collectionPath).document(documentPath).set(conference)
+                                    .addOnSuccessListener {
+                                        Log.d("TAG", "DocumentSnapshot successfully written! ")
+                                    }
+                                    .addOnFailureListener {
+                                        Log.d("TAG", "Error writing document, $it")
+                                    }
+                            }
                         }
                         false -> { //지도 o, 이미지 o
+
                             for(i in imageList){
                                 uriList.add(i)
                             }
-                            val uploadPostImageTask = storage.getReference("documentPost").child("document$documentPath")
+
+                            conference.image?.clear()
+                            val uploadPostImageTask = storage.getReference("documentPost").child("$documentPath")
+
                             for(i in uriList){ //이미지 올리기
-                                uploadPostImageTask.child("${i.path?.substring(i.path!!.length-4, i.path!!.length)}").putFile(i).addOnSuccessListener {
-                                    Log.d("TAG", "storageWrite: ${it.uploadSessionUri}")
+                                if(i.toString().startsWith("h")){
+                                    conference.image?.add(Uri.parse("documentPost/$documentPath/${i.path.toString().substring(i.path.toString().length-4, i.path.toString().length)}"))
+                                    uploadPostImageTask.child("${i.path.toString().substring(i.path.toString().length-4, i.path.toString().length)}").putFile(i).addOnSuccessListener {
+                                        Log.d("TAG", "storageWrite: ${it.uploadSessionUri}")
+                                    }
+                                }
+                                else{
+                                    conference.image?.add(Uri.parse("documentPost/$documentPath/${i.toString().substring(i.toString().length-4, i.toString().length)}"))
+                                    uploadPostImageTask.child("${i.toString().substring(i.toString().length-4, i.toString().length)}").putFile(i).addOnSuccessListener {
+                                        Log.d("TAG", "storageWrite: ${it.uploadSessionUri}")
+                                    }
                                 }
                             }
-                            storage.getReference("documentPost").child("document$documentPath").child("MapSnapShot.jpeg").putBytes(data)
-                            conference.image?.clear()
-                            for(i in uriList){
-                                conference.image?.add(Uri.parse("documentPost/document$documentPath/${i.path?.substring(i.path!!.length-4, i.path!!.length)}"))
+
+                            if(conference.offline == false){
+                                storage.getReference("documentPost").child("$documentPath/Map").child("MapSnapShot.jpeg").delete()
                             }
+                            else{
+                                storage.getReference("documentPost").child("$documentPath/Map").child("MapSnapShot.jpeg").putBytes(data)
+                                conference.image?.add(Uri.parse("documentPost/$documentPath/Map/MapSnapShot.jpeg"))
+                            }
+
+                            db.collection(collectionPath).document(documentPath).set(conference)
+
                             conference.image?.sort()
 
                             db.collection(collectionPath).document(documentPath).set(conference)
