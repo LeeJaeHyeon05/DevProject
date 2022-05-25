@@ -30,8 +30,8 @@ class LanguageListAdapter2(languageArray: MutableList<String>) : RecyclerView.Ad
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.languageImageView.layoutParams.width = 120;
-        viewHolder.languageImageView.layoutParams.height = 120;
+        viewHolder.languageImageView.layoutParams.width = 100;
+        viewHolder.languageImageView.layoutParams.height = 100;
         viewHolder.languageImageView.requestLayout()
 
         when(languageArray[position]){
