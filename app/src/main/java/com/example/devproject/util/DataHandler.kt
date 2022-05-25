@@ -71,6 +71,7 @@ class DataHandler {
                                 document.data["studyURL"] as String,
                                 document.data["totalMember"] as Long,
                                 document.data["remainingMemeber"] as Long,
+                                document.data["language"] as MutableList<String>,
                                 document.data["documentID"] as String,
                                 document.data["uid"] as String
                             )
@@ -126,6 +127,7 @@ class DataHandler {
                                         document.data["studyURL"] as String,
                                         document.data["totalMember"] as Long,
                                         document.data["remainingMemeber"] as Long,
+                                        document.data["language"] as MutableList<String>,
                                         document.data["documentID"] as String,
                                         document.data["uid"] as String
                                     )

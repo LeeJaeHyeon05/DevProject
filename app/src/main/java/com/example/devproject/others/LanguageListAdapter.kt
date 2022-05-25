@@ -1,8 +1,6 @@
 package com.example.devproject.others
 
 import android.content.Context
-import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -11,20 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.devproject.R
-import com.example.devproject.activity.conference.ShowConferenceDetailActivity
-import com.example.devproject.activity.ShowWebViewActivity
-import com.example.devproject.util.DataHandler
 import com.example.devproject.util.UIHandler
-import com.google.firebase.storage.FirebaseStorage
-import kotlinx.android.synthetic.main.language_list_item.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<LanguageListAdapter.ViewHolder>() {
 
@@ -34,7 +21,7 @@ class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<Lang
 
     companion object{
         var languageMap = HashMap<String, Boolean>()
-        var arr : MutableList<Boolean> = listOf(false, false, false, false).toMutableList()
+        var arr : MutableList<Boolean> = listOf(false, false, false, false, false).toMutableList()
         fun getLanguageMaps() : HashMap<String, Boolean> {
             arr.forEachIndexed { index, b ->
                 if(b){
@@ -43,6 +30,7 @@ class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<Lang
                         1 -> languageMap["cpp"] = true
                         2 -> languageMap["kotlin"] = true
                         3 -> languageMap["javascript"] = true
+                        4 -> languageMap["swift"] = true
                     }
                 }
             }
@@ -52,10 +40,7 @@ class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<Lang
     }
 
     init{
-        languageMap["csharp"] = false
-        languageMap["cpp"] = false
-        languageMap["kotlin"] = false
-        languageMap["javascript"] = false
+        languageMap.forEach { (t, u) -> languageMap[t] = false  }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

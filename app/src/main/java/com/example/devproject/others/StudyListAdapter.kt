@@ -2,14 +2,18 @@ package com.example.devproject.others
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.TypedArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.R
 import com.example.devproject.activity.ShowWebViewActivity
+import com.example.devproject.fragment.StudyFragment
 import com.example.devproject.util.DataHandler.Companion.studyDataSet
 import com.example.devproject.util.UIHandler
 
@@ -24,6 +28,7 @@ class StudyListAdapter() : RecyclerView.Adapter<StudyListAdapter.ViewHolder>() {
         val studyOfflineTextView : TextView= view.findViewById(R.id.studyOfflineTextView)
         val studyLinkImageView : ImageView= view.findViewById(R.id.studyLinkImageView)
         val remainingMemeberTextView :TextView = view.findViewById(R.id.remainingMemberTextView)
+        val languageRecyclerView2 : RecyclerView = view.findViewById(R.id.languageRecyclerView2)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -48,6 +53,10 @@ class StudyListAdapter() : RecyclerView.Adapter<StudyListAdapter.ViewHolder>() {
             UIHandler.rootView?.context?.startActivity(intent)
         }
         viewHolder.remainingMemeberTextView.text = studyDataSet[position][7].toString() +"명 남음!"
+        var typedArray : TypedArray = UIHandler.rootView?.resources!!.obtainTypedArray(R.array.language_array)
+        viewHolder.languageRecyclerView2?.layoutManager =
+          LinearLayoutManager(this.context,  RecyclerView.HORIZONTAL, false )
+        viewHolder.languageRecyclerView2?.adapter = LanguageListAdapter2(studyDataSet[position][8] as MutableList<String>)
     }
 
     override fun getItemCount() = studyDataSet.size
