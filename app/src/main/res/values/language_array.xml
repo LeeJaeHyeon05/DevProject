@@ -5,5 +5,6 @@
         <item>@drawable/logo_cplusplus</item>
         <item>@drawable/logo_kotlin</item>
         <item>@drawable/logo_javascript</item>
+        <item>@drawable/logo_swift</item>
     </array>
 </resources>

@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
@@ -24,6 +25,7 @@ import com.example.devproject.others.LanguageListAdapter
 import com.example.devproject.others.StudyListAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
+import com.example.devproject.util.UIHandler
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
@@ -58,6 +60,8 @@ class AddStudyActivity : AppCompatActivity() {
 
         var totalMember : Long? = 0
 
+        UIHandler.languageNumberTextView = binding.languageNumberTextView;
+
         memberNumberPicker.minValue = 1
         memberNumberPicker.maxValue = data.size-1
         memberNumberPicker.wrapSelectorWheel = false
@@ -72,6 +76,15 @@ class AddStudyActivity : AppCompatActivity() {
         val documentID = "study${ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))}"
 
         addStudyButton.setOnClickListener {
+
+            val languageMap = LanguageListAdapter.getLanguageMaps()
+            var languageArray : MutableList<String> = emptyList<String>().toMutableList()
+            languageMap.forEach { if(it.value){
+                    languageArray.add(it.key)
+                }
+            }
+
+
             val studyInfo = StudyInfo(
                 documentID = documentID,
                 ongoing = true,
@@ -81,6 +94,7 @@ class AddStudyActivity : AppCompatActivity() {
                 studyURL = binding.addStudyLink.text.toString(),
                 totalMember = totalMember,
                 remainingMemeber = totalMember,
+                language = languageArray,
                 uid = FirebaseAuth.getInstance().uid,
                 uploader= DataHandler.userInfo.id
             )

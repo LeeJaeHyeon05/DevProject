@@ -30,7 +30,7 @@ class ProfileActivity : AppCompatActivity() {
         profileIDTextView.text = DataHandler.userInfo.id
 
         val profileImageView : ImageView = findViewById(R.id.profileImageView)
-        profileImageView.setImageResource(R.drawable.ic_main)
+        profileImageView.setImageResource(R.drawable.logo512)
     }
 
     override fun onBackPressed() {
