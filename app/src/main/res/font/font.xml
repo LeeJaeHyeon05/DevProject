@@ -4,4 +4,10 @@
         android:font="@font/jua_regular"
         android:fontWeight="200"
         android:fontStyle="normal"/>
+
+    <font
+        android:font="@font/pretendard_medium"
+        android:fontWeight="600"
+        android:fontStyle="normal"/>
+
 </font-family>

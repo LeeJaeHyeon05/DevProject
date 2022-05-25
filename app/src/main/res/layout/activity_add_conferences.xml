@@ -274,7 +274,7 @@
                     <TextView
                         android:id="@+id/priceTextView"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="5dp"
                         android:text=""
@@ -285,7 +285,7 @@
                     <Button
                         android:id="@+id/priceButton"
                         android:layout_width="120dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:background="@drawable/con_round"
                         android:fontFamily="@font/jua_regular"
                         android:letterSpacing="-0.001"
