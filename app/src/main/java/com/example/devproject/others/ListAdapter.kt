@@ -31,7 +31,8 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
         val conferPreImageView : ImageView = view.findViewById(R.id.conferPreImageView)
         val conferPreImageView2 : ImageView = view.findViewById(R.id.imageView2)
         val conferPreTitleTextVIew : TextView = view.findViewById(R.id.conferPreTitleTextView)
-        val conferPreDateTextView : TextView = view.findViewById(R.id.conferPreDateTextView)
+        val conferPreStartDateTextView : TextView = view.findViewById(R.id.conferPreStartDateTextView)
+        val conferPreFinishDateTextView : TextView = view.findViewById(R.id.conferPreFinishDateTextView)
         val conferPreContentTextView : TextView = view.findViewById(R.id.conferPreContentTextView)
         val conferPreCardView: CardView = view.findViewById(R.id.conferPreCardView)
     }
@@ -49,9 +50,9 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
         //Binding Image & Text data Set trough firebase
         //이미지가 들어가야함
         getImage(viewHolder, position)
-        viewHolder.conferPreImageView.setImageResource(R.drawable.default_image)
+        viewHolder.conferPreImageView.setImageResource(R.drawable.logo512)
         viewHolder.conferPreImageView2.visibility = View.GONE
-        if(todayDate > DataHandler.conferDataSet[position][2].toString().replace(". ", "").toInt()){
+        if(todayDate > DataHandler.conferDataSet[position][11].toString().replace(". ", "").toInt()){
             viewHolder.conferPreImageView2.visibility = View.VISIBLE
         }
 
@@ -61,7 +62,8 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
             context?.startActivity(intent)
         }
         viewHolder.conferPreTitleTextVIew.text = DataHandler.conferDataSet[position][1].toString()
-        viewHolder.conferPreDateTextView.text = DataHandler.conferDataSet[position][2].toString()// date
+        viewHolder.conferPreStartDateTextView.text = DataHandler.conferDataSet[position][10].toString()
+        viewHolder.conferPreFinishDateTextView.text = DataHandler.conferDataSet[position][11].toString()
         viewHolder.conferPreContentTextView.text = DataHandler.conferDataSet[position][6].toString()
         viewHolder.conferPreCardView.setOnClickListener {
             val intent = Intent(UIHandler.rootView?.context, ShowConferenceDetailActivity::class.java)
@@ -81,13 +83,15 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
             val list: MutableList<*> = DataHandler.conferDataSet[position][9] as MutableList<*>
             if(list.isNotEmpty()){
                 val path = list[0].toString()
-                val storageRef = storage.reference.child(path)
+                if(!path.contains("MapSnapShot.jpeg")){
+                    val storageRef = storage.reference.child(path)
 
-                storageRef.downloadUrl.addOnSuccessListener {
-                    Glide.with(viewHolder.itemView.context)
-                        .load(it)
-                        .fitCenter()
-                        .into(viewHolder.conferPreImageView)
+                    storageRef.downloadUrl.addOnSuccessListener {
+                        Glide.with(viewHolder.itemView.context)
+                            .load(it)
+                            .fitCenter()
+                            .into(viewHolder.conferPreImageView)
+                    }
                 }
             }
         }

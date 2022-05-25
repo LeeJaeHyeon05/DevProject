@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
+import androidx.core.net.toUri
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.format.UserInfo
 import com.google.android.gms.tasks.Task
@@ -26,23 +27,12 @@ class FirebaseIO {
         @SuppressLint("StaticFieldLeak")
         var db = FirebaseFirestore.getInstance()
         var storage = FirebaseStorage.getInstance()
-        private val uriList: MutableList<Uri> = mutableListOf()
+        private var uriList: MutableList<Uri> = mutableListOf()
         var success = false
 
-        fun write(collectionPath : String, documentPath : String, information : UserInfo) {
-
-            db.collection(collectionPath).document(documentPath).set(information)
-                .addOnSuccessListener {
-                    Log.d("TAG", "DocumentSnapshot successfully written! ")
-                }
-                .addOnFailureListener {
-                    Log.d("TAG", "Error writing document, $it")
-                }
-        }
-
-        fun write(collectionPath: String, documentPath: String, information: ConferenceInfo): Boolean{
+        fun write(collectionPath: String, documentPath: String, information: Any): Boolean{
             var success = false
-            db.collection(collectionPath).document("document$documentPath").set(information)
+            db.collection(collectionPath).document(documentPath).set(information)
                 .addOnSuccessListener {
                     Log.d("TAG", "DocumentSnapshot successfully written! ")
                 }
@@ -62,7 +52,7 @@ class FirebaseIO {
             val baos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
 
-            db.collection("conferenceDocument").document("document${documentPath}").set(conference)
+            db.collection("conferenceDocument").document(documentPath).set(conference)
                 .addOnSuccessListener {
                     Log.d("TAG", "DocumentSnapshot successfully written! ")
                 }
@@ -76,11 +66,10 @@ class FirebaseIO {
         }
 
         fun storageWrite(
+            collectionPath: String,
             documentPath: String,
             snapshotImage: ImageView,
             imageList: ArrayList<Uri>,
-            collectionPath: String,
-            docNumText: String,
             conference: ConferenceInfo,
         ): Boolean{
             val bitmapDrawable = snapshotImage.drawable
@@ -89,7 +78,7 @@ class FirebaseIO {
                 true -> {
                     when(imageList.isEmpty()){
                         true -> { //지도사진 x, 이미지 x
-                            db.collection(collectionPath).document("document$docNumText").set(conference)
+                            db.collection(collectionPath).document(documentPath).set(conference)
                                 .addOnSuccessListener {
                                     Log.d("TAG", "DocumentSnapshot successfully written! ")
                                 }
@@ -98,31 +87,24 @@ class FirebaseIO {
                                 }
                         }
                         false -> { //지도사진 x, 이미지 o
-                            var count = 1
                             for(i in imageList){
                                 uriList.add(i)
                             }
-                            CoroutineScope(Dispatchers.Main).launch {
-                                val uploadPostImageTask = storage.getReference("documentPost").child("document$documentPath")
-                                for(i in uriList){ //이미지 올리기
-                                    uploadPostImageTask.child("$count Image.jpeg").putFile(i)
-                                    count++
-                                }
-                                count = 1
-                                conference.image?.clear()
-                                for(i in uriList){
-                                    conference.image?.add(Uri.parse("documentPost/document$documentPath/$count Image.jpeg"))
-                                    count++
-                                }
-                                db.collection(collectionPath).document("document$docNumText").set(conference)
-                                    .addOnSuccessListener {
-                                        Log.d("TAG", "DocumentSnapshot successfully written! ")
-                                    }
-                                    .addOnFailureListener {
-                                        Log.d("TAG", "Error writing document, $it")
-                                    }
-                                uriList.clear()
+                            val uploadPostImageTask = storage.getReference("documentPost").child(documentPath)
+                            conference.image?.clear()
+                            for(i in uriList){ //이미지 올리기
+                                uploadPostImageTask.child("${i.toString().substring(i.toString().length-4, i.toString().length)}").putFile(i)
+                                conference.image?.add(Uri.parse("documentPost/$documentPath/${i.toString().substring(i.toString().length-4, i.toString().length)}"))
                             }
+                            conference.image?.sort()
+                            db.collection(collectionPath).document(documentPath).set(conference)
+                                .addOnSuccessListener {
+                                    Log.d("TAG", "DocumentSnapshot successfully written! ")
+                                }
+                                .addOnFailureListener {
+                                    Log.d("TAG", "Error writing document, $it")
+                                }
+                            uriList.clear()
                         }
                     }
                 }
@@ -134,33 +116,68 @@ class FirebaseIO {
 
                     when(imageList.isEmpty()){
                         true -> { //지도 o, 이미지 x
-                            storage.getReference("documentPost").child("document$documentPath").child("MapSnapShot.jpeg").putBytes(data)
-                            db.collection(collectionPath).document("document$docNumText").set(conference)
-                                .addOnSuccessListener {
-                                    Log.d("TAG", "DocumentSnapshot successfully written! ")
-                                }
-                                .addOnFailureListener {
-                                    Log.d("TAG", "Error writing document, $it")
-                                }
+                            if(conference.offline == false){
+                                storage.getReference("documentPost").child("$documentPath/Map").child("MapSnapShot.jpeg").delete()
+                                conference.image?.clear()
+
+                                db.collection(collectionPath).document(documentPath).set(conference)
+                                    .addOnSuccessListener {
+                                        Log.d("TAG", "DocumentSnapshot successfully written! ")
+                                    }
+                                    .addOnFailureListener {
+                                        Log.d("TAG", "Error writing document, $it")
+                                    }
+                            }
+                            else{
+                                storage.getReference("documentPost").child("$documentPath/Map").child("MapSnapShot.jpeg").putBytes(data)
+                                conference.image?.clear()
+                                conference.image?.add(Uri.parse("documentPost/$documentPath/Map/MapSnapShot.jpeg"))
+                                db.collection(collectionPath).document(documentPath).set(conference)
+                                    .addOnSuccessListener {
+                                        Log.d("TAG", "DocumentSnapshot successfully written! ")
+                                    }
+                                    .addOnFailureListener {
+                                        Log.d("TAG", "Error writing document, $it")
+                                    }
+                            }
                         }
                         false -> { //지도 o, 이미지 o
-                            var count = 1
+
                             for(i in imageList){
                                 uriList.add(i)
                             }
-                            val uploadPostImageTask = storage.getReference("documentPost").child("document$documentPath")
-                            for(i in uriList){ //이미지 올리기
-                                uploadPostImageTask.child("$count Image.jpeg").putFile(i)
-                                count++
-                            }
-                            count = 1
+
                             conference.image?.clear()
-                            for(i in uriList){
-                                conference.image?.add(Uri.parse("documentPost/document$documentPath/$count Image.jpeg"))
-                                count++
+                            val uploadPostImageTask = storage.getReference("documentPost").child("$documentPath")
+
+                            for(i in uriList){ //이미지 올리기
+                                if(i.toString().startsWith("h")){
+                                    conference.image?.add(Uri.parse("documentPost/$documentPath/${i.path.toString().substring(i.path.toString().length-4, i.path.toString().length)}"))
+                                    uploadPostImageTask.child("${i.path.toString().substring(i.path.toString().length-4, i.path.toString().length)}").putFile(i).addOnSuccessListener {
+                                        Log.d("TAG", "storageWrite: ${it.uploadSessionUri}")
+                                    }
+                                }
+                                else{
+                                    conference.image?.add(Uri.parse("documentPost/$documentPath/${i.toString().substring(i.toString().length-4, i.toString().length)}"))
+                                    uploadPostImageTask.child("${i.toString().substring(i.toString().length-4, i.toString().length)}").putFile(i).addOnSuccessListener {
+                                        Log.d("TAG", "storageWrite: ${it.uploadSessionUri}")
+                                    }
+                                }
                             }
-                            storage.getReference("documentPost").child("document$documentPath").child("MapSnapShot.jpeg").putBytes(data)
-                            db.collection(collectionPath).document("document$docNumText").set(conference)
+
+                            if(conference.offline == false){
+                                storage.getReference("documentPost").child("$documentPath/Map").child("MapSnapShot.jpeg").delete()
+                            }
+                            else{
+                                storage.getReference("documentPost").child("$documentPath/Map").child("MapSnapShot.jpeg").putBytes(data)
+                                conference.image?.add(Uri.parse("documentPost/$documentPath/Map/MapSnapShot.jpeg"))
+                            }
+
+                            db.collection(collectionPath).document(documentPath).set(conference)
+
+                            conference.image?.sort()
+
+                            db.collection(collectionPath).document(documentPath).set(conference)
                                 .addOnSuccessListener {
                                     Log.d("TAG", "DocumentSnapshot successfully written! ")
                                 }
@@ -174,7 +191,7 @@ class FirebaseIO {
                 }
 
             }
-            if(db.collection(collectionPath).document("document$docNumText").path.isNotEmpty()){
+            if(db.collection(collectionPath).document(documentPath).path.isNotEmpty()){
                 success = true
             }
             return success

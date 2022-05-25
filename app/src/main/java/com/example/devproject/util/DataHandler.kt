@@ -2,9 +2,15 @@ package com.example.devproject.util
 
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.devproject.R
+import com.example.devproject.format.UserInfo
+import com.example.devproject.fragment.HomeFragment
+import com.example.devproject.fragment.StudyFragment
 import com.example.devproject.others.DBType
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.io.File
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -16,6 +22,7 @@ class DataHandler {
         var imageDataSet : MutableList<Array<File>> = emptyList<Array<File>>().toMutableList()
         var conferDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
         var studyDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
+        var userInfo = UserInfo()
 
         val filterList : MutableList<Any> = mutableListOf(0)
 
@@ -41,15 +48,36 @@ class DataHandler {
                                     document.data["content"] as String,       //6
                                     document.data["uid"] as String,
                                     document.data["documentID"] as String,
-                                    document.data["image"] as MutableList<*>
+                                    document.data["image"] as MutableList<*>,
+                                    document.data["startDate"] as String,   //10
+                                    document.data["finishDate"] as String,   //11
+                                    document.data["place"] as String //12
                                 )
                                 )
                             }
                         }
                     }
                 }
-                DBType.STUDY -> {}
-                else -> {
+                DBType.STUDY -> {
+                    FirebaseIO.readPublic("groupstudyDocument").addOnSuccessListener { result ->
+                        studyDataSet.clear()
+                        for (document in result) {
+                            studyDataSet.add(arrayOf(
+                                document.data["ongoing"] as Boolean,
+                                document.data["uploader"] as String,
+                                document.data["title"] as String,
+                                document.data["content"] as String,
+                                document.data["offline"] as Boolean,
+                                document.data["studyURL"] as String,
+                                document.data["totalMember"] as Long,
+                                document.data["remainingMemeber"] as Long,
+                                document.data["language"] as MutableList<String>,
+                                document.data["documentID"] as String,
+                                document.data["uid"] as String
+                            )
+                            )
+                        }
+                    }
 
                 }
             }
@@ -72,17 +100,43 @@ class DataHandler {
                                     document.data["content"] as String,       //6
                                     document.data["uid"] as String,
                                     document.data["documentID"] as String,
-                                    document.data["image"] as MutableList<*>
+                                    document.data["image"] as MutableList<*>,
+                                    document.data["startDate"] as String,   //10
+                                    document.data["finishDate"] as String,   //11
+                                    document.data["place"] as String //12
                                 )
                                 )
                             }
                         }.run {
-                            UIHandler.adapter!!.notifyDataSetChanged()
-                            UIHandler.activateUI(R.id.conferRecyclerView)
+                              HomeFragment.adapter!!.notifyDataSetChanged()
                         }
                     }
                 }
                 DBType.STUDY->{
+                    FirebaseIO.readPublic("groupstudyDocument").addOnSuccessListener { result ->
+                        run {
+                            studyDataSet.clear()
+                            for (document in result) {
+                                studyDataSet.add(
+                                    arrayOf(
+                                        document.data["ongoing"] as Boolean,
+                                        document.data["uploader"] as String,
+                                        document.data["title"] as String,
+                                        document.data["content"] as String,
+                                        document.data["offline"] as Boolean,
+                                        document.data["studyURL"] as String,
+                                        document.data["totalMember"] as Long,
+                                        document.data["remainingMemeber"] as Long,
+                                        document.data["language"] as MutableList<String>,
+                                        document.data["documentID"] as String,
+                                        document.data["uid"] as String
+                                    )
+                                )
+                            }
+                        }.run {
+                            StudyFragment.adapter!!.notifyDataSetChanged()
+                        }
+                    }
                 }
             }
         }
@@ -109,12 +163,33 @@ class DataHandler {
                                 )
                             }
                         }.run {
-                            UIHandler.adapter!!.notifyDataSetChanged()
-                            UIHandler.activateUI(R.id.conferRecyclerView)
+                            HomeFragment.adapter!!.notifyDataSetChanged()
                         }
                     }
                 }
                 DBType.STUDY->{
+                    FirebaseIO.readPublic("groupstudyDocument").addOnSuccessListener { result ->
+                        run {
+                            studyDataSet.clear()
+                            for (document in result) {
+                                studyDataSet.add(
+                                    arrayOf(
+                                        document.data["ongoing"] as Boolean,
+                                        document.data["uploader"] as String,
+                                        document.data["title"] as String,
+                                        document.data["offline"] as Boolean,
+                                        document.data["studyURL"] as String,
+                                        document.data["totalMember"] as Long,
+                                        document.data["remainingMemeber"] as Long,
+                                        document.data["documentID"] as String,
+                                        document.data["uid"] as String
+                                    )
+                                )
+                            }
+                        }.run {
+                            StudyFragment.adapter!!.notifyDataSetChanged()
+                        }
+                    }
                 }
             }
         }
@@ -126,12 +201,27 @@ class DataHandler {
                     conferDataSet.clear()
                 }
                 DBType.STUDY->{
-
+                    studyDataSet.clear()
                 }
                 else->{}
             }
 
         }
+
+        fun updateUserInfo(){
+            FirebaseFirestore.getInstance().collection("UserInfo")
+                .whereEqualTo("email", FirebaseAuth.getInstance().currentUser?.email)
+                .get()
+                .addOnSuccessListener {
+                    for(document in it){
+                        userInfo.id = document["id"] as String
+                    }
+                }
+                .addOnFailureListener{
+                    Log.d("TAG", "findUploader: ${it.stackTrace}")
+                }
+        }
+
     }
 
 }
