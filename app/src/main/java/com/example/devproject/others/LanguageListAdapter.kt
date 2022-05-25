@@ -6,6 +6,7 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,12 +29,37 @@ import kotlinx.coroutines.launch
 class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<LanguageListAdapter.ViewHolder>() {
 
     var languageArray = languageArray
-    var arr : MutableList<Boolean> = listOf(false, false, false, false).toMutableList()
 
     private var context : Context? = null
+
+    companion object{
+        var languageMap = HashMap<String, Boolean>()
+        var arr : MutableList<Boolean> = listOf(false, false, false, false).toMutableList()
+        fun getLanguageMaps() : HashMap<String, Boolean> {
+            arr.forEachIndexed { index, b ->
+                if(b){
+                    when(index){
+                        0 -> languageMap["csharp"] = true
+                        1 -> languageMap["cpp"] = true
+                        2 -> languageMap["kotlin"] = true
+                        3 -> languageMap["javascript"] = true
+                    }
+                }
+            }
+            return languageMap
+        }
+
+    }
+
+    init{
+        languageMap["csharp"] = false
+        languageMap["cpp"] = false
+        languageMap["kotlin"] = false
+        languageMap["javascript"] = false
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var languageImageView : ImageView = view.findViewById(R.id.languageImageView)
-//        var languageNumberTextView : TextView = view.findViewById(R.id.languageNumberTextView)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -47,6 +73,7 @@ class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<Lang
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.languageImageView.setImageDrawable(languageArray.getDrawable(position))
+
         viewHolder.languageImageView.setOnClickListener {
             if(!arr[position]){
                 viewHolder.languageImageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
@@ -55,18 +82,21 @@ class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<Lang
                 viewHolder.languageImageView.clearColorFilter()
                 arr[position] = false
             }
-
-//            viewHolder.languageNumberTextView.text = updateLanguageSelectedNumber().toString()
-
+            UIHandler.languageNumberTextView?.text = updateLanguageSelectedNumber().toString()
         }
     }
 
 
     override fun getItemCount() = languageArray.length()
 
-    fun updateLanguageSelectedNumber() : Int {
-        var count : Int = 0
-        arr.forEach { if(it) count++ }
+    private fun updateLanguageSelectedNumber() : Int {
+        var count = 0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+           arr.forEach { if(it) {
+               count++
+            }
+           }
+        }
         return count
     }
 }
