@@ -6,5 +6,6 @@
         <item>@drawable/logo_kotlin</item>
         <item>@drawable/logo_javascript</item>
         <item>@drawable/logo_swift</item>
+        <item>@drawable/logo_go</item>
     </array>
 </resources>

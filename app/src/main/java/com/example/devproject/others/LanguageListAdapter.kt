@@ -21,7 +21,7 @@ class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<Lang
 
     companion object{
         var languageMap = HashMap<String, Boolean>()
-        var arr : MutableList<Boolean> = listOf(false, false, false, false, false).toMutableList()
+        var arr : MutableList<Boolean> = emptyList<Boolean>().toMutableList()
         fun getLanguageMaps() : HashMap<String, Boolean> {
             arr.forEachIndexed { index, b ->
                 if(b){
@@ -31,6 +31,7 @@ class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<Lang
                         2 -> languageMap["kotlin"] = true
                         3 -> languageMap["javascript"] = true
                         4 -> languageMap["swift"] = true
+                        4 -> languageMap["go"] = true
                     }
                 }
             }
@@ -40,7 +41,16 @@ class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<Lang
     }
 
     init{
-        languageMap.forEach { (t, u) -> languageMap[t] = false  }
+
+        languageMap.put("csharp", false)
+        languageMap.put("cpp", false)
+        languageMap.put("kotlin", false)
+        languageMap.put("javascript", false)
+        languageMap.put("swift", false)
+        languageMap.put("go", false)
+        languageMap.forEach {
+            arr.add(false)
+        }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

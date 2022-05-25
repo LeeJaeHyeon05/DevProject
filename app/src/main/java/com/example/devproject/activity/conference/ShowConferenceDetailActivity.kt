@@ -93,7 +93,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         conferContentTextView = findViewById(R.id.conferConetentTextView)
         confershowNoImage = findViewById(R.id.conferDetailImageView)
 
-        conferUploaderIconImageView?.setImageResource(R.drawable.dev)
+        conferUploaderIconImageView?.setImageResource(R.drawable.logo512)
         conferUploaderTextView?.text = conferDataSet[position][0].toString()
         conferTitleTextView?.text = conferDataSet[position][1].toString()
         //DummyImage
