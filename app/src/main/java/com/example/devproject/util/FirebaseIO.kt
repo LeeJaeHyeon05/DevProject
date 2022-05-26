@@ -89,12 +89,23 @@ class FirebaseIO {
                         false -> { //지도사진 x, 이미지 o
                             for(i in imageList){
                                 uriList.add(i)
+                                Log.d("TAG", "didhstorageWrite: ${i.toString()}")
                             }
                             val uploadPostImageTask = storage.getReference("documentPost").child(documentPath)
                             conference.image?.clear()
                             for(i in uriList){ //이미지 올리기
-                                uploadPostImageTask.child("${i.toString().substring(i.toString().length-4, i.toString().length)}").putFile(i)
-                                conference.image?.add(Uri.parse("documentPost/$documentPath/${i.toString().substring(i.toString().length-4, i.toString().length)}"))
+                                if(i.toString().startsWith("h")){
+                                    conference.image?.add(Uri.parse("documentPost/$documentPath/${i.path.toString().substring(i.path.toString().length-4, i.path.toString().length)}"))
+                                    uploadPostImageTask.child("${i.path.toString().substring(i.path.toString().length-4, i.path.toString().length)}").putFile(i).addOnSuccessListener {
+                                        Log.d("TAG", "storageWrite: ${it.uploadSessionUri}")
+                                    }
+                                }
+                                else{
+                                    conference.image?.add(Uri.parse("documentPost/$documentPath/${i.toString().substring(i.toString().length-4, i.toString().length)}"))
+                                    uploadPostImageTask.child("${i.toString().substring(i.toString().length-4, i.toString().length)}").putFile(i).addOnSuccessListener {
+                                        Log.d("TAG", "storageWrite: ${it.uploadSessionUri}")
+                                    }
+                                }
                             }
                             conference.image?.sort()
                             db.collection(collectionPath).document(documentPath).set(conference)
