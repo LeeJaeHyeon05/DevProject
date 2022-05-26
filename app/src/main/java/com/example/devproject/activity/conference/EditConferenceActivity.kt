@@ -173,7 +173,7 @@ class EditConferenceActivity() : AppCompatActivity() {
                 0
             } else Integer.parseInt(exceptWon[0]).toLong()
 
-            if(imageAdapter.itemCount != 0){
+            if(imageAdapter.itemCount != -1){
                 this.deleteImageList = imageAdapter.getDeleteImage()
             }
 
