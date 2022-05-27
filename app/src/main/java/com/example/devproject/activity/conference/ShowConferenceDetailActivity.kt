@@ -2,7 +2,6 @@ package com.example.devproject.activity.conference
 
 import android.content.Intent
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,7 +10,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alespero.expandablecardview.ExpandableCardView
@@ -95,7 +93,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         conferContentTextView = findViewById(R.id.conferConetentTextView)
         confershowNoImage = findViewById(R.id.conferDetailImageView)
 
-        conferUploaderIconImageView?.setImageResource(R.drawable.dev)
+        conferUploaderIconImageView?.setImageResource(R.drawable.logo512)
         conferUploaderTextView?.text = conferDataSet[position][0].toString()
         conferTitleTextView?.text = conferDataSet[position][1].toString()
         //DummyImage

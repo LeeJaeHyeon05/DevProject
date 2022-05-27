@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/conferPreCardView"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="150dp"
     android:layout_marginLeft="5dp"
     android:layout_marginTop="5dp"
     android:layout_marginRight="5dp"
@@ -19,11 +19,11 @@
             android:id="@+id/conferPreImageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/conferPreTitleTextView"
-            android:layout_marginStart="10dp"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -36,35 +36,41 @@
 
         <TextView
             android:id="@+id/conferPreTitleTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="18dp"
-            android:ellipsize="marquee"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingRight="2dp"
             android:text="네이버 컨퍼런스"
             android:textColor="@color/black"
             android:textSize="22sp"
-            android:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/conferPreImageView"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/conferPreContentTextView"
-            android:layout_width="280dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="The Conference for Java,Architecture and Software Innovation"
+            android:layout_marginLeft="5dp"
+            android:ellipsize="end"
             android:letterSpacing="-0.035"
+            android:maxLines="2"
+            android:paddingRight="2dp"
+            android:text="The Conference for Java"
             android:textColor="@color/darkGrayColor"
             android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/conferPreTitleTextView"
-            app:layout_constraintTop_toBottomOf="@+id/conferPreTitleTextView"
-            android:maxLines="1"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/conferPreTitleTextView" />
 
         <TextView
             android:id="@+id/conferPreStartDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:text="2022. 05. 02"
             android:textColor="@color/brightGrayColor"
             app:layout_constraintStart_toStartOf="@+id/conferPreTitleTextView"
@@ -92,9 +98,10 @@
         <com.google.android.material.chip.Chip
             android:id="@+id/languageChip"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="25dp"
             android:background="@color/buttonColor"
             android:text="코틀린"
+            android:visibility="invisible"
             app:chipBackgroundColor="@color/buttonColor"
             app:layout_constraintStart_toStartOf="@+id/conferPreTitleTextView"
             app:layout_constraintTop_toBottomOf="@+id/conferPreStartDateTextView" />

@@ -40,6 +40,7 @@ class LanguageListAdapter2(languageArray: MutableList<String>) : RecyclerView.Ad
             "kotlin" -> viewHolder.languageImageView.setImageResource(R.drawable.logo_kotlin)
             "javascript" -> viewHolder.languageImageView.setImageResource(R.drawable.logo_javascript)
             "swift" -> viewHolder.languageImageView.setImageResource(R.drawable.logo_swift)
+            "go" -> viewHolder.languageImageView.setImageResource(R.drawable.logo_go)
         }
     }
 
