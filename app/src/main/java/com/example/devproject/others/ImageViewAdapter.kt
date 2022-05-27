@@ -79,11 +79,16 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri> = ArrayList<Uri>(),
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when(holder.itemView.context){
             is AddConferencesActivity -> {
+                var layout = holder.itemView.layoutParams
+                Log.d("TAG", "height: ${layout.height}")
+                Log.d("TAG", "width: ${layout.width}")
                 val item = imageList[position]
+
                 holder.addConferenceImageView?.let {
+                    it.maxHeight
                     Glide.with(context)
                         .load(item)
-                        .override(SIZE_ORIGINAL)
+                        .override(100, 300)
                         .into(it)
                 }
                 holder.addConferenceImageView?.setOnClickListener {

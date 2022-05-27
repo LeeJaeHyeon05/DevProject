@@ -74,16 +74,36 @@ class AddConferencesActivity() : AppCompatActivity() {
             if(result.data != null){
                 val imageData = result.data
                 val size = imageData?.clipData?.itemCount
-                val imageUri = imageData?.clipData
-                if (imageUri != null) {
-                    for(i in 0 until size!!){
-                        imageList.add(result.data!!.clipData!!.getItemAt(i).uri)
+
+                if(size != null){
+                    if(size >= 4){
+                        val imageUri = imageData?.clipData
+                        if (imageUri != null) {
+                            for(i in 0 until 3){
+                                imageList.add(result.data!!.clipData!!.getItemAt(i).uri)
+                            }
+                            imageList.sort()
+                            imageAdapter = ImageViewAdapter(imageList = imageList, this)
+                            imageRecyclerView.adapter = imageAdapter
+                            imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+                        }
+
+                        Toast.makeText(this, "이미지는 3개까지 선택가능합니다", Toast.LENGTH_SHORT).show()
                     }
-                    imageList.sort()
-                    imageAdapter = ImageViewAdapter(imageList = imageList, this)
-                    imageRecyclerView.adapter = imageAdapter
-                    imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+                    else{
+                        val imageUri = imageData?.clipData
+                        if (imageUri != null) {
+                            for(i in 0 until size!!){
+                                imageList.add(result.data!!.clipData!!.getItemAt(i).uri)
+                            }
+                            imageList.sort()
+                            imageAdapter = ImageViewAdapter(imageList = imageList, this)
+                            imageRecyclerView.adapter = imageAdapter
+                            imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+                        }
+                    }
                 }
+
             }
         }
 
