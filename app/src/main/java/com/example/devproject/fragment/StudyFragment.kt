@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.devproject.activity.AddStudyActivity
+import com.example.devproject.activity.study.AddStudyActivity
 import com.example.devproject.databinding.FragmentStudyBinding
 import com.example.devproject.others.DBType
 import com.example.devproject.others.StudyListAdapter
