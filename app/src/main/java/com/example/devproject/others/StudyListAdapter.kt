@@ -51,7 +51,7 @@ class StudyListAdapter() : RecyclerView.Adapter<StudyListAdapter.ViewHolder>() {
         viewHolder.studyLinkImageView.setImageResource(R.drawable.link)
         viewHolder.studyLinkImageView.setOnClickListener {
             val intent = Intent(UIHandler.rootView?.context, ShowWebViewActivity::class.java)
-            intent.putExtra("conferenceURL", studyDataSet[position][4].toString())
+            intent.putExtra("conferenceURL", studyDataSet[position][5].toString())
             UIHandler.rootView?.context?.startActivity(intent)
         }
         viewHolder.remainingMemeberTextView.text = studyDataSet[position][7].toString() + "명 남음!"
