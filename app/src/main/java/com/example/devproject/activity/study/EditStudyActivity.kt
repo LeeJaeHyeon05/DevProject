@@ -27,7 +27,6 @@ class EditStudyActivity : AppCompatActivity() {
         var position = intent.getIntExtra("position", 0)
         pos = position
 
-
         binding.addStudyTitle.setText(studyDataSet[pos][2].toString())
         binding.addStudyContent.setText(studyDataSet[pos][3].toString())
         binding.addStudyLink.setText(studyDataSet[pos][5].toString())

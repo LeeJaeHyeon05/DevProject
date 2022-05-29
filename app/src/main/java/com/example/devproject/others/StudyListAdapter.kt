@@ -15,6 +15,7 @@ import com.example.devproject.activity.study.ShowStudyDetailActivity
 import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.util.DataHandler.Companion.studyDataSet
 import com.example.devproject.util.UIHandler
+import org.w3c.dom.Text
 
 
 class StudyListAdapter() : RecyclerView.Adapter<StudyListAdapter.ViewHolder>() {
@@ -29,6 +30,7 @@ class StudyListAdapter() : RecyclerView.Adapter<StudyListAdapter.ViewHolder>() {
         val remainingMemeberTextView :TextView = view.findViewById(R.id.remainingMemberTextView)
         val languageRecyclerView2 : RecyclerView = view.findViewById(R.id.languageRecyclerView2)
         val studyCardView : CardView = view.findViewById(R.id.studyCardView)
+        val studyPreDateTextView : TextView = view.findViewById(R.id.studyPreDateTextView)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -65,6 +67,9 @@ class StudyListAdapter() : RecyclerView.Adapter<StudyListAdapter.ViewHolder>() {
             intent.putExtra("position", position)
             UIHandler.rootView?.context?.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
+
+        var endDate = studyDataSet[position][11].toString()
+        viewHolder.studyPreDateTextView.text = endDate.substring(2, endDate.length) + "까지"
     }
 
     override fun getItemCount() = studyDataSet.size

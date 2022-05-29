@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class AddStudyActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStudyBinding
@@ -60,6 +61,15 @@ class AddStudyActivity : AppCompatActivity() {
 
         addStudyButton.setOnClickListener {
 
+            val c = Calendar.getInstance()
+            c.add(Calendar.DAY_OF_YEAR , 21)
+
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+
+
+
             val languageMap = adapter.getLanguageMaps()
             var languageArray : MutableList<String> = emptyList<String>().toMutableList()
             languageMap.forEach { if(it.value){
@@ -79,7 +89,8 @@ class AddStudyActivity : AppCompatActivity() {
                 remainingMemeber = totalMember,
                 language = languageArray,
                 uid = FirebaseAuth.getInstance().uid,
-                uploader= DataHandler.userInfo.id
+                uploader= DataHandler.userInfo.id,
+                endDate = "${year}. ${month}. $day"
             )
 
             if(FirebaseIO.write("groupstudyDocument", documentID, studyInfo)){
