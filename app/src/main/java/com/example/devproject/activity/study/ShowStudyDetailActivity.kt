@@ -49,7 +49,7 @@ class ShowStudyDetailActivity : AppCompatActivity() {
             intent.putExtra("conferenceURL", studyDataSet[position][5].toString())
             UIHandler.rootView?.context?.startActivity(intent)
         }
-        binding.studyDetailMemberTextView.text = "모집인원 ${studyDataSet[position][6]}명 중 ${studyDataSet[position][7]}명 모집 완료!"
+        binding.studyDetailMemberTextView.text = "총 ${studyDataSet[position][6]}명 중 ${studyDataSet[position][6] as Long - studyDataSet[position][7] as Long}명 모집 완료!"
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

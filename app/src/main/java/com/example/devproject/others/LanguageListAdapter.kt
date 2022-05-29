@@ -13,16 +13,35 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.R
 import com.example.devproject.util.UIHandler
 
-class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<LanguageListAdapter.ViewHolder>() {
+class LanguageListAdapter(languageArray: TypedArray , languages: MutableList<String>?) : RecyclerView.Adapter<LanguageListAdapter.ViewHolder>() {
 
-    var languageArray = languageArray
-
+    private var languageArray = languageArray
     private var context : Context? = null
+    var languageMap = LinkedHashMap<String, Boolean>()
+    var arr : MutableList<Boolean> = emptyList<Boolean>().toMutableList()
 
-    companion object{
-        var languageMap = HashMap<String, Boolean>()
-        var arr : MutableList<Boolean> = emptyList<Boolean>().toMutableList()
-        fun getLanguageMaps() : HashMap<String, Boolean> {
+    init{
+        languageMap["csharp"] = false
+        languageMap["cpp"] = false
+        languageMap["kotlin"] = false
+        languageMap["javascript"] = false
+        languageMap["swift"] = false
+        languageMap["go"] = false
+
+        languages?.forEach {
+            languageMap[it] = true
+        }
+
+        languageMap.forEach {
+            arr.add(it.value)
+        }
+
+        println(languages)
+        println(arr)
+        UIHandler.languageNumberTextView?.text = updateLanguageSelectedNumber().toString()
+    }
+
+    fun getLanguageMaps() : HashMap<String, Boolean> {
             arr.forEachIndexed { index, b ->
                 if(b){
                     when(index){
@@ -31,27 +50,12 @@ class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<Lang
                         2 -> languageMap["kotlin"] = true
                         3 -> languageMap["javascript"] = true
                         4 -> languageMap["swift"] = true
-                        4 -> languageMap["go"] = true
+                        5 -> languageMap["go"] = true
                     }
                 }
             }
             return languageMap
         }
-
-    }
-
-    init{
-
-        languageMap.put("csharp", false)
-        languageMap.put("cpp", false)
-        languageMap.put("kotlin", false)
-        languageMap.put("javascript", false)
-        languageMap.put("swift", false)
-        languageMap.put("go", false)
-        languageMap.forEach {
-            arr.add(false)
-        }
-    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var languageImageView : ImageView = view.findViewById(R.id.languageImageView)
@@ -68,6 +72,9 @@ class LanguageListAdapter(languageArray: TypedArray) : RecyclerView.Adapter<Lang
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.languageImageView.setImageDrawable(languageArray.getDrawable(position))
+        if(arr[position]){
+            viewHolder.languageImageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
+        }
 
         viewHolder.languageImageView.setOnClickListener {
             if(!arr[position]){
