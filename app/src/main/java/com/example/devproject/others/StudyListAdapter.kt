@@ -47,11 +47,11 @@ class StudyListAdapter() : RecyclerView.Adapter<StudyListAdapter.ViewHolder>() {
             if (studyDataSet[position][0] as Boolean) "모집중" else "마감"
         viewHolder.studyPreTitleTextView.text = studyDataSet[position][2].toString()
         viewHolder.studyOfflineTextView.text =
-            if (studyDataSet[position][4] as Boolean) "온라인" else "오프라인"
+            if (!(studyDataSet[position][4] as Boolean)) "온라인" else "오프라인"
         viewHolder.studyLinkImageView.setImageResource(R.drawable.link)
         viewHolder.studyLinkImageView.setOnClickListener {
             val intent = Intent(UIHandler.rootView?.context, ShowWebViewActivity::class.java)
-            intent.putExtra("conferenceURL", studyDataSet[position][4].toString())
+            intent.putExtra("conferenceURL", studyDataSet[position][5].toString())
             UIHandler.rootView?.context?.startActivity(intent)
         }
         viewHolder.remainingMemeberTextView.text = studyDataSet[position][7].toString() + "명 남음!"

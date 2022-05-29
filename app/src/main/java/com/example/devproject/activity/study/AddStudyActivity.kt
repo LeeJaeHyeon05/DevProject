@@ -38,12 +38,12 @@ class AddStudyActivity : AppCompatActivity() {
         var typedArray : TypedArray = resources.obtainTypedArray(R.array.language_array)
         var languageSelectRecyclerView = binding.languageSelectRecyclerView
         languageSelectRecyclerView?.layoutManager = LinearLayoutManager(this.baseContext, LinearLayoutManager.HORIZONTAL, false)
-        var adapter = LanguageListAdapter(typedArray)
+        var adapter = LanguageListAdapter(typedArray, null)
         languageSelectRecyclerView?.adapter = adapter
 
         var totalMember : Long? = 0
 
-        UIHandler.languageNumberTextView = binding.languageNumberTextView;
+        UIHandler.languageNumberTextView = binding.languageNumberTextView
 
         memberNumberPicker.minValue = 1
         memberNumberPicker.maxValue = data.size-1
@@ -60,7 +60,7 @@ class AddStudyActivity : AppCompatActivity() {
 
         addStudyButton.setOnClickListener {
 
-            val languageMap = LanguageListAdapter.getLanguageMaps()
+            val languageMap = adapter.getLanguageMaps()
             var languageArray : MutableList<String> = emptyList<String>().toMutableList()
             languageMap.forEach { if(it.value){
                     languageArray.add(it.key)
