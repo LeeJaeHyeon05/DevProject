@@ -48,6 +48,9 @@ class StudyListAdapter() : RecyclerView.Adapter<StudyListAdapter.ViewHolder>() {
         viewHolder.studyPreOngoingTextView.text =
             if (studyDataSet[position][0] as Boolean) "모집중" else "마감"
         viewHolder.studyPreTitleTextView.text = studyDataSet[position][2].toString()
+
+
+
         viewHolder.studyOfflineTextView.text =
             if (!(studyDataSet[position][4] as Boolean)) "온라인" else "오프라인"
         viewHolder.studyLinkImageView.setImageResource(R.drawable.link)

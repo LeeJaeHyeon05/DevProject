@@ -185,6 +185,7 @@
             android:id="@+id/conferOnlineCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:buttonTint="@color/yellow_500"
             android:text="온라인 입니다"
             app:layout_constraintBottom_toTopOf="@+id/TextLayoutConferenceGeo"
             app:layout_constraintStart_toStartOf="@+id/addConferenceGuideLeft"

@@ -1,8 +1,10 @@
 package com.example.devproject.activity.study
 
 import android.content.res.TypedArray
+import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -30,10 +32,8 @@ class AddStudyActivity : AppCompatActivity() {
         binding = ActivityAddStudyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var memberNumberPicker = binding.memberNumberPicker
-        val data: Array<String> = Array(100){
-                i -> (i+1).toString()
-        }
+        binding.tableRow.visibility = View.INVISIBLE
+
 
         //language list view
         var typedArray : TypedArray = resources.obtainTypedArray(R.array.language_array)
@@ -45,7 +45,10 @@ class AddStudyActivity : AppCompatActivity() {
         var totalMember : Long? = 0
 
         UIHandler.languageNumberTextView = binding.languageNumberTextView
-
+        var memberNumberPicker = binding.memberNumberPicker
+        val data: Array<String> = Array(100){
+                i -> (i+1).toString()
+        }
         memberNumberPicker.minValue = 1
         memberNumberPicker.maxValue = data.size-1
         memberNumberPicker.wrapSelectorWheel = false
@@ -68,15 +71,12 @@ class AddStudyActivity : AppCompatActivity() {
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
 
-
-
             val languageMap = adapter.getLanguageMaps()
             var languageArray : MutableList<String> = emptyList<String>().toMutableList()
             languageMap.forEach { if(it.value){
                     languageArray.add(it.key)
                 }
             }
-
 
             val studyInfo = StudyInfo(
                 documentID = documentID,
@@ -90,7 +90,7 @@ class AddStudyActivity : AppCompatActivity() {
                 language = languageArray,
                 uid = FirebaseAuth.getInstance().uid,
                 uploader= DataHandler.userInfo.id,
-                endDate = "${year}. ${month}. $day"
+                endDate = "${year}. ${month+1}. $day"
             )
 
             if(FirebaseIO.write("groupstudyDocument", documentID, studyInfo)){
