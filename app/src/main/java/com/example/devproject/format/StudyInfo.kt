@@ -13,5 +13,6 @@ data class StudyInfo (
     var remainingMemeber : Long? = 0,
     val language: MutableList<String>? = null,
     var uid : String? = null,
-    var uploader : String? = null
+    var uploader : String? = null,
+    var endDate : String? = null
 )
