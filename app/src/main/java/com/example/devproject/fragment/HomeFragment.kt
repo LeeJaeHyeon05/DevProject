@@ -17,6 +17,7 @@ import com.example.devproject.others.DBType
 import com.example.devproject.others.ListAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
+import com.example.devproject.util.UIHandler
 
 class HomeFragment : Fragment() {
     private var mBinding : FragmentHomeBinding? = null
@@ -31,6 +32,9 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        UIHandler.mainActivity?.supportActionBar?.title = "개발 컨퍼런스"
+
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
         mBinding = binding
 
