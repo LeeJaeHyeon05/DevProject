@@ -30,6 +30,7 @@ import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
+import com.example.devproject.util.UIHandler
 import com.google.android.material.chip.Chip
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -71,40 +72,38 @@ class AddConferencesActivity() : AppCompatActivity() {
         setDatePrice()
 
         val startGetImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result-> //사진 불러오기
-            if(result.data != null){
-                val imageData = result.data
-                val size = imageData?.clipData?.itemCount
+            imageAdapter = ImageViewAdapter(imageList = imageList, this)
+            UIHandler.countImage(result, imageList, this, imageRecyclerView, imageAdapter)
 
-                if(size != null){
-                    if(size >= 4){
-                        val imageUri = imageData?.clipData
-                        if (imageUri != null) {
-                            for(i in 0 until 3){
-                                imageList.add(result.data!!.clipData!!.getItemAt(i).uri)
-                            }
-                            imageList.sort()
-                            imageAdapter = ImageViewAdapter(imageList = imageList, this)
-                            imageRecyclerView.adapter = imageAdapter
-                            imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-                        }
-
-                        Toast.makeText(this, "이미지는 3개까지 선택가능합니다", Toast.LENGTH_SHORT).show()
-                    }
-                    else{
-                        val imageUri = imageData?.clipData
-                        if (imageUri != null) {
-                            for(i in 0 until size!!){
-                                imageList.add(result.data!!.clipData!!.getItemAt(i).uri)
-                            }
-                            imageList.sort()
-                            imageAdapter = ImageViewAdapter(imageList = imageList, this)
-                            imageRecyclerView.adapter = imageAdapter
-                            imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-                        }
-                    }
-                }
-
-            }
+//            if(result.data != null){
+//                val imageData = result.data
+//                var size = imageData?.clipData?.itemCount
+//
+//                if(size != null){
+//                    if(imageList.size < 4){
+//                        val imageUri = imageData?.clipData
+//                        if (imageUri != null) {
+//                            if(imageList.size + size < 4){ // imagelist는 사진을 추가할때마다 값이 커짐, size는 추가한 사진의 개수만 가져옴, 둘이합쳐서 3개이면 다 넣어도됨
+//                                for(i in 0 until size){
+//                                    imageList.add(result.data!!.clipData!!.getItemAt(i).uri)
+//                                }
+//                            }
+//                            else{ //기존 선택한 사진과 새로 추가한 사진의 개수가 총 3개가 넘으면 기존선택한 사진의 개수는 유지하고 새로추가한 사진의 개수를 빼야함
+//                                var index = 0
+//                                while(imageList.size != 3){
+//                                    imageList.add(result.data!!.clipData!!.getItemAt(index).uri)
+//                                    index++
+//                                }
+//                                Toast.makeText(this, "이미지는 3개까지 선택가능합니다", Toast.LENGTH_SHORT).show()
+//                            }
+//                            imageList.sortDescending()
+//                            imageAdapter = ImageViewAdapter(imageList = imageList, this)
+//                            imageRecyclerView.adapter = imageAdapter
+//                            imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+//                        }
+//                    }
+//                }
+//            }
         }
 
         binding.addConImageBtn.setOnClickListener { //사진 불러오기

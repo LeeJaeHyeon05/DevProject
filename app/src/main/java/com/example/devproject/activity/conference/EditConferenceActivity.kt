@@ -34,6 +34,7 @@ import com.example.devproject.others.DBType
 import com.example.devproject.others.ImageViewAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
+import com.example.devproject.util.UIHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -117,27 +118,43 @@ class EditConferenceActivity() : AppCompatActivity() {
             if(result.data != null){
                 val imageData = result.data
                 var size: Int = imageData?.clipData?.itemCount!!
-                val imageUri = imageData?.clipData
-                if (imageUri != null) {
-                    for(i in 0 until size){
-                        editImageList.add(result.data!!.clipData!!.getItemAt(i).uri)
-                    }
-                    if(originalImageList.isNotEmpty()){
-                        for(i in originalImageList){
-                            if(editImageList.contains(i)){
-                                continue
-                            }
-                            else{
-                                editImageList.add(i)
-                            }
+                if(originalImageList.isNotEmpty()){ //서버에서 받아온 이미지가 있었으면 같이 포함해야함
+                    for(i in originalImageList){
+                        if(editImageList.contains(i)){
+                            continue
+                        }
+                        else{
+                            editImageList.add(i)
                         }
                     }
-                    editImageList.sortDescending()
-                    imageAdapter = ImageViewAdapter(imageList = editImageList, this, deleteImageList = imagelist)
-                    imageRecyclerView.adapter = imageAdapter
-                    imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
                 }
+                imageAdapter = ImageViewAdapter(imageList = editImageList, this, deleteImageList = imagelist)
+                UIHandler.countImage(result, editImageList, this, imageRecyclerView, imageAdapter)
 
+//                if(size != null){
+//                    val imageUri = imageData?.clipData
+//                    if(editImageList.size < 4){
+//                        if (imageUri != null) {
+//                            if(editImageList.size + size < 4){
+//                                for(i in 0 until size){
+//                                    editImageList.add(result.data!!.clipData!!.getItemAt(i).uri)
+//                                }
+//                            }
+//                            else{
+//                                var index = 0
+//                                while(editImageList.size != 3){
+//                                    editImageList.add(result.data!!.clipData!!.getItemAt(index).uri)
+//                                    index++
+//                                }
+//                                Toast.makeText(this, "이미지는 3개까지 선택가능합니다", Toast.LENGTH_SHORT).show()
+//                            }
+//                            editImageList.sortDescending()
+//                            imageAdapter = ImageViewAdapter(imageList = editImageList, this, deleteImageList = imagelist)
+//                            imageRecyclerView.adapter = imageAdapter
+//                            imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+//                        }
+//                    }
+//                }
             }
         }
 
