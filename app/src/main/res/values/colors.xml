@@ -13,6 +13,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="holo_red_light">#D55454</color>
+
     <!-- 새로 추가한 색상 -->
     <color name="textInputOutlinedColor">#030303</color>
     <color name="textInputHintColor">#6C6C6C</color>

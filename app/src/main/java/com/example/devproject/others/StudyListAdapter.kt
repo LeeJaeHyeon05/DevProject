@@ -1,7 +1,9 @@
 package com.example.devproject.others
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +17,7 @@ import com.example.devproject.activity.study.ShowStudyDetailActivity
 import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.util.DataHandler.Companion.studyDataSet
 import com.example.devproject.util.UIHandler
+import com.google.firebase.database.collection.LLRBNode
 import org.w3c.dom.Text
 
 
@@ -42,6 +45,7 @@ class StudyListAdapter() : RecyclerView.Adapter<StudyListAdapter.ViewHolder>() {
         return ViewHolder(view)
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         //Binding Image & Text data Set trough firebase
         if (studyDataSet.size == 0) return
@@ -49,7 +53,10 @@ class StudyListAdapter() : RecyclerView.Adapter<StudyListAdapter.ViewHolder>() {
             if (studyDataSet[position][0] as Boolean) "모집중" else "마감"
         viewHolder.studyPreTitleTextView.text = studyDataSet[position][2].toString()
 
-
+        if(!(studyDataSet[position][0] as Boolean)){
+            viewHolder.studyPreOngoingTextView.setBackgroundColor(Color.rgb(234, 84, 84))
+            viewHolder.studyPreDateTextView.setBackgroundColor(Color.rgb(234, 84, 84))
+        }
 
         viewHolder.studyOfflineTextView.text =
             if (!(studyDataSet[position][4] as Boolean)) "온라인" else "오프라인"

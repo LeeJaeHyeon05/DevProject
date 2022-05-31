@@ -65,7 +65,10 @@ class ShowStudyDetailActivity : AppCompatActivity() {
                 val dialog = BasicDialog(this, "정말 마감할까요?")
                 dialog.activate()
                 dialog.okButton?.setOnClickListener {
-//                    FirebaseIO.delete("groupstudyDocument", studyDataSet[intent.getIntExtra("position", 0)][9] as String )
+                    FirebaseIO.db.collection("groupstudyDocument").
+                    document(studyDataSet[intent.getIntExtra("position", 0)][9] as String).update("ongoing", false)
+
+//                  FirebaseIO.delete("groupstudyDocument", studyDataSet[intent.getIntExtra("position", 0)][9] as String )
                     Toast.makeText(this, "마감 했어요", Toast.LENGTH_SHORT).show()
                     DataHandler.reload(DBType.STUDY)
                     finish()
