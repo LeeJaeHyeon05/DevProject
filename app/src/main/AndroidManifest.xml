@@ -61,8 +61,16 @@
             android:exported="false" />
 
         <activity
-            android:name=".activity.AddStudyActivity"
+            android:name=".activity.study.AddStudyActivity"
             android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.study.ShowStudyDetailActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.study.EditStudyActivity"
             android:exported="false" />
 
         <activity

@@ -396,6 +396,7 @@ class EditConferenceActivity() : AppCompatActivity() {
         super.onBackPressed()
         val intent = Intent(this, ShowConferenceDetailActivity::class.java)
         intent.putExtra("position", pos)
+        Toast.makeText(this, "편집 취소", Toast.LENGTH_SHORT).show()
         startActivity(intent)
         finish()
     }
