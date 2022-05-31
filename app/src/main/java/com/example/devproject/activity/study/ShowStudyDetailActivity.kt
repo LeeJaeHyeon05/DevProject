@@ -54,7 +54,12 @@ class ShowStudyDetailActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if(FirebaseIO.isValidAccount() && (FirebaseAuth.getInstance().uid == studyDataSet[intent.getIntExtra("position", 0)][10].toString())) {
-            menuInflater.inflate(R.menu.actionbar_study_menu, menu)
+            if(studyDataSet[intent.getIntExtra("position", 0)][0] == true){
+                menuInflater.inflate(R.menu.actionbar_study_menu, menu)
+            }else{
+                menuInflater.inflate(R.menu.actionbar_add_conference_menu, menu)
+            }
+
         }
         return true
     }
