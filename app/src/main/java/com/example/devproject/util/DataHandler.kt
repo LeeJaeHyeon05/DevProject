@@ -51,7 +51,8 @@ class DataHandler {
                                     document.data["image"] as MutableList<*>,
                                     document.data["startDate"] as String,   //10
                                     document.data["finishDate"] as String,   //11
-                                    document.data["place"] as String //12
+                                    document.data["place"] as String, //12
+                                    document.data["manager"] as Boolean
                                 )
                                 )
                             }
@@ -104,7 +105,8 @@ class DataHandler {
                                     document.data["image"] as MutableList<*>,
                                     document.data["startDate"] as String,   //10
                                     document.data["finishDate"] as String,   //11
-                                    document.data["place"] as String //12
+                                    document.data["place"] as String, //12
+                                    document.data["manager"] as Boolean
                                 )
                                 )
                             }

@@ -2,6 +2,7 @@ package com.example.devproject.activity.conference
 
 import android.content.Intent
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -38,6 +39,8 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
     var conferURLImageView : ImageView? = null
     var conferContentTextView : TextView? = null
     var confershowNoImage: ImageView? = null
+    var conferManagerImageView : ImageView? = null
+
     private lateinit var imageAdapter: ImageViewAdapter
     lateinit var viewModel: ImageCounterViewModel
 
@@ -94,6 +97,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         conferURLImageView = findViewById(R.id.conferURLImageView)
         conferContentTextView = findViewById(R.id.conferConetentTextView)
         confershowNoImage = findViewById(R.id.conferDetailImageView)
+        conferManagerImageView = findViewById(R.id.conferManagerImageView)
 
         conferUploaderIconImageView?.setImageResource(R.drawable.logo512)
         conferUploaderTextView?.text = conferDataSet[position][0].toString()
@@ -105,7 +109,11 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         conferPriceTextView?.text = if(conferDataSet[position][3].toString().toInt() == 0) "무료" else "${conferDataSet[position][3]}원"
         conferOfflineTextView?.text = if(conferDataSet[position][4].toString() == "false") "온라인" else "오프라인"
         conferURLImageView?.setImageResource(R.drawable.link)
-
+        conferManagerImageView?.visibility = if(conferDataSet[position][13] as Boolean){
+            View.VISIBLE
+        }else{
+            View.INVISIBLE
+        }
         //image = conferDataSet[position][9]
         showImage(position, this)
 

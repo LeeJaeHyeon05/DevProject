@@ -90,7 +90,7 @@ class AddStudyActivity : AppCompatActivity() {
                 language = languageArray,
                 uid = FirebaseAuth.getInstance().uid,
                 uploader= DataHandler.userInfo.id,
-                endDate = "${year}. ${month+1}. $day"
+                endDate = "${year}. ${month+1}. $day",
             )
 
             if(FirebaseIO.write("groupstudyDocument", documentID, studyInfo)){

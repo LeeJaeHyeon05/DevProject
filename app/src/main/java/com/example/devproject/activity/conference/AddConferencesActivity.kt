@@ -186,7 +186,6 @@ class AddConferencesActivity() : AppCompatActivity() {
             } else Integer.parseInt(exceptWon[0]).toLong()
 
             val tag = binding.conferChipGroup.toString()
-            var offline = !binding.conferOnlineCheckBox.isChecked
 
             //월 불러오기
             val documentId = "document" + ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS")).toString()
@@ -198,7 +197,7 @@ class AddConferencesActivity() : AppCompatActivity() {
                 conferenceURL = link,
                 content = conContent,
                 date = binding.startDateTextView.text.toString().replace(",", "."),
-                offline = offline,
+                offline = !binding.conferOnlineCheckBox.isChecked,
                 place = binding.ETConferenceGeo.text.toString(),
                 price = price,
                 title = conTitle,
@@ -207,7 +206,8 @@ class AddConferencesActivity() : AppCompatActivity() {
                 image = imageList,
                 uid = uid,
                 startDate =  binding.startDateTextView.text.toString().replace(",", "."),
-                finishDate =  binding.finishDateTextView.text.toString().replace(",", ".")
+                finishDate =  binding.finishDateTextView.text.toString().replace(",", "."),
+                manager = binding.conferManagerCheckBox.isChecked
             )
 
             if(checkInput(conference)){
