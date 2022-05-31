@@ -16,16 +16,29 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/conferPreImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/conferPreTitleTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
             android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/conferPreImageView"
+            app:layout_constraintTop_toTopOf="@+id/conferPreImageView"
             app:srcCompat="@drawable/ic_baseline_free_cancellation_24"
             tools:visibility="gone" />
 
         <TextView
             android:id="@+id/conferPreTitleTextView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="18dp"
             android:ellipsize="end"
             android:maxLines="2"
@@ -34,11 +47,12 @@
             android:textColor="@color/black"
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/conferPreImageView"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/conferPreContentTextView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:ellipsize="end"
@@ -54,7 +68,7 @@
 
         <TextView
             android:id="@+id/conferPreStartDateTextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:text="2022. 05. 02"
@@ -64,7 +78,7 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
@@ -74,7 +88,7 @@
 
         <TextView
             android:id="@+id/conferPreFinishDateTextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2022. 05. 02"
             android:textColor="@color/brightGrayColor"
