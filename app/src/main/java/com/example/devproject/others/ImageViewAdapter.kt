@@ -9,18 +9,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.example.devproject.R
 import com.example.devproject.activity.conference.AddConferencesActivity
 import com.example.devproject.activity.conference.EditConferenceActivity
+import com.example.devproject.activity.conference.ImageCounterViewModel
 import com.example.devproject.activity.conference.ShowConferenceDetailActivity
 import com.example.devproject.others.ImageViewAdapter.ViewHolder
 import com.example.devproject.databinding.DialogShowImageBinding
 import com.example.devproject.util.FirebaseIO
 
-class ImageViewAdapter(private val imageList: ArrayList<Uri> = ArrayList<Uri>(), private val context: Context, private val deleteImageList: ArrayList<Uri> = ArrayList<Uri>()): RecyclerView.Adapter<ViewHolder>() {
+class ImageViewAdapter(private val imageList: ArrayList<Uri> = ArrayList<Uri>(), private val context: Context, private val deleteImageList: ArrayList<Uri> = ArrayList<Uri>(), private val viewModel: ImageCounterViewModel): RecyclerView.Adapter<ViewHolder>() {
 
     private var deleteReturnList = ArrayList<Uri>()
 
@@ -79,11 +82,16 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri> = ArrayList<Uri>(),
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when(holder.itemView.context){
             is AddConferencesActivity -> {
+                var layout = holder.itemView.layoutParams
+                Log.d("TAG", "height: ${layout.height}")
+                Log.d("TAG", "width: ${layout.width}")
                 val item = imageList[position]
+
                 holder.addConferenceImageView?.let {
+                    it.maxHeight
                     Glide.with(context)
                         .load(item)
-                        .override(SIZE_ORIGINAL)
+                        .override(100, 300)
                         .into(it)
                 }
                 holder.addConferenceImageView?.setOnClickListener {
@@ -103,6 +111,7 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri> = ArrayList<Uri>(),
 
                     dialogBinding.dialogShowImageDeleteBtn.setOnClickListener {
                         imageList.removeAt(position)
+                        viewModel.deleteValue(imageList.size)
                         notifyDataSetChanged()
                         ad.dismiss()
                     }
@@ -150,6 +159,7 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri> = ArrayList<Uri>(),
                     dialogBinding.dialogShowImageDeleteBtn.setOnClickListener {
                         if(deleteImageList.isEmpty()){
                             imageList.removeAt(position)
+                            viewModel.deleteValue(imageList.size)
                             notifyDataSetChanged()
                             ad.dismiss()
                         }
@@ -157,6 +167,7 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri> = ArrayList<Uri>(),
                             deleteReturnList.add(deleteImageList[position])
                             imageList.removeAt(position)
                             deleteImageList.removeAt(position)
+                            viewModel.deleteValue(imageList.size)
                             notifyDataSetChanged()
                             ad.dismiss()
                         }
