@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.R
 import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.databinding.ActivityShowStudyDetailBinding
-import com.example.devproject.dialog.DeleteDialog
+import com.example.devproject.dialog.BasicDialog
 import com.example.devproject.others.DBType
 import com.example.devproject.others.LanguageListAdapter2
 import com.example.devproject.util.DataHandler
@@ -54,13 +54,24 @@ class ShowStudyDetailActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if(FirebaseIO.isValidAccount() && (FirebaseAuth.getInstance().uid == studyDataSet[intent.getIntExtra("position", 0)][10].toString())) {
-            menuInflater.inflate(R.menu.actionbar_add_conference_menu, menu)
+            menuInflater.inflate(R.menu.actionbar_study_menu, menu)
         }
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item?.itemId){
+            R.id.closeButton->{
+                val dialog = BasicDialog(this, "정말 마감할까요?")
+                dialog.activate()
+                dialog.okButton?.setOnClickListener {
+//                    FirebaseIO.delete("groupstudyDocument", studyDataSet[intent.getIntExtra("position", 0)][9] as String )
+                    Toast.makeText(this, "마감 했어요", Toast.LENGTH_SHORT).show()
+                    DataHandler.reload(DBType.STUDY)
+                    finish()
+                }
+            }
+
             R.id.editButton-> {
                 if(FirebaseIO.isValidAccount()){
                     val intent = Intent(this, EditStudyActivity::class.java)
@@ -70,11 +81,11 @@ class ShowStudyDetailActivity : AppCompatActivity() {
                 }
             }
             R.id.deleteButton ->{
-                val dialog = DeleteDialog(this)
+                val dialog = BasicDialog(this, "정말 삭제할까요?")
                 dialog.activate()
                 dialog.okButton?.setOnClickListener {
                     FirebaseIO.delete("groupstudyDocument", studyDataSet[intent.getIntExtra("position", 0)][9] as String )
-                    Toast.makeText(this, "삭제 되었습니다", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "삭제 했어요", Toast.LENGTH_SHORT).show()
                     DataHandler.reload(DBType.STUDY)
                     finish()
                 }

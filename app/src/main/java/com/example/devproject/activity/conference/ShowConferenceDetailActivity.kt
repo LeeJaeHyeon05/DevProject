@@ -2,7 +2,6 @@ package com.example.devproject.activity.conference
 
 import android.content.Intent
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -19,8 +18,8 @@ import com.bumptech.glide.Glide
 import com.example.devproject.util.DataHandler
 import com.example.devproject.R
 import com.example.devproject.activity.ShowWebViewActivity
+import com.example.devproject.dialog.BasicDialog
 import com.example.devproject.others.ImageViewAdapter
-import com.example.devproject.dialog.DeleteDialog
 import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler.Companion.conferDataSet
 import com.example.devproject.util.FirebaseIO
@@ -65,11 +64,11 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
                 }
             }
             R.id.deleteButton ->{
-                val dialog = DeleteDialog(this)
+                val dialog = BasicDialog(this, "정말 삭제 할까요?")
                 dialog.activate()
                 dialog.okButton?.setOnClickListener {
                     FirebaseIO.delete("conferenceDocument", conferDataSet[intent.getIntExtra("position", 0)][8] as String )
-                    Toast.makeText(this, "삭제 되었습니다", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "삭제 했어요", Toast.LENGTH_SHORT).show()
                     DataHandler.reload(DBType.CONFERENCE)
                     finish()
                 }
