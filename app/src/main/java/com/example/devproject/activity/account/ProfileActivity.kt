@@ -23,13 +23,12 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
+        supportActionBar?.title = DataHandler.userInfo.id + "의 프로필"
+
         var logoutButton : Button = findViewById(R.id.logoutButton)
         logoutButton.setOnClickListener {
             logout()
         }
-
-        val profileIDTextView : TextView = findViewById(R.id.profilleIDTextView)
-        profileIDTextView.text = DataHandler.userInfo.id
 
         val profileImageView : ImageView = findViewById(R.id.profileImageView)
         profileImageView.setImageResource(R.drawable.logo512)
