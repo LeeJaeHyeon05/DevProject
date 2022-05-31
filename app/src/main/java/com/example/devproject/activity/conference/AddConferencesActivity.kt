@@ -18,7 +18,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.R
@@ -46,6 +50,7 @@ import java.util.*
 class AddConferencesActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddConferencesBinding
+    lateinit var viewModel: ImageCounterViewModel
     private lateinit var uploader: String
     private lateinit var imageAdapter: ImageViewAdapter
     private var checkOffline = false
@@ -71,9 +76,17 @@ class AddConferencesActivity() : AppCompatActivity() {
 
         setDatePrice()
 
+        viewModel = ViewModelProvider(this).get(ImageCounterViewModel::class.java)
+
+        viewModel.imageCounterValue.observe(this, androidx.lifecycle.Observer {
+            binding.addConImageTextView.text = "$it / 3"
+        })
+
         val startGetImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result-> //사진 불러오기
-            imageAdapter = ImageViewAdapter(imageList = imageList, this)
-            UIHandler.countImage(result, imageList, this, imageRecyclerView, imageAdapter)
+            imageAdapter = ImageViewAdapter(imageList = imageList, this, viewModel = viewModel)
+            val imageSize = UIHandler.countImage(result, imageList, this, imageRecyclerView, imageAdapter, viewModel).toString()
+
+            viewModel.updateValue(imageSize.toInt())
 
 //            if(result.data != null){
 //                val imageData = result.data
@@ -106,7 +119,7 @@ class AddConferencesActivity() : AppCompatActivity() {
 //            }
         }
 
-        binding.addConImageBtn.setOnClickListener { //사진 불러오기
+        binding.addConImageButtonLayout.setOnClickListener { //사진 불러오기
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)

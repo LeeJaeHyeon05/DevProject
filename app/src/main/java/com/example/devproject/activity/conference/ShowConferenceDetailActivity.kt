@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alespero.expandablecardview.ExpandableCardView
@@ -38,6 +39,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
     var conferContentTextView : TextView? = null
     var confershowNoImage: ImageView? = null
     private lateinit var imageAdapter: ImageViewAdapter
+    lateinit var viewModel: ImageCounterViewModel
 
     var link : String? = null
     private var pos : Int? = 0
@@ -107,6 +109,8 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         //image = conferDataSet[position][9]
         showImage(position, this)
 
+        viewModel = ViewModelProvider(this).get(ImageCounterViewModel::class.java)
+
         link = conferDataSet[position][5].toString()
         conferURLImageView?.setOnClickListener {
             val intent = Intent(this, ShowWebViewActivity::class.java)
@@ -174,7 +178,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
                         }
                     }.addOnSuccessListener {
                         imageList.sort()
-                        imageAdapter = ImageViewAdapter(imageList = imageList, showConferenceDetailActivity.applicationContext)
+                        imageAdapter = ImageViewAdapter(imageList = imageList, showConferenceDetailActivity.applicationContext, viewModel = viewModel)
                         conferRecyclerView?.adapter = imageAdapter
                         conferRecyclerView?.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
                     }

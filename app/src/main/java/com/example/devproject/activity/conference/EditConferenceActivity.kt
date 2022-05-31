@@ -21,6 +21,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alespero.expandablecardview.ExpandableCardView
@@ -45,6 +46,7 @@ class EditConferenceActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddConferencesBinding
     private var pos = 0
+    lateinit var viewModel: ImageCounterViewModel
     private lateinit var imageAdapter: ImageViewAdapter
     private var originalImageList: ArrayList<Uri> = ArrayList()
     private var editImageList: ArrayList<Uri> = ArrayList()
@@ -81,6 +83,13 @@ class EditConferenceActivity() : AppCompatActivity() {
         getDate()
         getPrice()
         showImage(position, this)
+
+        viewModel = ViewModelProvider(this).get(ImageCounterViewModel::class.java)
+
+        viewModel.imageCounterValue.observe(this, androidx.lifecycle.Observer {
+            binding.addConImageTextView.text = "$it / 3"
+        })
+
 
         var startMapActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result -> //지도 액티비티 결과값 받아오기
             if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
@@ -128,8 +137,10 @@ class EditConferenceActivity() : AppCompatActivity() {
                         }
                     }
                 }
-                imageAdapter = ImageViewAdapter(imageList = editImageList, this, deleteImageList = imagelist)
-                UIHandler.countImage(result, editImageList, this, imageRecyclerView, imageAdapter)
+                imageAdapter = ImageViewAdapter(imageList = editImageList, this, deleteImageList = imagelist, viewModel)
+                val imageSize = UIHandler.countImage(result, editImageList, this, imageRecyclerView, imageAdapter, viewModel).toString()
+                viewModel.updateValue(imageSize.toInt())
+
 
 //                if(size != null){
 //                    val imageUri = imageData?.clipData
@@ -158,7 +169,7 @@ class EditConferenceActivity() : AppCompatActivity() {
             }
         }
 
-        binding.addConImageBtn.setOnClickListener { //사진 불러오기
+        binding.addConImageButtonLayout.setOnClickListener { //사진 불러오기
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
@@ -287,7 +298,7 @@ class EditConferenceActivity() : AppCompatActivity() {
         val list: ArrayList<Uri> = DataHandler.conferDataSet[position][9] as ArrayList<Uri>
         val confershowNoImage = findViewById<ImageView>(R.id.conferDetailImageView)
         if(list.isEmpty()){
-            imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, deleteImageList = DataHandler.conferDataSet[position][9] as ArrayList<Uri>)
+            imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, deleteImageList = DataHandler.conferDataSet[position][9] as ArrayList<Uri>, viewModel = viewModel)
             binding.addConferenceImageRecyclerView.adapter = imageAdapter
             binding.addConferenceImageRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
             return
@@ -312,8 +323,9 @@ class EditConferenceActivity() : AppCompatActivity() {
                         originalImageList.add(image)
                     }
                 }.addOnSuccessListener {
+                    viewModel.updateValue(originalImageList.size)
                     originalImageList.sort()
-                    imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, deleteImageList = DataHandler.conferDataSet[position][9] as ArrayList<Uri>)
+                    imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, deleteImageList = DataHandler.conferDataSet[position][9] as ArrayList<Uri>, viewModel = viewModel)
                     binding.addConferenceImageRecyclerView.adapter = imageAdapter
                     binding.addConferenceImageRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
                 }
