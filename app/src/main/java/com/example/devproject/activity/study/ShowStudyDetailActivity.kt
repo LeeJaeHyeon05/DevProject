@@ -57,7 +57,7 @@ class ShowStudyDetailActivity : AppCompatActivity() {
             if(studyDataSet[intent.getIntExtra("position", 0)][0] == true){
                 menuInflater.inflate(R.menu.actionbar_study_menu, menu)
             }else{
-                menuInflater.inflate(R.menu.actionbar_verified_menu, menu)
+                menuInflater.inflate(R.menu.actionbar_document_edit_menu, menu)
             }
 
         }

@@ -48,7 +48,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if(FirebaseIO.isValidAccount() && (FirebaseAuth.getInstance().uid == conferDataSet[intent.getIntExtra("position", 0)][7].toString())) {
-            menuInflater.inflate(R.menu.actionbar_verified_menu, menu)
+            menuInflater.inflate(R.menu.actionbar_document_edit_menu, menu)
         }
         return true
     }

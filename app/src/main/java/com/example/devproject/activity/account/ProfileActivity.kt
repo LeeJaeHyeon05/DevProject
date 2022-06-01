@@ -5,6 +5,8 @@ import android.content.res.TypedArray
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +15,9 @@ import com.example.devproject.activity.MainActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
 import com.example.devproject.databinding.ActivityAddStudyBinding
 import com.example.devproject.databinding.ActivityProfileBinding
+import com.example.devproject.dialog.FilterDialog
 import com.example.devproject.format.UserInfo
+import com.example.devproject.others.DBType
 import com.example.devproject.others.LanguageListAdapter
 import com.example.devproject.others.LanguageListAdapter2
 import com.example.devproject.util.DataHandler
@@ -29,15 +33,31 @@ import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.actionbar_profile_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item?.itemId){
+            R.id.editButton -> {
+            }
+
+            R.id.logoutButton -> {
+                logout()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar?.title = DataHandler.userInfo.id + "의 프로필"
-        binding.logoutButton.setOnClickListener {
-            logout()
-        }
 
         binding.profileImageView.setImageResource(R.drawable.logo512)
         var userId =  OneSignal.getDeviceState()?.userId

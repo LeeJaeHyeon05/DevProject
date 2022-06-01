@@ -253,7 +253,6 @@ class EditConferenceActivity() : AppCompatActivity() {
             startDate = binding.startDateTextView.text.toString().replace(",", "."),
             finishDate = binding.finishDateTextView.text.toString().replace(",", "."),
             manager = binding.conferManagerCheckBox.isChecked
-
         )
     }
 
