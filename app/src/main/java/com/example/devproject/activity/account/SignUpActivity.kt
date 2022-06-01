@@ -219,7 +219,6 @@ class SignUpActivity : AppCompatActivity() {
         userInfo.id = binding.TvFieldInputId.text.toString()
         userInfo.Email = binding.TvFieldInputEmail.text.toString()
         userInfo.mainLanguage = languages[pos]
-
         FirebaseIO.write("UserInfo", binding.TvFieldInputId.text.toString(), userInfo)
 
     }

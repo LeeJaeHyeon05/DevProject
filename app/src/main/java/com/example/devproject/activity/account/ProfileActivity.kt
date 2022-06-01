@@ -4,10 +4,7 @@ import android.content.Intent
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
@@ -32,6 +29,20 @@ class ProfileActivity : AppCompatActivity() {
 
         val profileImageView : ImageView = findViewById(R.id.profileImageView)
         profileImageView.setImageResource(R.drawable.logo512)
+
+        val conferenceNotiSwitch : Switch = findViewById(R.id.conferenceNotiSwitch)
+        conferenceNotiSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked) {
+
+            }
+        }
+
+        val studyNotiSwitch : Switch = findViewById(R.id.studyNotiSwitch)
+        studyNotiSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked){
+
+            }
+        }
     }
 
     override fun onBackPressed() {
