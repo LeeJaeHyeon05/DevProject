@@ -25,7 +25,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:orientation="vertical"/>
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="주력 언어" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/languageRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                tools:listitem="@layout/language_list_item"/>
+        </LinearLayout>
     </TableRow>
 
     <Button
