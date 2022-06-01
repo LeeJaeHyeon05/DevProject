@@ -10,9 +10,14 @@ import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
 import com.example.devproject.format.UserInfo
 import com.example.devproject.util.DataHandler
+import com.example.devproject.util.DataHandler.Companion.conferenceNotiDeviceIDList
+import com.example.devproject.util.DataHandler.Companion.studyNotiDeviceIDList
 import com.example.devproject.util.FirebaseIO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firestore.v1.FirestoreGrpc
+import com.onesignal.OneSignal
+import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -30,17 +35,41 @@ class ProfileActivity : AppCompatActivity() {
         val profileImageView : ImageView = findViewById(R.id.profileImageView)
         profileImageView.setImageResource(R.drawable.logo512)
 
+
+        var userId =  OneSignal.getDeviceState()?.userId
+
+
         val conferenceNotiSwitch : Switch = findViewById(R.id.conferenceNotiSwitch)
+        if(conferenceNotiDeviceIDList.contains(userId)){
+            conferenceNotiSwitch.isChecked = true
+        }
+
         conferenceNotiSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked) {
-
+                if (userId != null) {
+                    conferenceNotiDeviceIDList.add(userId)
+                }
+                FirebaseIO.db.collection("onesignalInfo").document("conferenceNotification").update("deviceID", conferenceNotiDeviceIDList)
+            }else{
+                conferenceNotiDeviceIDList.remove(userId)
+                FirebaseIO.db.collection("onesignalInfo").document("conferenceNotification").update("deviceID", conferenceNotiDeviceIDList)
             }
         }
 
         val studyNotiSwitch : Switch = findViewById(R.id.studyNotiSwitch)
+        if(studyNotiDeviceIDList.contains(userId)){
+            studyNotiSwitch.isChecked = true
+        }
+
         studyNotiSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked){
-
+                if (userId != null) {
+                    studyNotiDeviceIDList.add(userId)
+                }
+                FirebaseIO.db.collection("onesignalInfo").document("studyNotification").update("deviceID", studyNotiDeviceIDList)
+            }else{
+                studyNotiDeviceIDList.remove(userId)
+                FirebaseIO.db.collection("onesignalInfo").document("studyNotification").update("deviceID", studyNotiDeviceIDList)
             }
         }
     }

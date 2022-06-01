@@ -22,6 +22,10 @@ class DataHandler {
         var imageDataSet : MutableList<Array<File>> = emptyList<Array<File>>().toMutableList()
         var conferDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
         var studyDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
+
+        var conferenceNotiDeviceIDList : MutableList<String> = emptyList<String>().toMutableList()
+        var studyNotiDeviceIDList : MutableList<String> = emptyList<String>().toMutableList()
+
         var userInfo = UserInfo()
 
         val filterList : MutableList<Any> = mutableListOf(0)
@@ -81,6 +85,22 @@ class DataHandler {
                         }
                     }
 
+                }
+            }
+        }
+
+        fun loadNotiInformation(){
+            FirebaseIO.readPublic("onesignalInfo").addOnSuccessListener {
+                result->
+                for (document in result){
+                    when(document.id){
+                        "conferenceNotification" -> {
+                            conferenceNotiDeviceIDList = document.data["deviceID"] as MutableList<String>
+                        }
+                        "studyNotification" -> {
+                            studyNotiDeviceIDList = document.data["deviceID"] as MutableList<String>
+                        }
+                    }
                 }
             }
         }

@@ -25,12 +25,13 @@ import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler
 import com.google.android.material.snackbar.Snackbar
+import com.onesignal.OneSignal
 
 
 class MainActivity : AppCompatActivity() {
     private var backPressedTime : Long = 0
     private lateinit var mBinding: ActivityMainBinding
-
+    private val ONESIGNAL_APP_ID = "75c55497-72ce-473d-98ba-a2d796996de7"
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if(FirebaseIO.isValidAccount()) {
             menuInflater.inflate(R.menu.actionbar_logined_menu, menu)
@@ -74,6 +75,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
+
+        // OneSignal Initialization
+        OneSignal.initWithContext(this);
+        OneSignal.setAppId(ONESIGNAL_APP_ID);
+
         UIHandler.allocateUI(window.decorView.rootView, this)
 
         //navigation host
