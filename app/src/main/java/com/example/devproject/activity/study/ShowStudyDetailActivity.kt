@@ -74,7 +74,7 @@ class ShowStudyDetailActivity : AppCompatActivity() {
                     document(studyDataSet[intent.getIntExtra("position", 0)][9] as String).update("ongoing", false)
 
 //                  FirebaseIO.delete("groupstudyDocument", studyDataSet[intent.getIntExtra("position", 0)][9] as String )
-                    Toast.makeText(this, "마감 했어요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "마감했어요", Toast.LENGTH_SHORT).show()
                     DataHandler.reload(DBType.STUDY)
                     finish()
                 }
@@ -93,7 +93,7 @@ class ShowStudyDetailActivity : AppCompatActivity() {
                 dialog.activate()
                 dialog.okButton?.setOnClickListener {
                     FirebaseIO.delete("groupstudyDocument", studyDataSet[intent.getIntExtra("position", 0)][9] as String )
-                    Toast.makeText(this, "삭제 했어요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "삭제했어요", Toast.LENGTH_SHORT).show()
                     DataHandler.reload(DBType.STUDY)
                     finish()
                 }

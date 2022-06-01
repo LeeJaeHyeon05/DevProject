@@ -64,11 +64,11 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
                 }
             }
             R.id.deleteButton ->{
-                val dialog = BasicDialog(this, "정말 삭제 할까요?")
+                val dialog = BasicDialog(this, "정말 삭제할까요?")
                 dialog.activate()
                 dialog.okButton?.setOnClickListener {
                     FirebaseIO.delete("conferenceDocument", conferDataSet[intent.getIntExtra("position", 0)][8] as String )
-                    Toast.makeText(this, "삭제 했어요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "삭제했어요", Toast.LENGTH_SHORT).show()
                     DataHandler.reload(DBType.CONFERENCE)
                     finish()
                 }

@@ -35,9 +35,7 @@ class ProfileActivity : AppCompatActivity() {
         val profileImageView : ImageView = findViewById(R.id.profileImageView)
         profileImageView.setImageResource(R.drawable.logo512)
 
-
         var userId =  OneSignal.getDeviceState()?.userId
-
 
         val conferenceNotiSwitch : Switch = findViewById(R.id.conferenceNotiSwitch)
         if(conferenceNotiDeviceIDList.contains(userId)){

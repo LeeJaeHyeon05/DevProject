@@ -8,7 +8,6 @@ import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -18,34 +17,33 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.databinding.DataBindingUtil
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
-import com.example.devproject.others.ImageViewAdapter
 import com.example.devproject.databinding.ActivityAddConferencesBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.others.DBType
+import com.example.devproject.others.ImageViewAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
 import com.example.devproject.util.UIHandler
 import com.google.android.material.chip.Chip
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.GeoPoint
+import com.onesignal.OneSignal
+import com.onesignal.OneSignal.PostNotificationResponseHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONException
+import org.json.JSONObject
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+
 
 class AddConferencesActivity() : AppCompatActivity() {
 
@@ -210,9 +208,37 @@ class AddConferencesActivity() : AppCompatActivity() {
                 manager = binding.conferManagerCheckBox.isChecked
             )
 
+
+
             if(checkInput(conference)){
+
+                var deviceIDs = ""
+                DataHandler.conferenceNotiDeviceIDList.forEachIndexed { index, s ->
+                    deviceIDs += if(index + 1 == DataHandler.conferenceNotiDeviceIDList.size ){
+                        "'${s}'"
+                    }else{
+                        "'${s}', "
+                    }
+                }
+
                 if(storageWrite("conferenceDocument", documentId, snapshotImage, imageList, conference)){
-                    Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "업로드했어요!", Toast.LENGTH_SHORT).show()
+                    //Notification
+                    try {
+                        OneSignal.postNotification("{'headings' : {'en' : '신규 컨퍼런스'}, 'contents': {'en':'${conference.title}'}, 'include_player_ids': [${deviceIDs}]}",
+                            object : PostNotificationResponseHandler {
+                                override fun onSuccess(response: JSONObject) {
+                                    Log.i("OneSignalExample", "postNotification Success: $response")
+                                }
+
+                                override fun onFailure(response: JSONObject) {
+                                    Log.e("OneSignalExample", "postNotification Failure: $response")
+                                }
+                            })
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+
                     CoroutineScope(Dispatchers.Main).launch {
                         DataHandler.reload(DBType.CONFERENCE)
                     }
