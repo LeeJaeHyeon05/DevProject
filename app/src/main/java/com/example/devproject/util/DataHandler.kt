@@ -1,10 +1,8 @@
 package com.example.devproject.util
 
-import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.example.devproject.R
 import com.example.devproject.format.UserInfo
 import com.example.devproject.fragment.HomeFragment
 import com.example.devproject.fragment.StudyFragment

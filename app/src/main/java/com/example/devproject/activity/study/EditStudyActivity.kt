@@ -77,14 +77,6 @@ class EditStudyActivity : AppCompatActivity() {
         binding.addStudyButton.text = "스터디 모집글 편집하기"
         binding.addStudyButton.setOnClickListener {
 
-            val languageMap = adapter.getLanguageMaps()
-            var languageArray : MutableList<String> = emptyList<String>().toMutableList()
-            languageMap.forEach { if(it.value){
-                languageArray.add(it.key)
-            }
-            }
-            println(languageArray)
-
             val studyInfo = StudyInfo(
                 documentID = studyDataSet[pos!!][9].toString(),
                 ongoing = true,
@@ -94,7 +86,7 @@ class EditStudyActivity : AppCompatActivity() {
                 studyURL = binding.addStudyLink.text.toString(),
                 totalMember = totalMember,
                 remainingMemeber = totalMember - binding.selectedMemberTextView.text.toString().toLong(),
-                language = languageArray,
+                language = adapter.getLanguageList(),
                 uid = FirebaseAuth.getInstance().uid,
                 uploader= DataHandler.userInfo.id,
                 endDate = endDate
@@ -102,7 +94,7 @@ class EditStudyActivity : AppCompatActivity() {
 
             if(FirebaseIO.write("groupstudyDocument", studyInfo.documentID.toString(), studyInfo)){
                 DataHandler.reload(DBType.STUDY)
-                Toast.makeText(this, "수정하였습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "수정했어요", Toast.LENGTH_SHORT).show()
             }
             finish()
         }

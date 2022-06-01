@@ -1,22 +1,22 @@
 package com.example.devproject.activity.account
 
-import android.app.Activity
 import android.content.Intent
+import android.content.res.TypedArray
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.devproject.R
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.KeyboardVisibilityUtils
 import com.example.devproject.format.UserInfo
 import com.example.devproject.databinding.ActivitySignUpAcitivtyBinding
-import com.google.android.material.navigation.NavigationBarView
+import com.example.devproject.format.ConferenceInfo
+import com.example.devproject.others.LanguageListAdapter
+import com.example.devproject.util.DataHandler
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -26,13 +26,9 @@ class SignUpActivity : AppCompatActivity() {
     lateinit var binding: ActivitySignUpAcitivtyBinding
     private lateinit var  auth: FirebaseAuth
     private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
-    private val languages = listOf<String>("Kotlin" , "Java", "JavaScript" , "C++", "C")
-    private var pos = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivitySignUpAcitivtyBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
 
         keyboardVisibilityUtils = KeyboardVisibilityUtils(window,
@@ -43,18 +39,12 @@ class SignUpActivity : AppCompatActivity() {
             })
 
 
-       var languageAdpater = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, languages)
-        binding.languageSpinner.adapter = languageAdpater
-        binding.languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-               pos = position
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-
-        }
+        //language list view
+        var typedArray : TypedArray = resources.obtainTypedArray(R.array.language_array)
+        var languageSelectRecyclerView = binding.languageRecyclerView
+        languageSelectRecyclerView?.layoutManager = LinearLayoutManager(this.baseContext, LinearLayoutManager.HORIZONTAL, false)
+        var adapter = LanguageListAdapter(typedArray, null)
+        languageSelectRecyclerView?.adapter = adapter
 
         binding.TvFieldInputId.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -177,7 +167,13 @@ class SignUpActivity : AppCompatActivity() {
                                 .addOnCompleteListener(this){ task ->
                                     if(task.isSuccessful){
 
-                                        storeUserId()
+                                        val userInfo = UserInfo(
+                                            uid = auth.uid,
+                                            id = binding.TvFieldInputId.text.toString(),
+                                            Email = binding.TvFieldInputEmail.text.toString(),
+                                            languages = adapter.getLanguageList()
+                                        )
+                                        FirebaseIO.write("UserInfo", binding.TvFieldInputId.text.toString(), userInfo)
 
                                         Toast.makeText(this, "회원가입 완료", Toast.LENGTH_SHORT).show()
                                         val mIntent = Intent(this, LoginActivity::class.java)
@@ -211,16 +207,6 @@ class SignUpActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun storeUserId(){
-        var userInfo = UserInfo()
-        userInfo.uid = auth.uid
-        userInfo.id = binding.TvFieldInputId.text.toString()
-        userInfo.Email = binding.TvFieldInputEmail.text.toString()
-        userInfo.mainLanguage = languages[pos]
-        FirebaseIO.write("UserInfo", binding.TvFieldInputId.text.toString(), userInfo)
-
     }
 }
 

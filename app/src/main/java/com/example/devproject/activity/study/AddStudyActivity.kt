@@ -76,13 +76,6 @@ class AddStudyActivity : AppCompatActivity() {
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
 
-            val languageMap = adapter.getLanguageMaps()
-            var languageArray : MutableList<String> = emptyList<String>().toMutableList()
-            languageMap.forEach { if(it.value){
-                    languageArray.add(it.key)
-                }
-            }
-
             val studyInfo = StudyInfo(
                 documentID = documentID,
                 ongoing = true,
@@ -92,7 +85,7 @@ class AddStudyActivity : AppCompatActivity() {
                 studyURL = binding.addStudyLink.text.toString(),
                 totalMember = totalMember,
                 remainingMemeber = totalMember,
-                language = languageArray,
+                language = adapter.getLanguageList(),
                 uid = FirebaseAuth.getInstance().uid,
                 uploader= DataHandler.userInfo.id,
                 endDate = "${year}. ${month+1}. $day",
