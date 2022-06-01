@@ -22,6 +22,10 @@ class DataHandler {
         var imageDataSet : MutableList<Array<File>> = emptyList<Array<File>>().toMutableList()
         var conferDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
         var studyDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
+
+        var conferenceNotiDeviceIDList : MutableList<String> = emptyList<String>().toMutableList()
+        var studyNotiDeviceIDList : MutableList<String> = emptyList<String>().toMutableList()
+
         var userInfo = UserInfo()
 
         val filterList : MutableList<Any> = mutableListOf(0)
@@ -51,7 +55,8 @@ class DataHandler {
                                     document.data["image"] as MutableList<*>,
                                     document.data["startDate"] as String,   //10
                                     document.data["finishDate"] as String,   //11
-                                    document.data["place"] as String //12
+                                    document.data["place"] as String, //12
+                                    document.data["manager"] as Boolean
                                 )
                                 )
                             }
@@ -84,6 +89,22 @@ class DataHandler {
             }
         }
 
+        fun loadNotiInformation(){
+            FirebaseIO.readPublic("onesignalInfo").addOnSuccessListener {
+                result->
+                for (document in result){
+                    when(document.id){
+                        "conferenceNotification" -> {
+                            conferenceNotiDeviceIDList = document.data["deviceID"] as MutableList<String>
+                        }
+                        "studyNotification" -> {
+                            studyNotiDeviceIDList = document.data["deviceID"] as MutableList<String>
+                        }
+                    }
+                }
+            }
+        }
+
         fun reload(type : DBType){
             delete(type)
             when(type){
@@ -104,7 +125,8 @@ class DataHandler {
                                     document.data["image"] as MutableList<*>,
                                     document.data["startDate"] as String,   //10
                                     document.data["finishDate"] as String,   //11
-                                    document.data["place"] as String //12
+                                    document.data["place"] as String, //12
+                                    document.data["manager"] as Boolean
                                 )
                                 )
                             }

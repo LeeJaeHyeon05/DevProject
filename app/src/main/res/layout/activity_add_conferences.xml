@@ -195,6 +195,16 @@
             app:layout_constraintTop_toBottomOf="@+id/conferChipGroup"
             app:layout_constraintVertical_bias="1.0" />
 
+        <CheckBox
+            android:id="@+id/conferManagerCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/yellow_500"
+            android:text="담당자 입니다"
+            app:layout_constraintBottom_toTopOf="@+id/conferOnlineCheckBox"
+            app:layout_constraintStart_toEndOf="@+id/conferChipGroup"
+            app:layout_constraintTop_toBottomOf="@+id/tagNumberTextView" />
+
         <com.alespero.expandablecardview.ExpandableCardView
             android:id="@+id/showMapSnapShotLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

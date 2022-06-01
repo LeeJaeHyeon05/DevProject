@@ -17,4 +17,5 @@ data class ConferenceInfo(
     var uid : String? = null,
     var startDate : String? = null,
     var finishDate : String?  = null,
+    var manager : Boolean?  = false,
 )

@@ -19,6 +19,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DataHandler.loadNotiInformation()
         DataHandler.load(DBType.CONFERENCE)
         DataHandler.load(DBType.STUDY)
 

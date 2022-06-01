@@ -18,8 +18,8 @@ import com.bumptech.glide.Glide
 import com.example.devproject.util.DataHandler
 import com.example.devproject.R
 import com.example.devproject.activity.ShowWebViewActivity
+import com.example.devproject.dialog.BasicDialog
 import com.example.devproject.others.ImageViewAdapter
-import com.example.devproject.dialog.DeleteDialog
 import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler.Companion.conferDataSet
 import com.example.devproject.util.FirebaseIO
@@ -38,6 +38,8 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
     var conferURLImageView : ImageView? = null
     var conferContentTextView : TextView? = null
     var confershowNoImage: ImageView? = null
+    var conferManagerImageView : ImageView? = null
+
     private lateinit var imageAdapter: ImageViewAdapter
     lateinit var viewModel: ImageCounterViewModel
 
@@ -62,11 +64,11 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
                 }
             }
             R.id.deleteButton ->{
-                val dialog = DeleteDialog(this)
+                val dialog = BasicDialog(this, "정말 삭제할까요?")
                 dialog.activate()
                 dialog.okButton?.setOnClickListener {
                     FirebaseIO.delete("conferenceDocument", conferDataSet[intent.getIntExtra("position", 0)][8] as String )
-                    Toast.makeText(this, "삭제 되었습니다", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "삭제했어요", Toast.LENGTH_SHORT).show()
                     DataHandler.reload(DBType.CONFERENCE)
                     finish()
                 }
@@ -94,6 +96,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         conferURLImageView = findViewById(R.id.conferURLImageView)
         conferContentTextView = findViewById(R.id.conferConetentTextView)
         confershowNoImage = findViewById(R.id.conferDetailImageView)
+        conferManagerImageView = findViewById(R.id.conferManagerImageView)
 
         conferUploaderIconImageView?.setImageResource(R.drawable.logo512)
         conferUploaderTextView?.text = conferDataSet[position][0].toString()
@@ -105,7 +108,11 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         conferPriceTextView?.text = if(conferDataSet[position][3].toString().toInt() == 0) "무료" else "${conferDataSet[position][3]}원"
         conferOfflineTextView?.text = if(conferDataSet[position][4].toString() == "false") "온라인" else "오프라인"
         conferURLImageView?.setImageResource(R.drawable.link)
-
+        conferManagerImageView?.visibility = if(conferDataSet[position][13] as Boolean){
+            View.VISIBLE
+        }else{
+            View.INVISIBLE
+        }
         //image = conferDataSet[position][9]
         showImage(position, this)
 

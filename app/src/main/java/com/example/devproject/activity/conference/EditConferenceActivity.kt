@@ -77,6 +77,9 @@ class EditConferenceActivity() : AppCompatActivity() {
         binding.addConLink.setText(DataHandler.conferDataSet[position][5] as String)
         binding.addConDetail.setText(DataHandler.conferDataSet[position][6] as String)
         binding.addConButton.text = "컨퍼런스 편집하기"
+        binding.conferOnlineCheckBox.isChecked =  !(DataHandler.conferDataSet[position][4] as Boolean)
+        binding.conferManagerCheckBox.isChecked = DataHandler.conferDataSet[position][13] as Boolean
+
         val imagelist: ArrayList<Uri> = DataHandler.conferDataSet[position][9] as ArrayList<Uri>
         var snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
         
@@ -248,7 +251,9 @@ class EditConferenceActivity() : AppCompatActivity() {
             image = DataHandler.conferDataSet[position][9] as ArrayList<Uri>,
             uid = DataHandler.conferDataSet[position][7] as String,
             startDate = binding.startDateTextView.text.toString().replace(",", "."),
-            finishDate = binding.finishDateTextView.text.toString().replace(",", ".")
+            finishDate = binding.finishDateTextView.text.toString().replace(",", "."),
+            manager = binding.conferManagerCheckBox.isChecked
+
         )
     }
 
