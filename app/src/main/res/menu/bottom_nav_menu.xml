@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/headhuntingFragment"
+        android:icon="@drawable/developer"
+        android:title="헤드헌팅"/>
+
+    <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/ic_baseline_supervised_user_circle_24"
         android:title="개발 컨퍼런스"/>

@@ -1,10 +1,8 @@
 package com.example.devproject.util
 
-import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.example.devproject.R
 import com.example.devproject.format.UserInfo
 import com.example.devproject.fragment.HomeFragment
 import com.example.devproject.fragment.StudyFragment
@@ -22,6 +20,7 @@ class DataHandler {
         var imageDataSet : MutableList<Array<File>> = emptyList<Array<File>>().toMutableList()
         var conferDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
         var studyDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
+        var headhuntingDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
 
         var conferenceNotiDeviceIDList : MutableList<String> = emptyList<String>().toMutableList()
         var studyNotiDeviceIDList : MutableList<String> = emptyList<String>().toMutableList()
@@ -227,7 +226,6 @@ class DataHandler {
                 DBType.STUDY->{
                     studyDataSet.clear()
                 }
-                else->{}
             }
 
         }
@@ -239,6 +237,12 @@ class DataHandler {
                 .addOnSuccessListener {
                     for(document in it){
                         userInfo.id = document["id"] as String
+                        try{
+                            userInfo.languages = document["languages"] as MutableList<String>
+                        }catch (e : Exception){
+                            userInfo.languages = emptyList<String>().toMutableList()
+                        }
+
                     }
                 }
                 .addOnFailureListener{

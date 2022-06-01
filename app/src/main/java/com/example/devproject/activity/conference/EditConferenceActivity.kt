@@ -85,14 +85,13 @@ class EditConferenceActivity() : AppCompatActivity() {
         
         getDate()
         getPrice()
-        showImage(position, this)
+
 
         viewModel = ViewModelProvider(this).get(ImageCounterViewModel::class.java)
-
         viewModel.imageCounterValue.observe(this, androidx.lifecycle.Observer {
             binding.addConImageTextView.text = "$it / 3"
         })
-
+        showImage(position, this)
 
         var startMapActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result -> //지도 액티비티 결과값 받아오기
             if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
@@ -253,7 +252,6 @@ class EditConferenceActivity() : AppCompatActivity() {
             startDate = binding.startDateTextView.text.toString().replace(",", "."),
             finishDate = binding.finishDateTextView.text.toString().replace(",", "."),
             manager = binding.conferManagerCheckBox.isChecked
-
         )
     }
 

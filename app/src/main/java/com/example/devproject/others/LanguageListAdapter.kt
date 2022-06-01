@@ -18,7 +18,6 @@ class LanguageListAdapter(languageArray: TypedArray , languages: MutableList<Str
     private var languageArray = languageArray
     private var context : Context? = null
     var languageMap = LinkedHashMap<String, Boolean>()
-    var arr : MutableList<Boolean> = emptyList<Boolean>().toMutableList()
 
     init{
         languageMap["csharp"] = false
@@ -31,31 +30,19 @@ class LanguageListAdapter(languageArray: TypedArray , languages: MutableList<Str
         languages?.forEach {
             languageMap[it] = true
         }
-
-        languageMap.forEach {
-            arr.add(it.value)
-        }
-
-        println(languages)
-        println(arr)
         UIHandler.languageNumberTextView?.text = updateLanguageSelectedNumber().toString()
     }
 
-    fun getLanguageMaps() : HashMap<String, Boolean> {
-            arr.forEachIndexed { index, b ->
-                if(b){
-                    when(index){
-                        0 -> languageMap["csharp"] = true
-                        1 -> languageMap["cpp"] = true
-                        2 -> languageMap["kotlin"] = true
-                        3 -> languageMap["javascript"] = true
-                        4 -> languageMap["swift"] = true
-                        5 -> languageMap["go"] = true
-                    }
-                }
-            }
-            return languageMap
+    fun getLanguageList() : MutableList<String> {
+        println("what the hell?")
+        var languageList : MutableList<String> = emptyList<String>().toMutableList()
+        languageMap.forEach { if(it.value){
+            languageList.add(it.key)
+            println(it.key)
         }
+        }
+        return languageList
+    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var languageImageView : ImageView = view.findViewById(R.id.languageImageView)
@@ -63,7 +50,6 @@ class LanguageListAdapter(languageArray: TypedArray , languages: MutableList<Str
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
-
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.language_list_item, viewGroup, false)
         context = view.context
@@ -72,17 +58,18 @@ class LanguageListAdapter(languageArray: TypedArray , languages: MutableList<Str
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.languageImageView.setImageDrawable(languageArray.getDrawable(position))
-        if(arr[position]){
+
+        if(languageMap[convertIndexToKey(position)] == true){
             viewHolder.languageImageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
         }
 
         viewHolder.languageImageView.setOnClickListener {
-            if(!arr[position]){
+            if(languageMap[convertIndexToKey(position)] == false){
                 viewHolder.languageImageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
-                arr[position] = true
+                languageMap[convertIndexToKey(position)] = true
             }else{
                 viewHolder.languageImageView.clearColorFilter()
-                arr[position] = false
+                languageMap[convertIndexToKey(position)] = false
             }
             UIHandler.languageNumberTextView?.text = updateLanguageSelectedNumber().toString()
         }
@@ -91,13 +78,24 @@ class LanguageListAdapter(languageArray: TypedArray , languages: MutableList<Str
 
     override fun getItemCount() = languageArray.length()
 
+    private fun convertIndexToKey(position : Int) : String {
+        return  when(position){
+            0 -> "csharp"
+            1->"cpp"
+            2->"kotlin"
+            3->"javascript"
+            4->"swift"
+            5->"go"
+            else ->  "kotlin"
+        }
+    }
+
     private fun updateLanguageSelectedNumber() : Int {
         var count = 0
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-           arr.forEach { if(it) {
-               count++
+        languageMap.forEach {
+            if(it.value){
+                count++;
             }
-           }
         }
         return count
     }
