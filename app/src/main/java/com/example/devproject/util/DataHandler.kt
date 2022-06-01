@@ -237,6 +237,7 @@ class DataHandler {
                 .addOnSuccessListener {
                     for(document in it){
                         userInfo.id = document["id"] as String
+                        userInfo.languages = document["languages"] as MutableList<String>
                     }
                 }
                 .addOnFailureListener{
