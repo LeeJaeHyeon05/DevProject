@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
+import com.example.devproject.activity.conference.EditConferenceActivity
 import com.example.devproject.databinding.ActivityAddConferencesBinding
 import com.example.devproject.databinding.ActivityAddStudyBinding
 import com.example.devproject.databinding.ActivityProfileBinding
@@ -42,6 +43,10 @@ class ProfileActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item?.itemId){
             R.id.editButton -> {
+                if(FirebaseIO.isValidAccount()){
+                    val intent = Intent(this, EditProfileActivity::class.java)
+                    startActivity(intent)
+                }
             }
 
             R.id.logoutButton -> {
@@ -80,6 +85,15 @@ class ProfileActivity : AppCompatActivity() {
             }else{
                 conferenceNotiDeviceIDList.remove(userId)
                 FirebaseIO.db.collection("onesignalInfo").document("conferenceNotification").update("deviceID", conferenceNotiDeviceIDList)
+            }
+        }
+
+        val headhuntingRegisterSwitch = binding.headhuntingRegisterSwitch
+        headhuntingRegisterSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked){
+
+            }else{
+
             }
         }
 

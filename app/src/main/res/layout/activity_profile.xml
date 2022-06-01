@@ -42,6 +42,7 @@
     </TableRow>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -72,7 +73,16 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:text="그룹 스터디 알림" />
+
         </LinearLayout>
     </LinearLayout>
+
+    <Switch
+        android:id="@+id/headhuntingRegisterSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="헤드헌팅에 이력 등록"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:layout_editor_absoluteX="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

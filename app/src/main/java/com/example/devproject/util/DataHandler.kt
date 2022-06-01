@@ -20,6 +20,7 @@ class DataHandler {
         var imageDataSet : MutableList<Array<File>> = emptyList<Array<File>>().toMutableList()
         var conferDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
         var studyDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
+        var headhuntingDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
 
         var conferenceNotiDeviceIDList : MutableList<String> = emptyList<String>().toMutableList()
         var studyNotiDeviceIDList : MutableList<String> = emptyList<String>().toMutableList()
@@ -225,7 +226,6 @@ class DataHandler {
                 DBType.STUDY->{
                     studyDataSet.clear()
                 }
-                else->{}
             }
 
         }

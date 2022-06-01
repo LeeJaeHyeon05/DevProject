@@ -43,6 +43,10 @@
             android:exported="false" />
 
         <activity
+            android:name=".activity.account.EditProfileActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".activity.account.SignUpActivity"
             android:exported="false" />
 
