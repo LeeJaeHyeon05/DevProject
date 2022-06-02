@@ -14,9 +14,7 @@ import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.KeyboardVisibilityUtils
 import com.example.devproject.format.UserInfo
 import com.example.devproject.databinding.ActivitySignUpAcitivtyBinding
-import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.adapter.LanguageListAdapter
-import com.example.devproject.util.DataHandler
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
