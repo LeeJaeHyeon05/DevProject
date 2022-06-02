@@ -43,7 +43,7 @@ class SignUpActivity : AppCompatActivity() {
         var typedArray : TypedArray = resources.obtainTypedArray(R.array.language_array)
         var languageSelectRecyclerView = binding.languageRecyclerView
         languageSelectRecyclerView?.layoutManager = LinearLayoutManager(this.baseContext, LinearLayoutManager.HORIZONTAL, false)
-        var adapter = LanguageListAdapter(typedArray, null, 3)
+        var adapter = LanguageListAdapter(typedArray, null)
         languageSelectRecyclerView?.adapter = adapter
 
         binding.TvFieldInputId.addTextChangedListener(object: TextWatcher{

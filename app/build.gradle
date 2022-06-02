@@ -103,4 +103,11 @@ dependencies {
 
     //onesignal
     implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
+
+    //viewPager2, circleindicator
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'me.relex:circleindicator:2.1.4'
+
+    //photoView
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 }

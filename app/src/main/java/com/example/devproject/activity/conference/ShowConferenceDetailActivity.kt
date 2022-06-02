@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.alespero.expandablecardview.ExpandableCardView
 import com.bumptech.glide.Glide
 import com.example.devproject.util.DataHandler
@@ -21,9 +23,11 @@ import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.dialog.BasicDialog
 import com.example.devproject.others.ImageViewAdapter
 import com.example.devproject.others.DBType
+import com.example.devproject.others.ImageSliderAdapter
 import com.example.devproject.util.DataHandler.Companion.conferDataSet
 import com.example.devproject.util.FirebaseIO
 import com.google.firebase.auth.FirebaseAuth
+import me.relex.circleindicator.CircleIndicator3
 
 class ShowConferenceDetailActivity : AppCompatActivity() {
 
@@ -39,8 +43,11 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
     var conferContentTextView : TextView? = null
     var confershowNoImage: ImageView? = null
     var conferManagerImageView : ImageView? = null
+    var conferPager: ViewPager2? = null
+    var numPage = 3
 
-    private lateinit var imageAdapter: ImageViewAdapter
+    private lateinit var indicator: CircleIndicator3
+    private lateinit var imageAdapter: ImageSliderAdapter
     lateinit var viewModel: ImageCounterViewModel
 
     var link : String? = null
@@ -88,14 +95,14 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
 
         conferUploaderIconImageView = findViewById(R.id.conferUploadeIconImageView)
         conferUploaderTextView  = findViewById(R.id.conferUploaderTextView)
-        conferRecyclerView= findViewById(R.id.conferDetailRecyclerView)
+        //conferRecyclerView= findViewById(R.id.conferDetailRecyclerView)
         conferStartDateTextView = findViewById(R.id.conferStartDateTextView)
         conferFinishDateTextView = findViewById(R.id.conferFinishDateTextView)
         conferPriceTextView = findViewById(R.id.conferPriceTextView)
         conferOfflineTextView = findViewById(R.id.conferOfflineTextView)
         conferURLImageView = findViewById(R.id.conferURLImageView)
         conferContentTextView = findViewById(R.id.conferConetentTextView)
-        confershowNoImage = findViewById(R.id.conferDetailImageView)
+        //confershowNoImage = findViewById(R.id.conferDetailImageView)
         conferManagerImageView = findViewById(R.id.conferManagerImageView)
 
         conferUploaderIconImageView?.setImageResource(R.drawable.logo512)
@@ -108,6 +115,8 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         conferPriceTextView?.text = if(conferDataSet[position][3].toString().toInt() == 0) "무료" else "${conferDataSet[position][3]}원"
         conferOfflineTextView?.text = if(conferDataSet[position][4].toString() == "false") "온라인" else "오프라인"
         conferURLImageView?.setImageResource(R.drawable.link)
+        conferPager = findViewById(R.id.detailViewPager)
+        indicator = findViewById(R.id.circleIndicator)
         conferManagerImageView?.visibility = if(conferDataSet[position][13] as Boolean){
             View.VISIBLE
         }else{
@@ -125,6 +134,8 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
             this.startActivity(intent)
         }
         conferContentTextView?.text = conferDataSet[position][6].toString()
+
+
     }
 
     private fun showImage(position: Int, showConferenceDetailActivity: ShowConferenceDetailActivity) {
@@ -144,6 +155,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
             for(i in list.indices){
                 if(list.size == 1 && conferDataSet[position][9].toString().contains("MapSnapShot.jpeg")){
                     confershowNoImage.visibility = View.VISIBLE
+                    conferPager?.visibility = View.INVISIBLE
                     //imageList.add(imageUri.toUri())
                     //imageAdapter = ImageViewAdapter(imageList = imageList, showConferenceDetailActivity.applicationContext)
                     //conferRecyclerView?.adapter = imageAdapter
@@ -164,7 +176,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
                     }
                 }
                 else {
-                    conferRecyclerView?.visibility = View.VISIBLE
+                    conferPager?.visibility = View.VISIBLE
                     confershowNoImage.visibility = View.INVISIBLE
                     val storageRef = FirebaseIO.storage.reference.child("${list[i]}")
                     storageRef.downloadUrl.addOnSuccessListener { image->
@@ -185,9 +197,14 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
                         }
                     }.addOnSuccessListener {
                         imageList.sort()
-                        imageAdapter = ImageViewAdapter(imageList = imageList, showConferenceDetailActivity.applicationContext, viewModel = viewModel)
-                        conferRecyclerView?.adapter = imageAdapter
-                        conferRecyclerView?.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+
+                        imageAdapter = ImageSliderAdapter(imageList = imageList, showConferenceDetailActivity.applicationContext, numPage)
+                        conferPager?.adapter = imageAdapter
+                        indicator.setViewPager(conferPager)
+                        conferPager?.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+                        conferPager?.currentItem = 0
+                        conferPager?.offscreenPageLimit = 3
+                        conferPager?.adapter?.registerAdapterDataObserver(indicator.adapterDataObserver)
                     }
                 }
             }

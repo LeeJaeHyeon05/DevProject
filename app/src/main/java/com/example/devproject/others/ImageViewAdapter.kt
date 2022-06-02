@@ -1,6 +1,7 @@
 package com.example.devproject.others
 
 import android.annotation.SuppressLint
+import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
@@ -124,6 +125,23 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri> = ArrayList<Uri>(),
                         .load(imageList[position])
                         .fitCenter()
                         .into(it)
+                }
+
+                holder.conferDetailImageView?.setOnClickListener {
+                    val dialogBinding: DialogShowImageBinding = DialogShowImageBinding.inflate(LayoutInflater.from(it.context))
+                    val builder = AlertDialog.Builder(it.context)
+                    val ad = builder.create()
+
+                    ad.setView(dialogBinding.root)
+                    ad.show()
+
+                    dialogBinding.showImageView.let { image ->
+                        Glide.with(context)
+                            .load(imageList[position])
+                            .override(SIZE_ORIGINAL)
+                            .into(image)
+                    }
+
                 }
             }
 
