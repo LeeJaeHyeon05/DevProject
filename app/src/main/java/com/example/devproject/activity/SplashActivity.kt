@@ -22,6 +22,7 @@ class SplashActivity : AppCompatActivity() {
         DataHandler.loadNotiInformation()
         DataHandler.load(DBType.CONFERENCE)
         DataHandler.load(DBType.STUDY)
+        DataHandler.load(DBType.HEADHUNTING)
 
         if(FirebaseIO.isValidAccount()){
             DataHandler.updateUserInfo()

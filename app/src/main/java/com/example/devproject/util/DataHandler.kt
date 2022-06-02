@@ -90,7 +90,6 @@ class DataHandler {
                         headhuntingDataSet.clear()
                         for(document in result){
                             headhuntingDataSet.add(arrayOf(
-                                document.data["experience"] as String,
                                 document.data["position"] as String
                             ))
                         }
@@ -172,6 +171,17 @@ class DataHandler {
                             StudyFragment.adapter!!.notifyDataSetChanged()
                         }
                     }
+                }
+
+                DBType.HEADHUNTING->{
+                        FirebaseIO.readPublic("headhuntingDocument").addOnSuccessListener { result->
+                            headhuntingDataSet.clear()
+                            for(document in result){
+                                headhuntingDataSet.add(arrayOf(
+                                    document.data["position"] as String
+                                ))
+                            }
+                        }
                 }
             }
         }
