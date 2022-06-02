@@ -38,7 +38,6 @@ class DataHandler {
             when(type){
                 DBType.CONFERENCE -> {
                     FirebaseIO.readPublic("conferenceDocument").addOnSuccessListener { result ->
-                        run {
                             conferDataSet.clear()
                             for (document in result) {
                                 conferDataSet.add(arrayOf(                   //index
@@ -59,9 +58,9 @@ class DataHandler {
                                 )
                                 )
                             }
-                        }
                     }
                 }
+
                 DBType.STUDY -> {
                     FirebaseIO.readPublic("groupstudyDocument").addOnSuccessListener { result ->
                         studyDataSet.clear()
@@ -85,6 +84,19 @@ class DataHandler {
                     }
 
                 }
+
+                DBType.HEADHUNTING -> {
+                    FirebaseIO.readPublic("headhuntingDocument").addOnSuccessListener { result->
+                        headhuntingDataSet.clear()
+                        for(document in result){
+                            headhuntingDataSet.add(arrayOf(
+                                document.data["experience"] as String,
+                                document.data["position"] as String
+                            ))
+                        }
+                    }
+                }
+
             }
         }
 

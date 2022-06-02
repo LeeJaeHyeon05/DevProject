@@ -15,7 +15,7 @@ import com.example.devproject.R
 import com.example.devproject.databinding.ActivityAddStudyBinding
 import com.example.devproject.format.StudyInfo
 import com.example.devproject.others.DBType
-import com.example.devproject.others.LanguageListAdapter
+import com.example.devproject.adapter.LanguageListAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler

@@ -19,8 +19,8 @@ import com.example.devproject.databinding.ActivityProfileBinding
 import com.example.devproject.dialog.FilterDialog
 import com.example.devproject.format.UserInfo
 import com.example.devproject.others.DBType
-import com.example.devproject.others.LanguageListAdapter
-import com.example.devproject.others.LanguageListAdapter2
+import com.example.devproject.adapter.LanguageListAdapter
+import com.example.devproject.adapter.LanguageListAdapter2
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.DataHandler.Companion.conferenceNotiDeviceIDList
 import com.example.devproject.util.DataHandler.Companion.studyNotiDeviceIDList

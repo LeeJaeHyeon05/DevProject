@@ -21,9 +21,9 @@ import com.example.devproject.util.DataHandler
 import com.example.devproject.R
 import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.dialog.BasicDialog
-import com.example.devproject.others.ImageViewAdapter
+import com.example.devproject.adapter.ImageViewAdapter
 import com.example.devproject.others.DBType
-import com.example.devproject.others.ImageSliderAdapter
+import com.example.devproject.adapter.ImageSliderAdapter
 import com.example.devproject.util.DataHandler.Companion.conferDataSet
 import com.example.devproject.util.FirebaseIO
 import com.google.firebase.auth.FirebaseAuth

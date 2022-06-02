@@ -15,12 +15,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.activity.conference.AddConferencesActivity
-import com.example.devproject.others.ListAdapter
+import com.example.devproject.adapter.ListAdapter
 import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
 import com.example.devproject.activity.conference.ImageCounterViewModel
 import com.example.devproject.databinding.ActivityAddConferencesBinding
-import com.example.devproject.others.ImageViewAdapter
+import com.example.devproject.adapter.ImageViewAdapter
 
 class UIHandler {
 

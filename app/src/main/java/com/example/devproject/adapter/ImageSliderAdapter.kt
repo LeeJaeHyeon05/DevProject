@@ -1,4 +1,4 @@
-package com.example.devproject.others
+package com.example.devproject.adapter
 
 import android.content.Context
 import android.content.Intent

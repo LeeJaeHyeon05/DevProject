@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.activity.study.AddStudyActivity
 import com.example.devproject.databinding.FragmentStudyBinding
 import com.example.devproject.others.DBType
-import com.example.devproject.others.StudyListAdapter
+import com.example.devproject.adapter.StudyListAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler

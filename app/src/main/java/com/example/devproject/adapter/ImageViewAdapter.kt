@@ -1,4 +1,4 @@
-package com.example.devproject.others
+package com.example.devproject.adapter
 
 import android.annotation.SuppressLint
 import android.app.ActivityOptions
@@ -20,7 +20,7 @@ import com.example.devproject.activity.conference.AddConferencesActivity
 import com.example.devproject.activity.conference.EditConferenceActivity
 import com.example.devproject.activity.conference.ImageCounterViewModel
 import com.example.devproject.activity.conference.ShowConferenceDetailActivity
-import com.example.devproject.others.ImageViewAdapter.ViewHolder
+import com.example.devproject.adapter.ImageViewAdapter.ViewHolder
 import com.example.devproject.databinding.DialogShowImageBinding
 import com.example.devproject.util.FirebaseIO
 
