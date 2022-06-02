@@ -16,6 +16,7 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:layout_marginLeft="10dp"
             android:id="@+id/conferPreTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,6 +32,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:layout_marginLeft="10dp"
             android:id="@+id/conferPreContentTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,16 +49,17 @@
             app:layout_constraintTop_toBottomOf="@+id/conferPreTitleTextView" />
 
         <TextView
+            android:layout_marginLeft="5dp"
             android:id="@+id/conferPreStartDateTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
             android:text="2022. 05. 02"
             android:textColor="@color/brightGrayColor"
             app:layout_constraintStart_toStartOf="@+id/conferPreTitleTextView"
             app:layout_constraintTop_toBottomOf="@+id/conferPreContentTextView" />
 
         <TextView
+            android:layout_marginLeft="10dp"
             android:id="@+id/textView3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -79,22 +82,23 @@
             android:id="@+id/conferLinkImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
             android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/link" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/languageChip"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
             android:background="@color/buttonColor"
             android:text="코틀린"
             android:visibility="invisible"
             app:chipBackgroundColor="@color/buttonColor"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

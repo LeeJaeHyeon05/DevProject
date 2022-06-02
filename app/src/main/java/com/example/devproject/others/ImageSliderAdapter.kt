@@ -31,6 +31,7 @@ class ImageSliderAdapter(private val imageList: ArrayList<Uri> = ArrayList<Uri>(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Glide.with(context)
             .load(imageList[position])
+            .centerCrop()
             .into(holder.imageUri)
 
         holder.itemView.setOnClickListener {
