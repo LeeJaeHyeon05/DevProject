@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="포지션">
-        <item>프론트엔드</item>
-        <item>백엔드</item>
-        <item>풀스택</item>
-        <item>임베디드</item>
-        <item>웹퍼블리셔</item>
-    </string-array>
+    <array name="language_array">
+        <item>@drawable/logo_frontend</item>
+        <item>@drawable/logo_backend</item>
+        <item>@drawable/logo_fullstack</item>
+        <item>@drawable/logo_embeded</item>
+        <item>@drawable/logo_publisher</item>
+    </array>
 </resources>
