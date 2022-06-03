@@ -1,6 +1,7 @@
 package com.example.devproject.activity.account
 
 import android.content.Intent
+import android.content.res.TypedArray
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -53,7 +54,9 @@ class ProfileActivity : AppCompatActivity() {
 
         supportActionBar?.title = userInfo.id + "의 프로필"
         UIHandler.profileImageView = binding.profileImageView
-        binding.profileImageView.setImageResource(R.drawable.logo_fullstack)
+
+        var typedArray : TypedArray = resources.obtainTypedArray(R.array.position_array)
+        binding.profileImageView.setImageDrawable(typedArray.getDrawable(userInfo.position!!.toInt()))
         binding.profileImageView.setBackgroundResource(R.drawable.round_corner)
 
 

@@ -6,5 +6,5 @@ data class UserInfo(
     var Email: String? = null,
     var mainLanguage : String? = "",
     var languages : MutableList<String>? = null,
-    var position : String? =""
+    var position : Long? = 0
 )

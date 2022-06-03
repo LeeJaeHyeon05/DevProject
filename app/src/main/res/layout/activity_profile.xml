@@ -26,24 +26,6 @@
             android:layout_marginLeft="5dp"
             android:orientation="vertical">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <TextView
-                    android:id="@+id/profilePositionLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="포지션(현직/희망)" />
-
-                <TextView
-                    android:id="@+id/profilePositionTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="프론트엔드" />
-            </TableRow>
-
             <TextView
                 android:id="@+id/textView7"
                 android:layout_width="match_parent"

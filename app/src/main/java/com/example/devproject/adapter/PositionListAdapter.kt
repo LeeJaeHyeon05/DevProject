@@ -10,10 +10,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.R
+import com.example.devproject.others.PositionType
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.UIHandler
 
-class PositionListAdapter(positionArray: TypedArray, positions: MutableList<String>?) : RecyclerView.Adapter<PositionListAdapter.ViewHolder>() {
+class PositionListAdapter(positionArray: TypedArray, selectedIndex : Int) : RecyclerView.Adapter<PositionListAdapter.ViewHolder>() {
     private var positionArray = positionArray
     private var context : Context? = null
     private var positionMap = LinkedHashMap<String, Boolean>()
@@ -25,9 +26,7 @@ class PositionListAdapter(positionArray: TypedArray, positions: MutableList<Stri
         positionMap["fullstack"] = false
         positionMap["embeded"] = false
         positionMap["publisher"] = false
-        positions?.forEach {
-            positionMap[it] = true
-        }
+        positionMap[convertIndexToKey(selectedIndex)] = true
     }
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
@@ -45,6 +44,7 @@ class PositionListAdapter(positionArray: TypedArray, positions: MutableList<Stri
         viewHolder.positionSelectImageView.setImageDrawable(positionArray.getDrawable(position))
         if(positionMap[convertIndexToKey(position)] == true){
             viewHolder.positionSelectImageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
+            selected = true
         }
 
         viewHolder.positionSelectImageView.setOnClickListener {
@@ -69,26 +69,25 @@ class PositionListAdapter(positionArray: TypedArray, positions: MutableList<Stri
 
     private fun convertIndexToKey(position : Int) : String {
         return  when(position){
-            0-> "frontend"
-            1-> "backend"
-            2-> "fullstack"
-            3-> "embeded"
-            4-> "publisher"
-            else ->  "frontend"
+            0-> PositionType.FRONTEND.krName
+            1-> PositionType.BACKEND.krName
+            2-> PositionType.FULLSTACK.krName
+            3-> PositionType.EMBEDED.krName
+            4-> PositionType.PUBLISHER.krName
+            else ->  PositionType.FRONTEND.krName
         }
     }
 
-    fun convertKeyToIndex() : Int{
-        return  when(selectedPosition){
-            "frontend" -> 0
-            "backend" -> 1
-            "fullstack" -> 2
-            "embeded" -> 3
-            "publisher" -> 4
+    fun convertKeyToIndex() : Int {
+        return when (selectedPosition) {
+            PositionType.FRONTEND.krName -> 0
+            PositionType.BACKEND.krName -> 1
+            PositionType.FULLSTACK.krName -> 2
+            PositionType.EMBEDED.krName -> 3
+            PositionType.PUBLISHER.krName -> 4
             else -> 0
         }
     }
-
 
     override fun getItemCount(): Int = positionArray.length()
 }
