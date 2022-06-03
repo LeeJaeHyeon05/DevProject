@@ -1,7 +1,6 @@
-package com.example.devproject.others
+package com.example.devproject.adapter
 
 import android.annotation.SuppressLint
-import android.app.ActivityOptions
 import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
@@ -10,8 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
@@ -20,9 +17,8 @@ import com.example.devproject.activity.conference.AddConferencesActivity
 import com.example.devproject.activity.conference.EditConferenceActivity
 import com.example.devproject.activity.conference.ImageCounterViewModel
 import com.example.devproject.activity.conference.ShowConferenceDetailActivity
-import com.example.devproject.others.ImageViewAdapter.ViewHolder
+import com.example.devproject.adapter.ImageViewAdapter.ViewHolder
 import com.example.devproject.databinding.DialogShowImageBinding
-import com.example.devproject.util.FirebaseIO
 
 class ImageViewAdapter(private val imageList: ArrayList<Uri> = ArrayList<Uri>(), private val context: Context, private val deleteImageList: ArrayList<Uri> = ArrayList<Uri>(), private val viewModel: ImageCounterViewModel): RecyclerView.Adapter<ViewHolder>() {
 

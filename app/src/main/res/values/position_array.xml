@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="position_array">
+        <item>@drawable/logo_frontend</item>
+        <item>@drawable/logo_backend</item>
+        <item>@drawable/logo_fullstack</item>
+        <item>@drawable/logo_embeded</item>
+        <item>@drawable/logo_publisher</item>
+    </array>
+</resources>

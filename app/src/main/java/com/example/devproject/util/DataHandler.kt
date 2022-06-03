@@ -38,7 +38,6 @@ class DataHandler {
             when(type){
                 DBType.CONFERENCE -> {
                     FirebaseIO.readPublic("conferenceDocument").addOnSuccessListener { result ->
-                        run {
                             conferDataSet.clear()
                             for (document in result) {
                                 conferDataSet.add(arrayOf(                   //index
@@ -59,9 +58,9 @@ class DataHandler {
                                 )
                                 )
                             }
-                        }
                     }
                 }
+
                 DBType.STUDY -> {
                     FirebaseIO.readPublic("groupstudyDocument").addOnSuccessListener { result ->
                         studyDataSet.clear()
@@ -85,6 +84,18 @@ class DataHandler {
                     }
 
                 }
+
+                DBType.HEADHUNTING -> {
+                    FirebaseIO.readPublic("headhuntingDocument").addOnSuccessListener { result->
+                        headhuntingDataSet.clear()
+                        for(document in result){
+                            headhuntingDataSet.add(arrayOf(
+                                document.data["position"] as String
+                            ))
+                        }
+                    }
+                }
+
             }
         }
 
@@ -160,6 +171,17 @@ class DataHandler {
                             StudyFragment.adapter!!.notifyDataSetChanged()
                         }
                     }
+                }
+
+                DBType.HEADHUNTING->{
+                        FirebaseIO.readPublic("headhuntingDocument").addOnSuccessListener { result->
+                            headhuntingDataSet.clear()
+                            for(document in result){
+                                headhuntingDataSet.add(arrayOf(
+                                    document.data["position"] as String
+                                ))
+                            }
+                        }
                 }
             }
         }
@@ -237,6 +259,7 @@ class DataHandler {
                 .addOnSuccessListener {
                     for(document in it){
                         userInfo.id = document["id"] as String
+                        userInfo.position = document["position"] as Long
                         try{
                             userInfo.languages = document["languages"] as MutableList<String>
                         }catch (e : Exception){

@@ -1,10 +1,9 @@
-package com.example.devproject.others
+package com.example.devproject.adapter
 
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,11 +33,9 @@ class LanguageListAdapter(languageArray: TypedArray , languages: MutableList<Str
     }
 
     fun getLanguageList() : MutableList<String> {
-        println("what the hell?")
         var languageList : MutableList<String> = emptyList<String>().toMutableList()
         languageMap.forEach { if(it.value){
             languageList.add(it.key)
-            println(it.key)
         }
         }
         return languageList
@@ -58,7 +55,6 @@ class LanguageListAdapter(languageArray: TypedArray , languages: MutableList<Str
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.languageImageView.setImageDrawable(languageArray.getDrawable(position))
-
         if(languageMap[convertIndexToKey(position)] == true){
             viewHolder.languageImageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
         }

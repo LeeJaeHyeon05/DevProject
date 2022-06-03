@@ -46,25 +46,6 @@ class FirebaseIO {
             return success
         }
 
-        fun cloudWrite(documentPath: String, mapSnapShotBitmap: Bitmap, conference: ConferenceInfo): Boolean{
-            var success = false
-            val bitmap = mapSnapShotBitmap
-            val baos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-
-            db.collection("conferenceDocument").document(documentPath).set(conference)
-                .addOnSuccessListener {
-                    Log.d("TAG", "DocumentSnapshot successfully written! ")
-                }
-                .addOnFailureListener {
-                    Log.d("TAG", "Error writing document, $it")
-                }
-            if(db.collection("conferenceDocument").document(documentPath).path.isNotEmpty()){
-                success = true
-            }
-            return success
-        }
-
         fun storageWrite(
             collectionPath: String,
             documentPath: String,

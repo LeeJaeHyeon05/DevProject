@@ -13,7 +13,7 @@ import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.databinding.ActivityShowStudyDetailBinding
 import com.example.devproject.dialog.BasicDialog
 import com.example.devproject.others.DBType
-import com.example.devproject.others.LanguageListAdapter2
+import com.example.devproject.adapter.LanguageListAdapter2
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.DataHandler.Companion.studyDataSet
 import com.example.devproject.util.FirebaseIO

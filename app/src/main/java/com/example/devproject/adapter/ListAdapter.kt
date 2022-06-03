@@ -1,4 +1,4 @@
-package com.example.devproject.others
+package com.example.devproject.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -13,17 +13,11 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.devproject.R
 import com.example.devproject.activity.conference.ShowConferenceDetailActivity
 import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.UIHandler
-import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.P)
 class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {

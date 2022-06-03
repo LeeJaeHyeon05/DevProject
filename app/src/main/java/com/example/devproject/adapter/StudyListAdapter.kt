@@ -1,4 +1,4 @@
-package com.example.devproject.others
+package com.example.devproject.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -17,9 +17,6 @@ import com.example.devproject.activity.study.ShowStudyDetailActivity
 import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.util.DataHandler.Companion.studyDataSet
 import com.example.devproject.util.UIHandler
-import com.google.firebase.database.collection.LLRBNode
-import org.w3c.dom.Text
-
 
 class StudyListAdapter() : RecyclerView.Adapter<StudyListAdapter.ViewHolder>() {
 

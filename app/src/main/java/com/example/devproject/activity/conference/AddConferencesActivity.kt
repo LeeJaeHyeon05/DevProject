@@ -26,7 +26,7 @@ import com.example.devproject.databinding.ActivityAddConferencesBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.others.DBType
-import com.example.devproject.others.ImageViewAdapter
+import com.example.devproject.adapter.ImageViewAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
 import com.example.devproject.util.UIHandler

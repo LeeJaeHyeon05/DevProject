@@ -1,26 +1,20 @@
 package com.example.devproject.util
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.devproject.activity.conference.AddConferencesActivity
-import com.example.devproject.others.ListAdapter
+import com.example.devproject.adapter.ListAdapter
 import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
 import com.example.devproject.activity.conference.ImageCounterViewModel
-import com.example.devproject.databinding.ActivityAddConferencesBinding
-import com.example.devproject.others.ImageViewAdapter
+import com.example.devproject.adapter.ImageViewAdapter
 
 class UIHandler {
 
@@ -32,6 +26,9 @@ class UIHandler {
         var rootView : View? = null
         var mainActivity : MainActivity? = null
         var languageNumberTextView : TextView? = null
+        var positionTextView : TextView? = null
+        var profileImageView : ImageView? = null
+
         lateinit var viewModel: ImageCounterViewModel
         fun allocateUI(rootView: View, mainActivity: MainActivity) {
             Companion.rootView = rootView
