@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -25,6 +26,9 @@ class UIHandler {
         var rootView : View? = null
         var mainActivity : MainActivity? = null
         var languageNumberTextView : TextView? = null
+        var positionTextView : TextView? = null
+        var profileImageView : ImageView? = null
+
         lateinit var viewModel: ImageCounterViewModel
         fun allocateUI(rootView: View, mainActivity: MainActivity) {
             Companion.rootView = rootView

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="language_array">
+    <array name="position_array">
         <item>@drawable/logo_frontend</item>
         <item>@drawable/logo_backend</item>
         <item>@drawable/logo_fullstack</item>

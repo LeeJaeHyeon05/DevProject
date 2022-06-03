@@ -17,6 +17,7 @@ import com.example.devproject.util.DataHandler.Companion.conferenceNotiDeviceIDL
 import com.example.devproject.util.DataHandler.Companion.studyNotiDeviceIDList
 import com.example.devproject.util.DataHandler.Companion.userInfo
 import com.example.devproject.util.FirebaseIO
+import com.example.devproject.util.UIHandler
 import com.google.firebase.auth.FirebaseAuth
 import com.onesignal.OneSignal
 
@@ -50,9 +51,12 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.title = DataHandler.userInfo.id + "의 프로필"
+        supportActionBar?.title = userInfo.id + "의 프로필"
+        UIHandler.profileImageView = binding.profileImageView
+        binding.profileImageView.setImageResource(R.drawable.logo_fullstack)
+        binding.profileImageView.setBackgroundResource(R.drawable.round_corner)
 
-        binding.profileImageView.setImageResource(R.drawable.logo512)
+
         var userId =  OneSignal.getDeviceState()?.userId
         val conferenceNotiSwitch = binding.conferenceNotiSwitch
         if(conferenceNotiDeviceIDList.contains(userId)){

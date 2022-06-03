@@ -18,7 +18,6 @@
             android:id="@+id/profileImageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            tools:srcCompat="@drawable/logo512"
             android:background="@drawable/round_corner"/>
 
         <LinearLayout
