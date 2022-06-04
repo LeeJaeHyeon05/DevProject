@@ -6,9 +6,10 @@
     android:layout_height="match_parent">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/swipeRefreshLayout">
+        android:padding="5dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/headhuntingRecyclerView"

@@ -87,9 +87,6 @@ class DataHandler {
 
                 }
                 DBType.HEADHUNTING -> {
-                    FirebaseIO.db.collection("etc").document("headhunting").get().addOnSuccessListener {
-                        headhuntingUserList = it["users"] as MutableList<String>
-                    }.run {
                         FirebaseIO.db.collection("UserInfo").get().addOnSuccessListener { result->
                             for(document in result){
                                 if( headhuntingUserList.contains(document.id)){
@@ -101,7 +98,6 @@ class DataHandler {
                                 }
                             }
                         }
-                    }
                 }
             }
         }
@@ -119,6 +115,13 @@ class DataHandler {
                         }
                     }
                 }
+            }
+        }
+
+        fun loadHeadhuntingInformation() {
+            headhuntingUserList.clear()
+            FirebaseIO.db.collection("etc").document("headhunting").get().addOnSuccessListener {
+                headhuntingUserList = it["users"] as MutableList<String>
             }
         }
 
@@ -181,19 +184,19 @@ class DataHandler {
                 }
 
                 DBType.HEADHUNTING->{
-                    FirebaseIO.db.collection("etc").document("headhunting").get().addOnSuccessListener {
-                        headhuntingUserList = it["users"] as MutableList<String>
-                    }.run {
-                        FirebaseIO.db.collection("UserInfo").get().addOnSuccessListener { result->
-                            for(document in result){
-                                if( headhuntingUserList.contains(document.id)){
-                                    headhuntingDataSet.add(arrayOf(
-                                            document.data["position"] as Long
+                        FirebaseIO.db.collection("UserInfo").get().addOnSuccessListener { result ->
+                            run {
+                                for (document in result) {
+                                    if (headhuntingUserList.contains(document.id)) {
+                                        headhuntingDataSet.add(
+                                            arrayOf(
+                                                document.data["position"] as Long,
+                                                document.data["email"] as String
+                                            )
                                         )
-                                    )
+                                    }
                                 }
                             }
-                        }
                     }.run {
                         HeadhuntingFragment.adapter!!.notifyDataSetChanged()
                     }
@@ -264,7 +267,6 @@ class DataHandler {
                     studyDataSet.clear()
                 }
                 DBType.HEADHUNTING -> {
-                    headhuntingUserList.clear()
                     headhuntingDataSet.clear()
                 }
             }

@@ -88,9 +88,11 @@ class ProfileActivity : AppCompatActivity() {
             if(isChecked){
                 headhuntingUserList.add(userInfo.id!!)
                 FirebaseIO.db.collection("etc").document("headhunting").update("users", headhuntingUserList)
+                DataHandler.loadHeadhuntingInformation()
             }else{
                 headhuntingUserList.remove(userInfo.id!!)
                 FirebaseIO.db.collection("etc").document("headhunting").update("users", headhuntingUserList)
+                DataHandler.loadHeadhuntingInformation()
             }
         }
 
@@ -105,6 +107,7 @@ class ProfileActivity : AppCompatActivity() {
                     studyNotiDeviceIDList.add(userId)
                 }
                 FirebaseIO.db.collection("onesignalInfo").document("studyNotification").update("deviceID", studyNotiDeviceIDList)
+
             }else{
                 studyNotiDeviceIDList.remove(userId)
                 FirebaseIO.db.collection("onesignalInfo").document("studyNotification").update("deviceID", studyNotiDeviceIDList)
