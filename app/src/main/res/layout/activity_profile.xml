@@ -59,14 +59,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Switch
+            <Switch xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/conferenceNotiSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="컨퍼런스 알림" />
+                android:text="컨퍼런스 알림"
+                />
 
-            <Switch
+            <Switch xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/studyNotiSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

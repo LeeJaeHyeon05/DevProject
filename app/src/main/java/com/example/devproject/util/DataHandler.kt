@@ -4,6 +4,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.devproject.format.UserInfo
+import com.example.devproject.fragment.HeadhuntingFragment
 import com.example.devproject.fragment.HomeFragment
 import com.example.devproject.fragment.StudyFragment
 import com.example.devproject.others.DBType
@@ -24,6 +25,7 @@ class DataHandler {
 
         var conferenceNotiDeviceIDList : MutableList<String> = emptyList<String>().toMutableList()
         var studyNotiDeviceIDList : MutableList<String> = emptyList<String>().toMutableList()
+        var headhuntingUserList : MutableList<String> = emptyList<String>().toMutableList()
 
         var userInfo = UserInfo()
 
@@ -84,18 +86,19 @@ class DataHandler {
                     }
 
                 }
-
                 DBType.HEADHUNTING -> {
-                    FirebaseIO.readPublic("headhuntingDocument").addOnSuccessListener { result->
-                        headhuntingDataSet.clear()
-                        for(document in result){
-                            headhuntingDataSet.add(arrayOf(
-                                document.data["position"] as String
-                            ))
+                        FirebaseIO.db.collection("UserInfo").get().addOnSuccessListener { result->
+                            for(document in result){
+                                if( headhuntingUserList.contains(document.id)){
+                                    headhuntingDataSet.add(arrayOf(
+                                        document.data["position"] as Long,
+                                        document.data["email"] as String,
+                                    )
+                                    )
+                                }
+                            }
                         }
-                    }
                 }
-
             }
         }
 
@@ -112,6 +115,13 @@ class DataHandler {
                         }
                     }
                 }
+            }
+        }
+
+        fun loadHeadhuntingInformation() {
+            headhuntingUserList.clear()
+            FirebaseIO.db.collection("etc").document("headhunting").get().addOnSuccessListener {
+                headhuntingUserList = it["users"] as MutableList<String>
             }
         }
 
@@ -174,14 +184,22 @@ class DataHandler {
                 }
 
                 DBType.HEADHUNTING->{
-                        FirebaseIO.readPublic("headhuntingDocument").addOnSuccessListener { result->
-                            headhuntingDataSet.clear()
-                            for(document in result){
-                                headhuntingDataSet.add(arrayOf(
-                                    document.data["position"] as String
-                                ))
+                        FirebaseIO.db.collection("UserInfo").get().addOnSuccessListener { result ->
+                            run {
+                                for (document in result) {
+                                    if (headhuntingUserList.contains(document.id)) {
+                                        headhuntingDataSet.add(
+                                            arrayOf(
+                                                document.data["position"] as Long,
+                                                document.data["email"] as String
+                                            )
+                                        )
+                                    }
+                                }
                             }
-                        }
+                    }.run {
+                        HeadhuntingFragment.adapter!!.notifyDataSetChanged()
+                    }
                 }
             }
         }
@@ -247,6 +265,9 @@ class DataHandler {
                 }
                 DBType.STUDY->{
                     studyDataSet.clear()
+                }
+                DBType.HEADHUNTING -> {
+                    headhuntingDataSet.clear()
                 }
             }
 

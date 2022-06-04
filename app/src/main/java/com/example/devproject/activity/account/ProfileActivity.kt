@@ -15,6 +15,7 @@ import com.example.devproject.format.UserInfo
 import com.example.devproject.adapter.LanguageListAdapter2
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.DataHandler.Companion.conferenceNotiDeviceIDList
+import com.example.devproject.util.DataHandler.Companion.headhuntingUserList
 import com.example.devproject.util.DataHandler.Companion.studyNotiDeviceIDList
 import com.example.devproject.util.DataHandler.Companion.userInfo
 import com.example.devproject.util.FirebaseIO
@@ -43,7 +44,6 @@ class ProfileActivity : AppCompatActivity() {
                 logout()
             }
         }
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -57,7 +57,6 @@ class ProfileActivity : AppCompatActivity() {
 
         var typedArray : TypedArray = resources.obtainTypedArray(R.array.position_array)
         binding.profileImageView.setImageDrawable(typedArray.getDrawable(userInfo.position!!.toInt()))
-        binding.profileImageView.setBackgroundResource(R.drawable.round_corner)
 
 
         var userId =  OneSignal.getDeviceState()?.userId
@@ -84,11 +83,16 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         val headhuntingRegisterSwitch = binding.headhuntingRegisterSwitch
+        headhuntingRegisterSwitch.isChecked = headhuntingUserList.contains(userInfo.id)
         headhuntingRegisterSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked){
-
+                headhuntingUserList.add(userInfo.id!!)
+                FirebaseIO.db.collection("etc").document("headhunting").update("users", headhuntingUserList)
+                DataHandler.loadHeadhuntingInformation()
             }else{
-
+                headhuntingUserList.remove(userInfo.id!!)
+                FirebaseIO.db.collection("etc").document("headhunting").update("users", headhuntingUserList)
+                DataHandler.loadHeadhuntingInformation()
             }
         }
 
@@ -103,6 +107,7 @@ class ProfileActivity : AppCompatActivity() {
                     studyNotiDeviceIDList.add(userId)
                 }
                 FirebaseIO.db.collection("onesignalInfo").document("studyNotification").update("deviceID", studyNotiDeviceIDList)
+
             }else{
                 studyNotiDeviceIDList.remove(userId)
                 FirebaseIO.db.collection("onesignalInfo").document("studyNotification").update("deviceID", studyNotiDeviceIDList)
