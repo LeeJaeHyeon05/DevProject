@@ -5,9 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/headhuntingRecyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/headhunting_list_item"/>
+        android:id="@+id/swipeRefreshLayout">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/headhuntingRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/headhunting_list_item" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

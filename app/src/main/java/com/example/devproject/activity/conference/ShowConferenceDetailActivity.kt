@@ -104,7 +104,6 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         conferManagerImageView = findViewById(R.id.conferManagerImageView)
 
         var typedArray : TypedArray = resources.obtainTypedArray(R.array.position_array)
-//        conferUploaderIconImageView?.setImageDrawable())
         FirebaseIO.db.collection("UserInfo").document(conferDataSet[position][0].toString()).get().addOnSuccessListener {
            conferUploaderIconImageView?.setImageDrawable(typedArray.getDrawable(it["position"].toString().toInt()))
         }

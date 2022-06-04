@@ -25,7 +25,7 @@ class HeadhuntingListAdapter : RecyclerView.Adapter<HeadhuntingListAdapter.ViewH
         return ViewHolder(view)
     }
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.headhuntingPositionTextView.text = DataHandler.headhuntingDataSet[position][0] as String
+        viewHolder.headhuntingPositionTextView.text = DataHandler.headhuntingDataSet[position][0].toString()
     }
 
     override fun getItemCount(): Int = DataHandler.headhuntingDataSet.size
