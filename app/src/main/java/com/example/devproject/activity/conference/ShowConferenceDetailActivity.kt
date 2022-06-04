@@ -1,6 +1,7 @@
 package com.example.devproject.activity.conference
 
 import android.content.Intent
+import android.content.res.TypedArray
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -102,11 +103,14 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         //confershowNoImage = findViewById(R.id.conferDetailImageView)
         conferManagerImageView = findViewById(R.id.conferManagerImageView)
 
-        conferUploaderIconImageView?.setImageResource(R.drawable.logo512)
+        var typedArray : TypedArray = resources.obtainTypedArray(R.array.position_array)
+//        conferUploaderIconImageView?.setImageDrawable())
+        FirebaseIO.db.collection("UserInfo").document(conferDataSet[position][0].toString()).get().addOnSuccessListener {
+           conferUploaderIconImageView?.setImageDrawable(typedArray.getDrawable(it["position"].toString().toInt()))
+        }
+
         conferUploaderTextView?.text = conferDataSet[position][0].toString()
         conferTitleTextView?.text = conferDataSet[position][1].toString()
-        //DummyImage
-        //conferImageView?.setImageResource(R.drawable.ic_launcher_foreground)
         conferStartDateTextView?.text = conferDataSet[position][10].toString().subSequence(5,12).toString() + " 부터"
         conferFinishDateTextView?.text = conferDataSet[position][11].toString().subSequence(5,12).toString() + " 까지"
         conferPriceTextView?.text = if(conferDataSet[position][3].toString().toInt() == 0) "무료" else "${conferDataSet[position][3]}원"

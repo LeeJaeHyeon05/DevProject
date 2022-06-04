@@ -57,7 +57,6 @@ class ProfileActivity : AppCompatActivity() {
 
         var typedArray : TypedArray = resources.obtainTypedArray(R.array.position_array)
         binding.profileImageView.setImageDrawable(typedArray.getDrawable(userInfo.position!!.toInt()))
-        binding.profileImageView.setBackgroundResource(R.drawable.round_corner)
 
 
         var userId =  OneSignal.getDeviceState()?.userId
