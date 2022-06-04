@@ -94,7 +94,8 @@ class DataHandler {
                             for(document in result){
                                 if( headhuntingUserList.contains(document.id)){
                                     headhuntingDataSet.add(arrayOf(
-                                        document.data["position"] as Long
+                                        document.data["position"] as Long,
+                                        document.data["email"] as String,
                                     )
                                     )
                                 }
