@@ -22,7 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
-import com.example.devproject.databinding.ActivityAddConferencesBinding
+import com.example.devproject.databinding.ActivityAddConferenceBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.others.DBType
@@ -45,9 +45,9 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class AddConferencesActivity() : AppCompatActivity() {
+class AddConferenceActivity() : AppCompatActivity() {
 
-    private lateinit var binding: ActivityAddConferencesBinding
+    private lateinit var binding: ActivityAddConferenceBinding
     lateinit var viewModel: ImageCounterViewModel
     private lateinit var uploader: String
     private lateinit var imageAdapter: ImageViewAdapter
@@ -57,7 +57,7 @@ class AddConferencesActivity() : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddConferencesBinding.inflate(layoutInflater)
+        binding = ActivityAddConferenceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar!!.title = "컨퍼런스 추가"

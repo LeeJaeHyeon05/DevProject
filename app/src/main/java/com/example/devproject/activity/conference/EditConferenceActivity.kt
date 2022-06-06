@@ -28,7 +28,7 @@ import com.alespero.expandablecardview.ExpandableCardView
 import com.bumptech.glide.Glide
 import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
-import com.example.devproject.databinding.ActivityAddConferencesBinding
+import com.example.devproject.databinding.ActivityAddConferenceBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.others.DBType
@@ -44,7 +44,7 @@ import kotlin.collections.ArrayList
 
 class EditConferenceActivity() : AppCompatActivity() {
 
-    private lateinit var binding: ActivityAddConferencesBinding
+    private lateinit var binding: ActivityAddConferenceBinding
     private var pos = 0
     lateinit var viewModel: ImageCounterViewModel
     private lateinit var imageAdapter: ImageViewAdapter
@@ -56,7 +56,7 @@ class EditConferenceActivity() : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddConferencesBinding.inflate(layoutInflater)
+        binding = ActivityAddConferenceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar!!.title = "컨퍼런스 편집"

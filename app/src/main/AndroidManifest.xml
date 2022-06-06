@@ -52,7 +52,7 @@
             android:name=".activity.conference.ShowConferenceDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.conference.AddConferencesActivity"
+            android:name=".activity.conference.AddConferenceActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
