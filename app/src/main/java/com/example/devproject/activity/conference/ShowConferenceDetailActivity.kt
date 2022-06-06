@@ -8,11 +8,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.alespero.expandablecardview.ExpandableCardView
 import com.bumptech.glide.Glide
@@ -83,17 +81,17 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
 
         supportActionBar?.title = conferDataSet[position][1].toString()
 
-        var conferUploaderIconImageView = binding.conferUploadeIconImageView//findViewById(R.id.conferUploadeIconImageView)
-        var conferUploaderTextView  = binding.conferUploaderTextView//findViewById(R.id.conferUploaderTextView)
+        var conferUploaderIconImageView = binding.conferUploadeIconImageView
+        var conferUploaderTextView  = binding.conferUploaderTextView
         //conferRecyclerView= findViewById(R.id.conferDetailRecyclerView)
-        var conferStartDateTextView = binding.conferStartDateTextView//findViewById(R.id.conferStartDateTextView)
-        var conferFinishDateTextView = binding.conferFinishDateTextView//findViewById(R.id.conferFinishDateTextView)
-        var conferPriceTextView = binding.conferPriceTextView//findViewById(R.id.conferPriceTextView)
-        var conferOfflineTextView = binding.conferOfflineTextView//findViewById(R.id.conferOfflineTextView)
-        var conferURLImageView = binding.conferURLImageView//findViewById(R.id.conferURLImageView)
-        var conferContentTextView = binding.conferConetentTextView//findViewById(R.id.conferConetentTextView)
+        var conferStartDateTextView = binding.conferStartDateTextView
+        var conferFinishDateTextView = binding.conferFinishDateTextView
+        var conferPriceTextView = binding.conferPriceTextView
+        var conferOfflineTextView = binding.conferOfflineTextView
+        var conferURLImageView = binding.conferURLImageView
+        var conferContentTextView = binding.conferConetentTextView
         //confershowNoImage = findViewById(R.id.conferDetailImageView)
-        var conferManagerImageView = binding.conferManagerImageView//findViewById(R.id.conferManagerImageView)
+        var conferManagerImageView = binding.conferManagerImageView
 
         var typedArray : TypedArray = resources.obtainTypedArray(R.array.position_array)
         FirebaseIO.db.collection("UserInfo").document(conferDataSet[position][0].toString()).get().addOnSuccessListener {

@@ -28,18 +28,64 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.95" />
 
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/addConImageButtonLayout"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/addConImage"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_baseline_camera_alt_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/addConImageTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:text="@{Integer.toString(viewModel.imageCounterLiveData)} / 3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/addConferenceImageRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:orientation="horizontal"></androidx.recyclerview.widget.RecyclerView>
+
+
+        </LinearLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/titleTextInput"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
             android:textColorHint="#9A9A9A"
             app:layout_constraintBottom_toTopOf="@id/detailTextInput"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
             app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
             <EditText
                 android:id="@+id/addConTitle"
@@ -131,13 +177,11 @@
             android:id="@+id/addChipButton"
             android:layout_width="70dp"
             android:layout_height="60dp"
-            app:layout_constraintStart_toEndOf="@+id/conferPreClip"
-            app:layout_constraintBottom_toBottomOf="@+id/conferPreClip"
-            app:layout_constraintTop_toTopOf="@+id/conferPreClip"
-            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
             android:text="추가하기"
             android:textColor="@color/black"
-            />
+            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
+            app:layout_constraintStart_toEndOf="@+id/conferPreClip"
+            tools:layout_editor_absoluteY="383dp" />
 
         <TextView
             android:id="@+id/tagNumberTextView"
@@ -223,7 +267,7 @@
         <LinearLayout
             android:id="@+id/LinearLayout"
             android:layout_width="0dp"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -233,7 +277,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -309,78 +353,27 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/addConImageButtonLayout"
-                        android:clickable="true"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/addConImage"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@drawable/ic_baseline_camera_alt_24"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/addConImageTextView"
-                            android:layout_marginTop="60dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{Integer.toString(viewModel.imageCounterLiveData)} / 3"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:layout_marginLeft="8dp"
-                        android:id="@+id/addConferenceImageRecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"></androidx.recyclerview.widget.RecyclerView>
-
-
-                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="3">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
 
-                <LinearLayout
+                <Button
+                    android:id="@+id/addConButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                    <Button
-                        android:id="@+id/addConButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/con_round"
-                        android:backgroundTint="@color/white"
-                        android:fontFamily="@font/jua_regular"
-                        android:letterSpacing="-0.01"
-                        android:padding="5dp"
-                        android:text="@string/addConferenceText"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-                </LinearLayout>
-
+                    android:layout_margin="10dp"
+                    android:background="@drawable/con_round"
+                    android:backgroundTint="@color/white"
+                    android:fontFamily="@font/jua_regular"
+                    android:letterSpacing="-0.01"
+                    android:padding="5dp"
+                    android:text="@string/addConferenceText"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent" />
             </LinearLayout>
 
         </LinearLayout>

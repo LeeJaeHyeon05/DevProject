@@ -19,6 +19,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.Pair
+import androidx.core.util.component1
 import androidx.lifecycle.ViewModelProvider
 import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
@@ -31,6 +33,7 @@ import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
 import com.example.devproject.util.UIHandler
 import com.google.android.material.chip.Chip
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.onesignal.OneSignal
 import com.onesignal.OneSignal.PostNotificationResponseHandler
@@ -39,6 +42,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
+import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -60,7 +64,7 @@ class AddConferenceActivity() : AppCompatActivity() {
         binding = ActivityAddConferenceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar!!.title = "컨퍼런스 추가"
+        supportActionBar!!.title = "컨퍼런스 등록"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         var latitude: Double = 0.0
@@ -340,14 +344,33 @@ class AddConferenceActivity() : AppCompatActivity() {
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
+        val formatter = SimpleDateFormat("yyyy. MM. dd")
 
         binding.startDateTextView.setOnClickListener {
-            val dig = DatePickerDialog(this,
-                { p0, year, month, day ->
-                    binding.startDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
-                    binding.finishDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
-                }, year, month, day)
-            dig.show()
+
+            val datePicker = MaterialDatePicker.Builder.dateRangePicker().setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
+                .setTitleText("컨퍼런스 날짜 선택").setSelection(
+                Pair(MaterialDatePicker.thisMonthInUtcMilliseconds(),
+                MaterialDatePicker.todayInUtcMilliseconds())
+            )
+            datePicker.build().also {
+                picker ->
+
+                picker.show(supportFragmentManager, picker.toString())
+
+                picker.addOnPositiveButtonClickListener { it ->
+                    println("시작" + formatter.format(Date(it.first)))
+                    println("종료" +  formatter.format(Date(it.second)))
+                }
+            }
+
+//            val dig = DatePickerDialog(this,
+//                { p0, year, month, day ->
+//                    binding.startDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
+//                    binding.finishDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
+//                }, year, month, day)
+
+
         }
 
         binding.finishDateTextView.setOnClickListener{
