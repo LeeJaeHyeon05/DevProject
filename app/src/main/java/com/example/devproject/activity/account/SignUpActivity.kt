@@ -26,6 +26,9 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        supportActionBar?.title = "회원가입"
+
         binding = ActivitySignUpAcitivtyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
