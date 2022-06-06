@@ -8,11 +8,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.alespero.expandablecardview.ExpandableCardView
 import com.bumptech.glide.Glide
@@ -22,6 +20,7 @@ import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.dialog.BasicDialog
 import com.example.devproject.others.DBType
 import com.example.devproject.adapter.ImageSliderAdapter
+import com.example.devproject.databinding.ActivityShowConferenceDetailBinding
 import com.example.devproject.util.DataHandler.Companion.conferDataSet
 import com.example.devproject.util.FirebaseIO
 import com.google.firebase.auth.FirebaseAuth
@@ -29,18 +28,8 @@ import me.relex.circleindicator.CircleIndicator3
 
 class ShowConferenceDetailActivity : AppCompatActivity() {
 
-    var conferUploaderIconImageView : ImageView? = null
-    var conferUploaderTextView : TextView? = null
-    var conferTitleTextView : TextView? = null
-    var conferRecyclerView : RecyclerView? = null
-    var conferStartDateTextView : TextView? = null
-    var conferFinishDateTextView : TextView? = null
-    var conferPriceTextView : TextView? = null
-    var conferOfflineTextView : TextView? = null
-    var conferURLImageView : ImageView? = null
-    var conferContentTextView : TextView? = null
-    var confershowNoImage: ImageView? = null
-    var conferManagerImageView : ImageView? = null
+    private lateinit var binding: ActivityShowConferenceDetailBinding
+
     var conferPager: ViewPager2? = null
     var numPage = 3
 
@@ -85,23 +74,24 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_page)
+        binding = ActivityShowConferenceDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val position = intent.getIntExtra("position", 0)
         pos = position
 
         supportActionBar?.title = conferDataSet[position][1].toString()
 
-        conferUploaderIconImageView = findViewById(R.id.conferUploadeIconImageView)
-        conferUploaderTextView  = findViewById(R.id.conferUploaderTextView)
+        var conferUploaderIconImageView = binding.conferUploadeIconImageView
+        var conferUploaderTextView  = binding.conferUploaderTextView
         //conferRecyclerView= findViewById(R.id.conferDetailRecyclerView)
-        conferStartDateTextView = findViewById(R.id.conferStartDateTextView)
-        conferFinishDateTextView = findViewById(R.id.conferFinishDateTextView)
-        conferPriceTextView = findViewById(R.id.conferPriceTextView)
-        conferOfflineTextView = findViewById(R.id.conferOfflineTextView)
-        conferURLImageView = findViewById(R.id.conferURLImageView)
-        conferContentTextView = findViewById(R.id.conferConetentTextView)
+        var conferStartDateTextView = binding.conferStartDateTextView
+        var conferFinishDateTextView = binding.conferFinishDateTextView
+        var conferPriceTextView = binding.conferPriceTextView
+        var conferOfflineTextView = binding.conferOfflineTextView
+        var conferURLImageView = binding.conferURLImageView
+        var conferContentTextView = binding.conferConetentTextView
         //confershowNoImage = findViewById(R.id.conferDetailImageView)
-        conferManagerImageView = findViewById(R.id.conferManagerImageView)
+        var conferManagerImageView = binding.conferManagerImageView
 
         var typedArray : TypedArray = resources.obtainTypedArray(R.array.position_array)
         FirebaseIO.db.collection("UserInfo").document(conferDataSet[position][0].toString()).get().addOnSuccessListener {
@@ -109,9 +99,8 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         }
 
         conferUploaderTextView?.text = conferDataSet[position][0].toString()
-        conferTitleTextView?.text = conferDataSet[position][1].toString()
-        conferStartDateTextView?.text = conferDataSet[position][10].toString().subSequence(5,12).toString() + " 부터"
-        conferFinishDateTextView?.text = conferDataSet[position][11].toString().subSequence(5,12).toString() + " 까지"
+        conferStartDateTextView?.text = conferDataSet[position][10].toString().subSequence(2,12).toString()
+        conferFinishDateTextView?.text = conferDataSet[position][11].toString().subSequence(2,12).toString()
         conferPriceTextView?.text = if(conferDataSet[position][3].toString().toInt() == 0) "무료" else "${conferDataSet[position][3]}원"
         conferOfflineTextView?.text = if(conferDataSet[position][4].toString() == "false") "온라인" else "오프라인"
         conferURLImageView?.setImageResource(R.drawable.link)

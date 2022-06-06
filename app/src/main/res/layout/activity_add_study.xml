@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:paddingLeft="5dp"
-    tools:context=".activity.conference.AddConferencesActivity">
+    tools:context=".activity.conference.AddConferenceActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

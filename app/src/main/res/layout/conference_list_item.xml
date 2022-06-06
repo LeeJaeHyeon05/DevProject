@@ -16,13 +16,12 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:layout_marginLeft="10dp"
             android:id="@+id/conferPreTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="2"
-            android:paddingLeft="5dp"
+            android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:paddingRight="5dp"
             android:text="네이버 컨퍼런스"
@@ -32,10 +31,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:layout_marginLeft="10dp"
             android:id="@+id/conferPreContentTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:ellipsize="end"
             android:letterSpacing="-0.035"
             android:maxLines="2"
@@ -49,10 +48,11 @@
             app:layout_constraintTop_toBottomOf="@+id/conferPreTitleTextView" />
 
         <TextView
-            android:layout_marginLeft="5dp"
             android:id="@+id/conferPreStartDateTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:paddingLeft="5dp"
             android:text="2022. 05. 02"
             android:textColor="@color/brightGrayColor"
             app:layout_constraintStart_toStartOf="@+id/conferPreTitleTextView"
@@ -72,6 +72,7 @@
             android:id="@+id/conferPreFinishDateTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingLeft="0dp"
             android:text="2022. 05. 02"
             android:textColor="@color/brightGrayColor"
             app:layout_constraintStart_toEndOf="@+id/textView3"

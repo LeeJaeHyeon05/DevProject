@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.example.devproject.R
-import com.example.devproject.activity.conference.AddConferencesActivity
+import com.example.devproject.activity.conference.AddConferenceActivity
 import com.example.devproject.activity.conference.EditConferenceActivity
 import com.example.devproject.activity.conference.ImageCounterViewModel
 import com.example.devproject.activity.conference.ShowConferenceDetailActivity
@@ -29,7 +29,7 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri> = ArrayList<Uri>(),
         var conferDetailImageView: ImageView? = null
         init {
             when(view.context){
-                is AddConferencesActivity -> {
+                is AddConferenceActivity -> {
                     addConferenceImageView = view.findViewById(R.id.IvAddConferenceListImageView)
                     view.setOnClickListener {
                         val dialogBinding: DialogShowImageBinding = DialogShowImageBinding.inflate(LayoutInflater.from(view.context))
@@ -78,7 +78,7 @@ class ImageViewAdapter(private val imageList: ArrayList<Uri> = ArrayList<Uri>(),
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when(holder.itemView.context){
-            is AddConferencesActivity -> {
+            is AddConferenceActivity -> {
                 var layout = holder.itemView.layoutParams
                 Log.d("TAG", "height: ${layout.height}")
                 Log.d("TAG", "width: ${layout.width}")

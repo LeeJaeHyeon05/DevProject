@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.devproject.activity.conference.AddConferencesActivity
+import com.example.devproject.activity.conference.AddConferenceActivity
 import com.example.devproject.databinding.FragmentHomeBinding
 import com.example.devproject.others.DBType
 import com.example.devproject.adapter.ListAdapter
@@ -52,7 +52,7 @@ class HomeFragment : Fragment() {
         val addCon = mBinding?.conferAddButton
         addCon?.setOnClickListener {
             if(FirebaseIO.isValidAccount()){
-                val intent = Intent(activity, AddConferencesActivity::class.java)
+                val intent = Intent(activity, AddConferenceActivity::class.java)
                 startActivity(intent)
             }else {
                 Toast.makeText(this.context, "로그인이 필요합니다", Toast.LENGTH_SHORT).show()
