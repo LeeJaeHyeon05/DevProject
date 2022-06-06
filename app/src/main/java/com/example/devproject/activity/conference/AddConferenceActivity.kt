@@ -323,7 +323,7 @@ class AddConferenceActivity() : AppCompatActivity() {
     }
 
     private fun getPrice() {
-        val priceBtn = binding.priceButton
+        val priceBtn = binding.conferPriceButton
         priceBtn.setOnClickListener {
             val dialog = PriceDialog(this)
             dialog.setOnOkClickedListener{ price->

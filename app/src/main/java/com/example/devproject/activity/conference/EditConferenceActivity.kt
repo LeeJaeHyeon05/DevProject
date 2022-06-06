@@ -1,7 +1,6 @@
 package com.example.devproject.activity.conference
 
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.location.Address
@@ -21,6 +20,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.Pair
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,9 +36,11 @@ import com.example.devproject.adapter.ImageViewAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler
+import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -82,16 +84,33 @@ class EditConferenceActivity() : AppCompatActivity() {
 
         val imagelist: ArrayList<Uri> = DataHandler.conferDataSet[position][9] as ArrayList<Uri>
         var snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
-        
-        getDate()
-        getPrice()
 
+        getPrice()
 
         viewModel = ViewModelProvider(this).get(ImageCounterViewModel::class.java)
         viewModel.imageCounterValue.observe(this, androidx.lifecycle.Observer {
             binding.addConImageTextView.text = "$it / 3"
         })
         showImage(position, this)
+
+        val formatter = SimpleDateFormat("yyyy. MM. dd")
+        binding.conferDateImageButton.setOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.dateRangePicker().setInputMode(
+                MaterialDatePicker.INPUT_MODE_CALENDAR)
+                .setTitleText("컨퍼런스 날짜 선택").setSelection(
+                    Pair(
+                        MaterialDatePicker.thisMonthInUtcMilliseconds(),
+                        MaterialDatePicker.todayInUtcMilliseconds())
+                )
+
+            datePicker.build().also { picker ->
+                picker.show(supportFragmentManager, picker.toString())
+                picker.addOnPositiveButtonClickListener { it ->
+                    binding.startDateTextView.text = formatter.format(Date(it.first))
+                    binding.finishDateTextView.text = formatter.format(Date(it.second))
+                }
+            }
+        }
 
         var startMapActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result -> //지도 액티비티 결과값 받아오기
             if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
@@ -143,31 +162,6 @@ class EditConferenceActivity() : AppCompatActivity() {
                 val imageSize = UIHandler.countImage(result, editImageList, this, imageRecyclerView, imageAdapter, viewModel).toString()
                 viewModel.updateValue(imageSize.toInt())
 
-
-//                if(size != null){
-//                    val imageUri = imageData?.clipData
-//                    if(editImageList.size < 4){
-//                        if (imageUri != null) {
-//                            if(editImageList.size + size < 4){
-//                                for(i in 0 until size){
-//                                    editImageList.add(result.data!!.clipData!!.getItemAt(i).uri)
-//                                }
-//                            }
-//                            else{
-//                                var index = 0
-//                                while(editImageList.size != 3){
-//                                    editImageList.add(result.data!!.clipData!!.getItemAt(index).uri)
-//                                    index++
-//                                }
-//                                Toast.makeText(this, "이미지는 3개까지 선택가능합니다", Toast.LENGTH_SHORT).show()
-//                            }
-//                            editImageList.sortDescending()
-//                            imageAdapter = ImageViewAdapter(imageList = editImageList, this, deleteImageList = imagelist)
-//                            imageRecyclerView.adapter = imageAdapter
-//                            imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-//                        }
-//                    }
-//                }
             }
         }
 
@@ -365,34 +359,8 @@ class EditConferenceActivity() : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    private fun getDate() {
-
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-
-
-        binding.startDateTextView.setOnClickListener{
-            val dig = DatePickerDialog(this,
-                { p0, year, month, day ->
-                    binding.startDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
-                }, year, month, day)
-            dig.show()
-        }
-
-        binding.finishDateTextView.setOnClickListener{
-            val dig = DatePickerDialog(this,
-                { p0, year, month, day ->
-                    binding.finishDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
-                }, year, month, day)
-            dig.show()
-        }
-    }
-
     private fun getPrice() {
-        val priceBtn = binding.priceButton
+        val priceBtn = binding.conferPriceButton
         priceBtn.setOnClickListener {
             val dialog = PriceDialog(this)
             dialog.setOnOkClickedListener{ price->
