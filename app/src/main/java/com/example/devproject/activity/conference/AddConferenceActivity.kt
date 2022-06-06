@@ -1,7 +1,6 @@
 package com.example.devproject.activity.conference
 
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.location.Address
@@ -20,7 +19,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
-import androidx.core.util.component1
 import androidx.lifecycle.ViewModelProvider
 import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
@@ -89,36 +87,6 @@ class AddConferenceActivity() : AppCompatActivity() {
             val imageSize = UIHandler.countImage(result, imageList, this, imageRecyclerView, imageAdapter, viewModel).toString()
 
             viewModel.updateValue(imageSize.toInt())
-
-//            if(result.data != null){
-//                val imageData = result.data
-//                var size = imageData?.clipData?.itemCount
-//
-//                if(size != null){
-//                    if(imageList.size < 4){
-//                        val imageUri = imageData?.clipData
-//                        if (imageUri != null) {
-//                            if(imageList.size + size < 4){ // imagelist는 사진을 추가할때마다 값이 커짐, size는 추가한 사진의 개수만 가져옴, 둘이합쳐서 3개이면 다 넣어도됨
-//                                for(i in 0 until size){
-//                                    imageList.add(result.data!!.clipData!!.getItemAt(i).uri)
-//                                }
-//                            }
-//                            else{ //기존 선택한 사진과 새로 추가한 사진의 개수가 총 3개가 넘으면 기존선택한 사진의 개수는 유지하고 새로추가한 사진의 개수를 빼야함
-//                                var index = 0
-//                                while(imageList.size != 3){
-//                                    imageList.add(result.data!!.clipData!!.getItemAt(index).uri)
-//                                    index++
-//                                }
-//                                Toast.makeText(this, "이미지는 3개까지 선택가능합니다", Toast.LENGTH_SHORT).show()
-//                            }
-//                            imageList.sortDescending()
-//                            imageAdapter = ImageViewAdapter(imageList = imageList, this)
-//                            imageRecyclerView.adapter = imageAdapter
-//                            imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-//                        }
-//                    }
-//                }
-//            }
         }
 
         binding.addConImageButtonLayout.setOnClickListener { //사진 불러오기
@@ -128,7 +96,23 @@ class AddConferenceActivity() : AppCompatActivity() {
             startGetImageResult.launch(intent)
         }
 
-        getDate()
+        val formatter = SimpleDateFormat("yyyy. MM. dd")
+        binding.conferDateImageButton.setOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.dateRangePicker().setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
+                .setTitleText("컨퍼런스 날짜 선택").setSelection(
+                    Pair(MaterialDatePicker.thisMonthInUtcMilliseconds(),
+                        MaterialDatePicker.todayInUtcMilliseconds())
+                )
+
+            datePicker.build().also { picker ->
+                picker.show(supportFragmentManager, picker.toString())
+                picker.addOnPositiveButtonClickListener { it ->
+                    binding.startDateTextView.text = formatter.format(Date(it.first))
+                    binding.finishDateTextView.text = formatter.format(Date(it.second))
+                }
+            }
+        }
+
         getPrice()
         //칩
         tagClip()
@@ -198,7 +182,7 @@ class AddConferenceActivity() : AppCompatActivity() {
             val conference = ConferenceInfo(
                 conferenceURL = link,
                 content = conContent,
-                date = binding.startDateTextView.text.toString().replace(",", "."),
+                date = binding.startDateTextView.text.toString(),
                 offline = !binding.conferOnlineCheckBox.isChecked,
                 place = binding.ETConferenceGeo.text.toString(),
                 price = price,
@@ -207,8 +191,8 @@ class AddConferenceActivity() : AppCompatActivity() {
                 uploader = DataHandler.userInfo.id,
                 image = imageList,
                 uid = uid,
-                startDate =  binding.startDateTextView.text.toString().replace(",", "."),
-                finishDate =  binding.finishDateTextView.text.toString().replace(",", "."),
+                startDate =  binding.startDateTextView.text.toString(),
+                finishDate =  binding.finishDateTextView.text.toString(),
                 manager = binding.conferManagerCheckBox.isChecked
             )
 
@@ -259,6 +243,7 @@ class AddConferenceActivity() : AppCompatActivity() {
         val day = c.get(Calendar.DAY_OF_MONTH)
 
         binding.startDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
+        binding.finishDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
         binding.priceTextView.text = "무료"
     }
 
@@ -335,52 +320,6 @@ class AddConferenceActivity() : AppCompatActivity() {
             else ->
                 return super.onOptionsItemSelected(item)
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.N)
-    private fun getDate() {
-
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-        val formatter = SimpleDateFormat("yyyy. MM. dd")
-
-        binding.startDateTextView.setOnClickListener {
-
-            val datePicker = MaterialDatePicker.Builder.dateRangePicker().setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
-                .setTitleText("컨퍼런스 날짜 선택").setSelection(
-                Pair(MaterialDatePicker.thisMonthInUtcMilliseconds(),
-                MaterialDatePicker.todayInUtcMilliseconds())
-            )
-            datePicker.build().also {
-                picker ->
-
-                picker.show(supportFragmentManager, picker.toString())
-
-                picker.addOnPositiveButtonClickListener { it ->
-                    println("시작" + formatter.format(Date(it.first)))
-                    println("종료" +  formatter.format(Date(it.second)))
-                }
-            }
-
-//            val dig = DatePickerDialog(this,
-//                { p0, year, month, day ->
-//                    binding.startDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
-//                    binding.finishDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
-//                }, year, month, day)
-
-
-        }
-
-        binding.finishDateTextView.setOnClickListener{
-            val datePickerDialog = DatePickerDialog(this,
-                { p0, year, month, day ->
-                    binding.finishDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
-                }, year, month, day)
-           datePickerDialog.show()
-        }
-
     }
 
     private fun getPrice() {
