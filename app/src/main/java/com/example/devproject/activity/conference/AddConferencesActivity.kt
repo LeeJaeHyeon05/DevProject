@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -31,9 +30,8 @@ import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
 import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -100,20 +98,18 @@ class AddConferencesActivity() : AppCompatActivity() {
         tagClip()
 
         val startMapActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result -> //지도 액티비티 결과값 받아오기
-            if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
+            if ((result?.resultCode ?: 0) == Activity.RESULT_OK) {
                 latitude  = result?.data?.getDoubleExtra("latitude", 0.0)?: 0.0
                 longitude = result?.data?.getDoubleExtra("longitude", 0.0)?: 0.0
 
                 var snapShot: ByteArray = result?.data?.getByteArrayExtra("snapshot")!!
 
 
-                if(snapShot != null){
-                    binding.showMapSnapShotLayout.setOnExpandedListener { view, isExpanded ->
-                        view.findViewById<ImageView>(R.id.IvMapSnapshot).setImageBitmap(
-                            BitmapFactory.decodeByteArray(snapShot, 0, snapShot.size))
-                    }
-                    binding.showMapSnapShotLayout.expand()
+                binding.showMapSnapShotLayout.setOnExpandedListener { view, isExpanded ->
+                    view.findViewById<ImageView>(R.id.IvMapSnapshot).setImageBitmap(
+                        BitmapFactory.decodeByteArray(snapShot, 0, snapShot.size))
                 }
+                binding.showMapSnapShotLayout.expand()
                 list = mGeocoder.getFromLocation(latitude, longitude, 1)
 
                 var address = list[0].getAddressLine(0)
@@ -153,7 +149,9 @@ class AddConferencesActivity() : AppCompatActivity() {
                 0
             } else Integer.parseInt(exceptWon[0]).toLong()
 
-            val tag = binding.conferChipGroup.toString()
+            val chipEdiText = binding.addClip
+            val editString = chipEdiText.text.toString()
+
             var offline = !binding.conferOnlineCheckBox.isChecked
 
             //월 불러오기
@@ -175,7 +173,8 @@ class AddConferencesActivity() : AppCompatActivity() {
                 image = imageList,
                 uid = uid,
                 startDate =  binding.startDateTextView.text.toString().replace(",", "."),
-                finishDate =  binding.finishDateTextView.text.toString().replace(",", ".")
+                finishDate =  binding.finishDateTextView.text.toString().replace(",", "."),
+                tag = editString
             )
 
             if(checkInput(conference)){
@@ -190,6 +189,7 @@ class AddConferencesActivity() : AppCompatActivity() {
         }
     }
 
+
     private fun setDatePrice(){
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
@@ -203,8 +203,7 @@ class AddConferencesActivity() : AppCompatActivity() {
     private fun tagClip() {
         val chipEdiText = binding.addClip
         val chipAddButton = binding.addChipButton
-        val chipGroup = binding.conferChipGroup
-        val chipCountText = binding.tagNumberTextView
+        val chipGroup  = binding.conferChipGroup
 
         //만약 editText 없다면
         chipAddButton.setOnClickListener {
@@ -223,19 +222,6 @@ class AddConferencesActivity() : AppCompatActivity() {
                 })
             }
         }
-        //이 밑에 파트를 갯수 파트로 변경 예정
-        chipCountText.text
-        val chipList = ArrayList<String>()
-        for (i: Int in 1..chipGroup.childCount) {
-            val chip: Chip = chipGroup.getChildAt(i - 1) as Chip
-            chipList.add(chip.text.toString())
-        }
-
-        var output = "count: ${chipList.size}\n"
-        for (i in chipList) {
-            output += "$i / "
-        }
-        showToast(output)
 
     }
     private fun showToast(message: String) {
@@ -318,3 +304,4 @@ class AddConferencesActivity() : AppCompatActivity() {
         }
     }
 }
+

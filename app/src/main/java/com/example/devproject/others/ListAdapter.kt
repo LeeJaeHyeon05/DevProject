@@ -25,7 +25,10 @@ import com.example.devproject.activity.conference.ShowConferenceDetailActivity
 import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.UIHandler
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.android.synthetic.main.activity_add_conferences.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,6 +52,7 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
         val conferPreFinishDateTextView : TextView = view.findViewById(R.id.conferPreFinishDateTextView)
         val conferPreContentTextView : TextView = view.findViewById(R.id.conferPreContentTextView)
         val conferPreCardView: CardView = view.findViewById(R.id.conferPreCardView)
+        val conferChip : ChipGroup = view.findViewById(R.id.languageChip)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -86,9 +90,13 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
             UIHandler.rootView?.context?.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK))
         }
         viewHolder.conferPreCardView.setOnLongClickListener {
-            //TO DO Somethinmg
+            //TO DO Something
             true
         }
+        viewHolder.conferChip.addView(Chip(context).apply {
+            val chipData = DataHandler.conferDataSet[position][1].toString()
+            text = chipData
+        })
 
     }
 
