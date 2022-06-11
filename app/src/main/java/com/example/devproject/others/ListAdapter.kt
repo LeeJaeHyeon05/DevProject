@@ -81,8 +81,10 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
             context?.startActivity(intent)
         }
         viewHolder.conferPreTitleTextVIew.text = DataHandler.conferDataSet[position][1].toString()
-        viewHolder.conferPreStartDateTextView.text = DataHandler.conferDataSet[position][10].toString()
-        viewHolder.conferPreFinishDateTextView.text = DataHandler.conferDataSet[position][11].toString()
+        var startDate = DataHandler.conferDataSet[position][10].toString()
+        var endDate = DataHandler.conferDataSet[position][10].toString()
+        viewHolder.conferPreStartDateTextView.text = startDate.substring(2, startDate.length)
+        viewHolder.conferPreFinishDateTextView.text =endDate.substring(2, endDate.length)
         viewHolder.conferPreContentTextView.text = DataHandler.conferDataSet[position][6].toString()
         viewHolder.conferPreCardView.setOnClickListener {
             val intent = Intent(UIHandler.rootView?.context, ShowConferenceDetailActivity::class.java)

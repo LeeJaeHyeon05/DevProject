@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -174,6 +177,7 @@
             android:id="@+id/conferOnlineCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:buttonTint="@color/yellow_500"
             android:text="온라인 입니다"
             app:layout_constraintBottom_toTopOf="@+id/TextLayoutConferenceGeo"
             app:layout_constraintStart_toStartOf="@+id/addConferenceGuideLeft"
@@ -287,17 +291,40 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/addConImageBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:letterSpacing="-0.03"
-                        android:text="사진 추가"
-                        android:textStyle="bold" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/addConImageButtonLayout"
+                        android:clickable="true"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/addConImage"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/ic_baseline_camera_alt_24"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/addConImageTextView"
+                            android:layout_marginTop="60dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{Integer.toString(viewModel.imageCounterLiveData)} / 3"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:layout_marginLeft="8dp"
                         android:id="@+id/addConferenceImageRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
