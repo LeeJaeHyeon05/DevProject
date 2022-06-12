@@ -66,17 +66,14 @@ class AddConferenceActivity() : AppCompatActivity() {
         supportActionBar!!.title = "컨퍼런스 등록"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        var latitude: Double = 0.0
-        var longitude: Double = 0.0
+        var latitude  = 0.0
+        var longitude = 0.0
         val mGeocoder = Geocoder(this, Locale.getDefault())
         var list = mutableListOf<Address>()
         val imageList = ArrayList<Uri>()
         val imageRecyclerView = binding.addConferenceImageRecyclerView
 
-        uploader = ""
-
         setDatePrice()
-
         viewModel = ViewModelProvider(this).get(ImageCounterViewModel::class.java)
 
         viewModel.imageCounterValue.observe(this, androidx.lifecycle.Observer {
@@ -180,7 +177,7 @@ class AddConferenceActivity() : AppCompatActivity() {
 
             val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
 
-            val conference = ConferenceInfo(
+            val conferenceInfo = ConferenceInfo(
                 conferenceURL = link,
                 content = conContent,
                 date = binding.startDateTextView.text.toString(),
@@ -199,7 +196,7 @@ class AddConferenceActivity() : AppCompatActivity() {
 
 
 
-            if(checkInput(conference)){
+            if(checkInput(conferenceInfo)){
 
                 var deviceIDs = ""
                 DataHandler.conferenceNotiDeviceIDList.forEachIndexed { index, s ->
@@ -210,10 +207,10 @@ class AddConferenceActivity() : AppCompatActivity() {
                     }
                 }
 
-                if(storageWrite("conferenceDocument", documentId, snapshotImage, imageList, conference)){
+                if(storageWrite("conferenceDocument", documentId, snapshotImage, imageList, conferenceInfo)){
                     Toast.makeText(this, "업로드했어요!", Toast.LENGTH_SHORT).show()
                     //Notification
-                    OneSignalUtil.post("신규 컨퍼런스", conference.title, deviceIDs)
+                    OneSignalUtil.post("신규 컨퍼런스", conferenceInfo.title, deviceIDs)
                     CoroutineScope(Dispatchers.Main).launch {
                         DataHandler.reload(DBType.CONFERENCE)
                     }
