@@ -31,30 +31,30 @@ class ShowStudyDetailActivity : AppCompatActivity() {
 
         val position = intent.getIntExtra("position", 0)
         pos = position
-        supportActionBar?.title = studyDataSet[pos!!][2] as String
+        supportActionBar?.title = studyDataSet[pos!!].title as String
 
         var studyRecyclerView = binding.languageRecyclerView
         studyRecyclerView.layoutManager =
             LinearLayoutManager(this.baseContext, RecyclerView.HORIZONTAL, false)
-        studyRecyclerView.adapter = LanguageListAdapter2(studyDataSet[position][8] as MutableList<String>)
+        studyRecyclerView.adapter = LanguageListAdapter2(studyDataSet[position].language as MutableList<String>)
 
-        binding.studyDetailContentTextView.text = studyDataSet[position][3].toString()
-        binding.studyDetailOfflineTextView.text = if(studyDataSet[position][4] as Boolean){
+        binding.studyDetailContentTextView.text = studyDataSet[position].content
+        binding.studyDetailOfflineTextView.text = if(studyDataSet[position].offline!!){
             "오프라인"
         }else{
             "온라인"
         }
         binding.studyDetailLinkImageView.setOnClickListener {
             val intent = Intent(UIHandler.rootView?.context, ShowWebViewActivity::class.java)
-            intent.putExtra("conferenceURL", studyDataSet[position][5].toString())
+            intent.putExtra("conferenceURL", studyDataSet[position].studyURL)
             UIHandler.rootView?.context?.startActivity(intent)
         }
-        binding.studyDetailMemberTextView.text = "총 ${studyDataSet[position][6]}명 중 ${studyDataSet[position][6] as Long - studyDataSet[position][7] as Long}명 모집 완료!"
+        binding.studyDetailMemberTextView.text = "총 ${studyDataSet[position].totalMember}명 중 ${studyDataSet[position].totalMember as Long - studyDataSet[position].remainingMemeber as Long}명 모집 완료!"
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if(FirebaseIO.isValidAccount() && (FirebaseAuth.getInstance().uid == studyDataSet[intent.getIntExtra("position", 0)][10].toString())) {
-            if(studyDataSet[intent.getIntExtra("position", 0)][0] == true){
+        if(FirebaseIO.isValidAccount() && (FirebaseAuth.getInstance().uid == studyDataSet[intent.getIntExtra("position", 0)].uploader.toString())) {
+            if(studyDataSet[intent.getIntExtra("position", 0)].ongoing == true){
                 menuInflater.inflate(R.menu.actionbar_study_menu, menu)
             }else{
                 menuInflater.inflate(R.menu.actionbar_document_edit_menu, menu)
@@ -71,7 +71,7 @@ class ShowStudyDetailActivity : AppCompatActivity() {
                 dialog.activate()
                 dialog.okButton?.setOnClickListener {
                     FirebaseIO.db.collection("groupstudyDocument").
-                    document(studyDataSet[intent.getIntExtra("position", 0)][9] as String).update("ongoing", false)
+                    document(studyDataSet[intent.getIntExtra("position", 0)].documentID as String).update("ongoing", false)
 
 //                  FirebaseIO.delete("groupstudyDocument", studyDataSet[intent.getIntExtra("position", 0)][9] as String )
                     Toast.makeText(this, "마감했어요", Toast.LENGTH_SHORT).show()
@@ -92,7 +92,7 @@ class ShowStudyDetailActivity : AppCompatActivity() {
                 val dialog = BasicDialog(this, "정말 삭제할까요?")
                 dialog.activate()
                 dialog.okButton?.setOnClickListener {
-                    FirebaseIO.delete("groupstudyDocument", studyDataSet[intent.getIntExtra("position", 0)][9] as String )
+                    FirebaseIO.delete("groupstudyDocument", studyDataSet[intent.getIntExtra("position", 0)].documentID as String )
                     Toast.makeText(this, "삭제했어요", Toast.LENGTH_SHORT).show()
                     DataHandler.reload(DBType.STUDY)
                     finish()

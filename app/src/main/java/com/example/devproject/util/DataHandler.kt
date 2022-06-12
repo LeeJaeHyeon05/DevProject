@@ -5,6 +5,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.devproject.format.ConferenceInfo
+import com.example.devproject.format.StudyInfo
 import com.example.devproject.format.UserInfo
 import com.example.devproject.fragment.HeadhuntingFragment
 import com.example.devproject.fragment.HomeFragment
@@ -21,7 +22,7 @@ class DataHandler {
     companion object {
 
         var imageDataSet : MutableList<Array<File>> = emptyList<Array<File>>().toMutableList()
-        var studyDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
+        var studyDataSet : MutableList<StudyInfo> = emptyList<StudyInfo>().toMutableList()
         var headhuntingDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
         var conferDataSet : MutableList<ConferenceInfo> = emptyList<ConferenceInfo>().toMutableList()
 
@@ -71,19 +72,20 @@ class DataHandler {
                     FirebaseIO.readPublic("groupstudyDocument").addOnSuccessListener { result ->
                         studyDataSet.clear()
                         for (document in result) {
-                            studyDataSet.add(arrayOf(
-                                document.data["ongoing"] as Boolean,
-                                document.data["uploader"] as String,
-                                document.data["title"] as String,
-                                document.data["content"] as String,
-                                document.data["offline"] as Boolean,
-                                document.data["studyURL"] as String,
-                                document.data["totalMember"] as Long,
-                                document.data["remainingMemeber"] as Long,
-                                document.data["language"] as MutableList<String>,
-                                document.data["documentID"] as String,
-                                document.data["uid"] as String,
-                                document.data["endDate"] as String
+                            studyDataSet.add(
+                                StudyInfo(
+                                ongoing = document.data["ongoing"] as Boolean,
+                                uploader = document.data["uploader"] as String,
+                                title = document.data["title"] as String,
+                                content = document.data["content"] as String,
+                                offline = document.data["offline"] as Boolean,
+                                studyURL = document.data["studyURL"] as String,
+                                totalMember =  document.data["totalMember"] as Long,
+                                remainingMemeber = document.data["remainingMemeber"] as Long,
+                                language = document.data["language"] as MutableList<String>,
+                                documentID = document.data["documentID"] as String,
+                                uid = document.data["uid"] as String,
+                                endDate = document.data["endDate"] as String
                             )
                             )
                         }
@@ -167,19 +169,19 @@ class DataHandler {
                             studyDataSet.clear()
                             for (document in result) {
                                 studyDataSet.add(
-                                    arrayOf(
-                                        document.data["ongoing"] as Boolean,
-                                        document.data["uploader"] as String,
-                                        document.data["title"] as String,
-                                        document.data["content"] as String,
-                                        document.data["offline"] as Boolean,
-                                        document.data["studyURL"] as String,
-                                        document.data["totalMember"] as Long,
-                                        document.data["remainingMemeber"] as Long,
-                                        document.data["language"] as MutableList<String>,
-                                        document.data["documentID"] as String,
-                                        document.data["uid"] as String,
-                                        document.data["endDate"] as String
+                                    StudyInfo(
+                                        ongoing = document.data["ongoing"] as Boolean,
+                                        uploader = document.data["uploader"] as String,
+                                        title = document.data["title"] as String,
+                                        content = document.data["content"] as String,
+                                        offline = document.data["offline"] as Boolean,
+                                        studyURL = document.data["studyURL"] as String,
+                                        totalMember =  document.data["totalMember"] as Long,
+                                        remainingMemeber = document.data["remainingMemeber"] as Long,
+                                        language = document.data["language"] as MutableList<String>,
+                                        documentID = document.data["documentID"] as String,
+                                        uid = document.data["uid"] as String,
+                                        endDate = document.data["endDate"] as String
                                     )
                                 )
                             }
@@ -247,16 +249,19 @@ class DataHandler {
                             studyDataSet.clear()
                             for (document in result) {
                                 studyDataSet.add(
-                                    arrayOf(
-                                        document.data["ongoing"] as Boolean,
-                                        document.data["uploader"] as String,
-                                        document.data["title"] as String,
-                                        document.data["offline"] as Boolean,
-                                        document.data["studyURL"] as String,
-                                        document.data["totalMember"] as Long,
-                                        document.data["remainingMemeber"] as Long,
-                                        document.data["documentID"] as String,
-                                        document.data["uid"] as String
+                                    StudyInfo(
+                                        ongoing = document.data["ongoing"] as Boolean,
+                                        uploader = document.data["uploader"] as String,
+                                        title = document.data["title"] as String,
+                                        content = document.data["content"] as String,
+                                        offline = document.data["offline"] as Boolean,
+                                        studyURL = document.data["studyURL"] as String,
+                                        totalMember =  document.data["totalMember"] as Long,
+                                        remainingMemeber = document.data["remainingMemeber"] as Long,
+                                        language = document.data["language"] as MutableList<String>,
+                                        documentID = document.data["documentID"] as String,
+                                        uid = document.data["uid"] as String,
+                                        endDate = document.data["endDate"] as String
                                     )
                                 )
                             }
