@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.devproject.activity.conference.AddConferenceActivity
 import com.example.devproject.databinding.FragmentHomeBinding
 import com.example.devproject.others.DBType
-import com.example.devproject.adapter.ListAdapter
+import com.example.devproject.adapter.ConferenceListAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler
@@ -22,7 +22,7 @@ class HomeFragment : Fragment() {
     private var mBinding : FragmentHomeBinding? = null
 
     companion object{
-        var adapter : ListAdapter? = null
+        var adapterConference : ConferenceListAdapter? = null
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
@@ -39,8 +39,8 @@ class HomeFragment : Fragment() {
 
         var conferRecyclerView = mBinding?.conferRecyclerView
         conferRecyclerView?.layoutManager = LinearLayoutManager(this.context)
-        adapter = ListAdapter()
-        conferRecyclerView?.adapter = adapter
+        adapterConference = ConferenceListAdapter()
+        conferRecyclerView?.adapter = adapterConference
 
         val swipeRefreshLayout= mBinding?.swiperConferRefreshLayout
         swipeRefreshLayout?.setOnRefreshListener {

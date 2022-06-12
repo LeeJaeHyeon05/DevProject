@@ -86,6 +86,7 @@ class DataHandler {
                     }
 
                 }
+
                 DBType.HEADHUNTING -> {
                         FirebaseIO.db.collection("UserInfo").get().addOnSuccessListener { result->
                             for(document in result){
@@ -151,7 +152,7 @@ class DataHandler {
                                 )
                             }
                         }.run {
-                              HomeFragment.adapter!!.notifyDataSetChanged()
+                              HomeFragment.adapterConference!!.notifyDataSetChanged()
                         }
                     }
                 }
@@ -226,7 +227,7 @@ class DataHandler {
                                 )
                             }
                         }.run {
-                            HomeFragment.adapter!!.notifyDataSetChanged()
+                            HomeFragment.adapterConference!!.notifyDataSetChanged()
                         }
                     }
                 }

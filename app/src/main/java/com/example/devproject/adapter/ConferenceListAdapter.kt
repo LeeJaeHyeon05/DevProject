@@ -20,7 +20,7 @@ import com.example.devproject.util.DataHandler
 import com.example.devproject.util.UIHandler
 
 @RequiresApi(Build.VERSION_CODES.P)
-class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
+class ConferenceListAdapter() : RecyclerView.Adapter<ConferenceListAdapter.ViewHolder>() {
 
     private var context : Context? = null
     private var todayDate = DataHandler.currentDate.toInt()
