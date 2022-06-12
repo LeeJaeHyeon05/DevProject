@@ -148,7 +148,7 @@ class DataHandler {
                                     document.data["finishDate"] as String,   //11
                                     document.data["place"] as String, //12
                                     document.data["manager"] as Boolean
-                                )
+                                   )
                                 )
                             }
                         }.run {

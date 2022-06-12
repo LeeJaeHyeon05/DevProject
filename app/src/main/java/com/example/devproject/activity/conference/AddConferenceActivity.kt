@@ -52,7 +52,6 @@ class AddConferenceActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddConferenceBinding
     lateinit var viewModel: ImageCounterViewModel
-    private lateinit var uploader: String
     private lateinit var imageAdapter: ImageViewAdapter
     private var checkOffline = false
 
