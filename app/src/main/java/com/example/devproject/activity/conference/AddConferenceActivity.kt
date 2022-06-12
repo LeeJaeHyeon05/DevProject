@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -34,13 +33,9 @@ import com.example.devproject.util.UIHandler
 import com.google.android.material.chip.Chip
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
-import com.onesignal.OneSignal
-import com.onesignal.OneSignal.PostNotificationResponseHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONException
-import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.time.ZonedDateTime
