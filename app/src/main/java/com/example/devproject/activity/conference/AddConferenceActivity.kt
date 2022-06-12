@@ -28,6 +28,8 @@ import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.others.DBType
 import com.example.devproject.adapter.ImageViewAdapter
 import com.example.devproject.util.DataHandler
+import com.example.devproject.util.FirebaseIO
+import com.example.devproject.util.FirebaseIO.Companion.db
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
 import com.example.devproject.util.UIHandler
 import com.google.android.material.chip.Chip
@@ -35,6 +37,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.onesignal.OneSignal
 import com.onesignal.OneSignal.PostNotificationResponseHandler
+import kotlinx.android.synthetic.main.activity_add_conference.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,6 +56,7 @@ class AddConferenceActivity() : AppCompatActivity() {
     lateinit var viewModel: ImageCounterViewModel
     private lateinit var uploader: String
     private lateinit var imageAdapter: ImageViewAdapter
+    private var chipList = ArrayList<String>()
     private var checkOffline = false
 
 
@@ -196,9 +200,31 @@ class AddConferenceActivity() : AppCompatActivity() {
                 manager = binding.conferManagerCheckBox.isChecked
             )
 
+            for (i: Int in 1..binding.conferChipGroup.childCount) {
+                val chip: Chip = binding.conferChipGroup.getChildAt(i - 1) as Chip
+                chipList.add(chip.text.toString())
+            }
 
+            val init = hashMapOf("init" to "init")
 
             if(checkInput(conference)){
+                //태그를 태그이름/conferenceNoti/idList형태로 추가
+                if(chipList.isNotEmpty()){
+                    for(i in chipList.indices){
+
+                        val ref = db.collection("language").document(chipList[i])
+
+                        ref.addSnapshotListener { value, error ->
+                            if(value?.exists() == true){
+                                Log.d("TAG", "already set db")
+                            }
+                            else{
+                                db.collection("language").document(chipList[i]).set(init)
+                                Log.d("TAG", "set new db now")
+                            }
+                        }
+                    }
+                }
 
                 var deviceIDs = ""
                 DataHandler.conferenceNotiDeviceIDList.forEachIndexed { index, s ->
@@ -212,20 +238,20 @@ class AddConferenceActivity() : AppCompatActivity() {
                 if(storageWrite("conferenceDocument", documentId, snapshotImage, imageList, conference)){
                     Toast.makeText(this, "업로드했어요!", Toast.LENGTH_SHORT).show()
                     //Notification
-                    try {
-                        OneSignal.postNotification("{'headings' : {'en' : '신규 컨퍼런스'}, 'contents': {'en':'${conference.title}'}, 'include_player_ids': [${deviceIDs}]}",
-                            object : PostNotificationResponseHandler {
-                                override fun onSuccess(response: JSONObject) {
-                                    Log.i("OneSignalExample", "postNotification Success: $response")
-                                }
-
-                                override fun onFailure(response: JSONObject) {
-                                    Log.e("OneSignalExample", "postNotification Failure: $response")
-                                }
-                            })
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
+//                    try {
+//                        OneSignal.postNotification("{'headings' : {'en' : '신규 컨퍼런스'}, 'contents': {'en':'${conference.title}'}, 'include_player_ids': [${deviceIDs}]}",
+//                            object : PostNotificationResponseHandler {
+//                                override fun onSuccess(response: JSONObject) {
+//                                    Log.i("OneSignalExample", "postNotification Success: $response")
+//                                }
+//
+//                                override fun onFailure(response: JSONObject) {
+//                                    Log.e("OneSignalExample", "postNotification Failure: $response")
+//                                }
+//                            })
+//                    } catch (e: JSONException) {
+//                        e.printStackTrace()
+//                    }
 
                     CoroutineScope(Dispatchers.Main).launch {
                         DataHandler.reload(DBType.CONFERENCE)
@@ -260,6 +286,7 @@ class AddConferenceActivity() : AppCompatActivity() {
                 Toast.makeText(this, "내용을 추가해주세요", Toast.LENGTH_SHORT).show()
                 chipAddButton.isEnabled
             } else {
+                chipEdiText.text.clear()
                 chipGroup.addView(Chip(this).apply {
                     text = editString
                     isCloseIconVisible = true
@@ -272,7 +299,7 @@ class AddConferenceActivity() : AppCompatActivity() {
         }
         //이 밑에 파트를 갯수 파트로 변경 예정
         chipCountText.text
-        val chipList = ArrayList<String>()
+
         for (i: Int in 1..chipGroup.childCount) {
             val chip: Chip = chipGroup.getChildAt(i - 1) as Chip
             chipList.add(chip.text.toString())

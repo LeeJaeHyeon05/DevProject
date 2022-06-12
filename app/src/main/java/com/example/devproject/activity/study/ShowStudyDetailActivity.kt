@@ -47,7 +47,7 @@ class ShowStudyDetailActivity : AppCompatActivity() {
         binding.studyDetailLinkImageView.setOnClickListener {
             val intent = Intent(UIHandler.rootView?.context, ShowWebViewActivity::class.java)
             intent.putExtra("conferenceURL", studyDataSet[position][5].toString())
-            UIHandler.rootView?.context?.startActivity(intent)
+            this.startActivity(intent)
         }
         binding.studyDetailMemberTextView.text = "총 ${studyDataSet[position][6]}명 중 ${studyDataSet[position][6] as Long - studyDataSet[position][7] as Long}명 모집 완료!"
     }

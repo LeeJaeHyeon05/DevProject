@@ -318,7 +318,7 @@
                         android:id="@+id/conferPreClip"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="260dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:maxHeight="200dp"
                         android:textColorHint="#9A9A9A">
 
@@ -338,7 +338,7 @@
                     <Button
                         android:id="@+id/addChipButton"
                         android:layout_width="70dp"
-                        android:layout_height="60dp"
+                        android:layout_height="match_parent"
                         android:text="추가하기"
                         android:textColor="@color/black"
                         tools:ignore="MissingConstraints" />
