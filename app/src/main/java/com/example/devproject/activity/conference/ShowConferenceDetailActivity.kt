@@ -120,7 +120,6 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         brightIndicator = findViewById(R.id.circleIndicator)
         darkerIndicator = findViewById(R.id.circleIndicator2)
         conferManagerImageView?.visibility = if(conferDataSet[position].manager as Boolean){
-
             View.VISIBLE
         }else{
             View.INVISIBLE
