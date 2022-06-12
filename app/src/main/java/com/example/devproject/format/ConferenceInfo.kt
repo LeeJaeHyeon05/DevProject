@@ -11,7 +11,7 @@ data class ConferenceInfo(
     var offline: Boolean? = null,
     var place: String? = "",
     var price: Long? = null,
-    var title: String? = null,
+    var title: String = "",
     var uploader : String? = null,
     val image: MutableList<Uri>? = null,
     var uid : String? = null,

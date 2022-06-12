@@ -29,6 +29,7 @@ import com.example.devproject.others.DBType
 import com.example.devproject.adapter.ImageViewAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
+import com.example.devproject.util.OneSignalUtil
 import com.example.devproject.util.UIHandler
 import com.google.android.material.chip.Chip
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -212,21 +213,7 @@ class AddConferenceActivity() : AppCompatActivity() {
                 if(storageWrite("conferenceDocument", documentId, snapshotImage, imageList, conference)){
                     Toast.makeText(this, "업로드했어요!", Toast.LENGTH_SHORT).show()
                     //Notification
-                    try {
-                        OneSignal.postNotification("{'headings' : {'en' : '신규 컨퍼런스'}, 'contents': {'en':'${conference.title}'}, 'include_player_ids': [${deviceIDs}]}",
-                            object : PostNotificationResponseHandler {
-                                override fun onSuccess(response: JSONObject) {
-                                    Log.i("OneSignalExample", "postNotification Success: $response")
-                                }
-
-                                override fun onFailure(response: JSONObject) {
-                                    Log.e("OneSignalExample", "postNotification Failure: $response")
-                                }
-                            })
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
-
+                    OneSignalUtil.post("신규 컨퍼런스", conference.title, deviceIDs)
                     CoroutineScope(Dispatchers.Main).launch {
                         DataHandler.reload(DBType.CONFERENCE)
                     }

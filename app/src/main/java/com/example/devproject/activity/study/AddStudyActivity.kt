@@ -16,6 +16,7 @@ import com.example.devproject.others.DBType
 import com.example.devproject.adapter.LanguageListAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
+import com.example.devproject.util.OneSignalUtil
 import com.example.devproject.util.UIHandler
 import com.google.firebase.auth.FirebaseAuth
 import com.onesignal.OneSignal
@@ -99,22 +100,8 @@ class AddStudyActivity : AppCompatActivity() {
                         "'${s}', "
                     }
                 }
-
                 //Notification
-                try {
-                    OneSignal.postNotification("{'headings' : {'en' : '신규 스터디'}, 'contents': {'en':'${studyInfo.title}'}, 'include_player_ids': [${deviceIDs}]}",
-                        object : OneSignal.PostNotificationResponseHandler {
-                            override fun onSuccess(response: JSONObject) {
-                                Log.i("OneSignalExample", "postNotification Success: $response")
-                            }
-
-                            override fun onFailure(response: JSONObject) {
-                                Log.e("OneSignalExample", "postNotification Failure: $response")
-                            }
-                        })
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
+                OneSignalUtil.post("신규 스터디", studyInfo.title, deviceIDs)
 
                 DataHandler.reload(DBType.STUDY)
                 Toast.makeText(this, "업로드했어요!", Toast.LENGTH_SHORT).show()
