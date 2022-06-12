@@ -1,7 +1,5 @@
 package com.example.devproject.format
 
-import android.net.Uri
-
 data class StudyInfo (
     var documentID : String? = null,
     var ongoing : Boolean? = null,
