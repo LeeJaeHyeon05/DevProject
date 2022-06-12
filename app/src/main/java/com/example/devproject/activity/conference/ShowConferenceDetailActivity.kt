@@ -2,7 +2,12 @@ package com.example.devproject.activity.conference
 
 import android.content.Intent
 import android.content.res.TypedArray
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.ImageDecoder
+import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -14,17 +19,23 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.alespero.expandablecardview.ExpandableCardView
 import com.bumptech.glide.Glide
-import com.example.devproject.util.DataHandler
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.devproject.R
 import com.example.devproject.activity.ShowWebViewActivity
-import com.example.devproject.dialog.BasicDialog
-import com.example.devproject.others.DBType
 import com.example.devproject.adapter.ImageSliderAdapter
 import com.example.devproject.databinding.ActivityShowConferenceDetailBinding
+import com.example.devproject.dialog.BasicDialog
+import com.example.devproject.others.DBType
+import com.example.devproject.util.DataHandler
 import com.example.devproject.util.DataHandler.Companion.conferDataSet
 import com.example.devproject.util.FirebaseIO
 import com.google.firebase.auth.FirebaseAuth
-import me.relex.circleindicator.CircleIndicator3
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+
 
 class ShowConferenceDetailActivity : AppCompatActivity() {
 
@@ -33,7 +44,8 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
     var conferPager: ViewPager2? = null
     var numPage = 3
 
-    private lateinit var indicator: CircleIndicator3
+    private lateinit var brightIndicator: DotsIndicator
+    private lateinit var darkerIndicator: DotsIndicator
     private lateinit var imageAdapter: ImageSliderAdapter
     lateinit var viewModel: ImageCounterViewModel
 
@@ -105,8 +117,10 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         conferOfflineTextView?.text = if(!conferDataSet[position].offline) "온라인" else "오프라인"
         conferURLImageView?.setImageResource(R.drawable.link)
         conferPager = findViewById(R.id.detailViewPager)
-        indicator = findViewById(R.id.circleIndicator)
-        conferManagerImageView?.visibility = if(conferDataSet[position].manager){
+        brightIndicator = findViewById(R.id.circleIndicator)
+        darkerIndicator = findViewById(R.id.circleIndicator2)
+        conferManagerImageView?.visibility = if(conferDataSet[position].manager as Boolean){
+
             View.VISIBLE
         }else{
             View.INVISIBLE
@@ -187,16 +201,108 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
                     }.addOnSuccessListener {
                         imageList.sort()
 
+                        var temp: FloatArray? = floatArrayOf()
+
+                        Glide.with(this)
+                            .asBitmap()
+                            .load(imageList[0])
+                            .into(object: CustomTarget<Bitmap?>(){
+                                override fun onResourceReady(
+                                    resource: Bitmap,
+                                    transition: Transition<in Bitmap?>?
+                                ) {
+                                    temp = calculateBrightnessEstimate(resource, 1)
+                                    val resizedBackgroundBrightness = temp?.get(0)
+                                    var colorInt = getColorStringFromBrightness(resizedBackgroundBrightness!!.toInt())
+
+                                    if(imageList.size > 1){
+                                        when(colorInt){
+                                            1 -> { //어두운 이미지일때
+                                                imageAdapter = ImageSliderAdapter(imageList = imageList, showConferenceDetailActivity.applicationContext, numPage)
+                                                conferPager?.adapter = imageAdapter
+                                                conferPager?.let { it1 -> brightIndicator.setViewPager2(it1) }
+                                                conferPager?.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+                                                conferPager?.currentItem = 0
+                                                conferPager?.offscreenPageLimit = 3
+                                                brightIndicator.visibility = View.VISIBLE
+                                            }
+                                            2 -> { //밝은 이미지일때
+                                                imageAdapter = ImageSliderAdapter(imageList = imageList, showConferenceDetailActivity.applicationContext, numPage)
+                                                conferPager?.adapter = imageAdapter
+                                                conferPager?.let { it1 -> darkerIndicator.setViewPager2(it1) }
+                                                conferPager?.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+                                                conferPager?.currentItem = 0
+                                                conferPager?.offscreenPageLimit = 3
+                                                darkerIndicator.visibility = View.VISIBLE
+                                            }
+                                        }
+                                    }
+                                }
+
+                                override fun onLoadCleared(placeholder: Drawable?) {
+                                    return
+                                }
+
+                            })
+
                         imageAdapter = ImageSliderAdapter(imageList = imageList, showConferenceDetailActivity.applicationContext, numPage)
                         conferPager?.adapter = imageAdapter
-                        indicator.setViewPager(conferPager)
-                        conferPager?.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-                        conferPager?.currentItem = 0
-                        conferPager?.offscreenPageLimit = 3
-                        conferPager?.adapter?.registerAdapterDataObserver(indicator.adapterDataObserver)
+//                        conferPager?.let { it1 -> indicator.setViewPager2(it1) }
+//                        conferPager?.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+//                        conferPager?.currentItem = 0
+//                        conferPager?.offscreenPageLimit = 3
+                        //conferPager?.adapter?.registerAdapterDataObserver(indicator.adapterDataObserver)
                     }
                 }
             }
+        }
+    }
+
+    private fun calculateBrightnessEstimate(bitmap: Bitmap, pixelSpacing: Int): FloatArray? {
+        var R = 0
+        var G = 0
+        var B = 0
+        var T = 0
+        var S = 0f
+        val height = bitmap.height
+        val width = bitmap.width
+        var n = 0
+        val pixels = IntArray(width * height)
+        bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
+        var i = 0
+        while (i < pixels.size) {
+            val color = pixels[i]
+            val hsv = FloatArray(3)
+            R += Color.red(color)
+            G += Color.green(color)
+            B += Color.blue(color)
+            T += getColorToBrightness(color)
+            Color.colorToHSV(color, hsv)
+            S += hsv[1]
+            n++
+            i += pixelSpacing * 15
+        }
+
+        //T = (R + B + G);
+        return floatArrayOf((T / n).toFloat(), S / n)
+    }
+
+
+    //컬러의 값을 밝기로값으로 가져오기
+    private fun getColorToBrightness(color: Int): Int {
+        val R = Color.red(color)
+        val G = Color.green(color)
+        val B = Color.blue(color)
+        return Math.sqrt(R * R * .241 + G * G * .691 + B * B * .068).toInt()
+    }
+
+
+    //bitmap의 밝기값을 매개값에 넣는다. 리턴값으로 bitmap이미지위의 텍스트 색상 출력
+    private fun getColorStringFromBrightness(brightness: Int): Int {
+        return if (brightness < 195) {
+            1
+        } else {
+            2
         }
     }
 }

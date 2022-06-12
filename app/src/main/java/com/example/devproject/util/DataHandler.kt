@@ -296,7 +296,7 @@ class DataHandler {
                 .addOnSuccessListener {
                     for(document in it){
                         userInfo.id = document["id"] as String
-                        userInfo.position = document["position"] as Long
+                        //userInfo.position = document["position"] as Long
                         try{
                             userInfo.languages = document["languages"] as MutableList<String>
                         }catch (e : Exception){
