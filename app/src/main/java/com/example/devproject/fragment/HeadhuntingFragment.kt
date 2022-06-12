@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.adapter.HeadhuntingListAdapter
-import com.example.devproject.adapter.ListAdapter
 import com.example.devproject.databinding.FragmentHeadhuntingBinding
 import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler

@@ -29,11 +29,11 @@ class EditStudyActivity : AppCompatActivity() {
         var position = intent.getIntExtra("position", 0)
         pos = position
 
-        val endDate = studyDataSet[pos][11].toString()
+        val endDate = studyDataSet[pos].endDate
         binding.tableRow.visibility = View.VISIBLE
-        binding.selectedMemberTextView.text = (Integer.parseInt(studyDataSet[pos][6].toString()) - Integer.parseInt(studyDataSet[pos][7].toString())).toString()
+        binding.selectedMemberTextView.text = (Integer.parseInt(studyDataSet[pos].totalMember.toString()) - Integer.parseInt(studyDataSet[pos].remainingMemeber.toString())).toString()
         binding.studyMemberPlusButton.setOnClickListener {
-            if( Integer.parseInt(binding.selectedMemberTextView.text as String) < Integer.parseInt(studyDataSet[pos][6].toString())) {
+            if( Integer.parseInt(binding.selectedMemberTextView.text as String) < Integer.parseInt(studyDataSet[pos].totalMember.toString())) {
                 binding.selectedMemberTextView.text = (Integer.parseInt(binding.selectedMemberTextView.text as String) + 1).toString()
             }
 
@@ -44,10 +44,10 @@ class EditStudyActivity : AppCompatActivity() {
             }
         }
 
-        binding.addStudyTitle.setText(studyDataSet[pos][2].toString())
-        binding.addStudyContent.setText(studyDataSet[pos][3].toString())
-        binding.addStudyLink.setText(studyDataSet[pos][5].toString())
-        binding.studyOnlineCheckBox.isChecked = !(studyDataSet[pos][4] as Boolean)
+        binding.addStudyTitle.setText(studyDataSet[pos].title.toString())
+        binding.addStudyContent.setText(studyDataSet[pos].content.toString())
+        binding.addStudyLink.setText(studyDataSet[pos].studyURL.toString())
+        binding.studyOnlineCheckBox.isChecked = !(studyDataSet[pos].offline!!)
         var memberNumberPicker = binding.memberNumberPicker
 
 
@@ -57,10 +57,10 @@ class EditStudyActivity : AppCompatActivity() {
         var typedArray : TypedArray = resources.obtainTypedArray(R.array.language_array)
         var languageSelectRecyclerView = binding.languageSelectRecyclerView
         languageSelectRecyclerView?.layoutManager = LinearLayoutManager(this.baseContext, LinearLayoutManager.HORIZONTAL, false)
-        var adapter = LanguageListAdapter(typedArray, studyDataSet[pos][8] as MutableList<String>)
+        var adapter = LanguageListAdapter(typedArray, studyDataSet[pos].language)
         languageSelectRecyclerView?.adapter = adapter
 
-        var totalMember : Long = studyDataSet[pos][6].toString().toLong()
+        var totalMember : Long = studyDataSet[pos].totalMember.toString().toLong()
         val data: Array<String> = Array(100){
                 i -> (i+1).toString()
         }
@@ -68,7 +68,7 @@ class EditStudyActivity : AppCompatActivity() {
         memberNumberPicker.maxValue = data.size-1
         memberNumberPicker.wrapSelectorWheel = false
         memberNumberPicker.displayedValues = data
-        memberNumberPicker.value = Integer.parseInt(studyDataSet[pos][6].toString())
+        memberNumberPicker.value = Integer.parseInt(studyDataSet[pos].totalMember.toString())
         memberNumberPicker.setOnValueChangedListener { picker, oldVal, newVal ->
             totalMember = picker.value.toLong()
 
@@ -78,7 +78,7 @@ class EditStudyActivity : AppCompatActivity() {
         binding.addStudyButton.setOnClickListener {
 
             val studyInfo = StudyInfo(
-                documentID = studyDataSet[pos!!][9].toString(),
+                documentID = studyDataSet[pos].documentID.toString(),
                 ongoing = true,
                 title = binding.addStudyTitle.text.toString(),
                 content = binding.addStudyContent.text.toString(),

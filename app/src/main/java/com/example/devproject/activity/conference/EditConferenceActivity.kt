@@ -72,17 +72,17 @@ class EditConferenceActivity() : AppCompatActivity() {
         pos = position
         val imageRecyclerView = binding.addConferenceImageRecyclerView
 
-        binding.addConTitle.setText(DataHandler.conferDataSet[position][1] as String)
-        binding.startDateTextView.text = DataHandler.conferDataSet[position][10] as String
-        binding.finishDateTextView.text = DataHandler.conferDataSet[position][11] as String
-        binding.priceTextView.text = DataHandler.conferDataSet[position][3].toString()
-        binding.addConLink.setText(DataHandler.conferDataSet[position][5] as String)
-        binding.addConDetail.setText(DataHandler.conferDataSet[position][6] as String)
+        binding.addConTitle.setText(DataHandler.conferDataSet[position].title)
+        binding.startDateTextView.text = DataHandler.conferDataSet[position].startDate
+        binding.finishDateTextView.text = DataHandler.conferDataSet[position].finishDate
+        binding.priceTextView.text = DataHandler.conferDataSet[position].price.toString()
+        binding.addConLink.setText(DataHandler.conferDataSet[position].conferenceURL)
+        binding.addConDetail.setText(DataHandler.conferDataSet[position].content)
         binding.addConButton.text = "컨퍼런스 편집하기"
-        binding.conferOnlineCheckBox.isChecked =  !(DataHandler.conferDataSet[position][4] as Boolean)
-        binding.conferManagerCheckBox.isChecked = DataHandler.conferDataSet[position][13] as Boolean
+        binding.conferOnlineCheckBox.isChecked =  !(DataHandler.conferDataSet[position].offline)
+        binding.conferManagerCheckBox.isChecked = DataHandler.conferDataSet[position].manager
 
-        val imagelist: ArrayList<Uri> = DataHandler.conferDataSet[position][9] as ArrayList<Uri>
+        val imagelist: MutableList<Uri>? = DataHandler.conferDataSet[position].image
         var snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
 
         getPrice()
@@ -158,7 +158,7 @@ class EditConferenceActivity() : AppCompatActivity() {
                         }
                     }
                 }
-                imageAdapter = ImageViewAdapter(imageList = editImageList, this, deleteImageList = imagelist, viewModel)
+                imageAdapter = ImageViewAdapter(imageList = editImageList, this, deleteImageList = imagelist as ArrayList<Uri>, viewModel)
                 val imageSize = UIHandler.countImage(result, editImageList, this, imageRecyclerView, imageAdapter, viewModel).toString()
                 viewModel.updateValue(imageSize.toInt())
 
@@ -201,7 +201,7 @@ class EditConferenceActivity() : AppCompatActivity() {
                 this.deleteImageList = imageAdapter.getDeleteImage()
             }
 
-            var place = DataHandler.conferDataSet[position][12] as String
+            var place = DataHandler.conferDataSet[position].place
 
             val conference = initConference(link, conContent, place, snapshotImage ,price, conTitle, position)
 
@@ -239,10 +239,10 @@ class EditConferenceActivity() : AppCompatActivity() {
             place = switchPlace,
             price = price,
             title = conTitle,
-            documentID = DataHandler.conferDataSet[position][8] as String,
-            uploader = DataHandler.conferDataSet[position][0] as String,
-            image = DataHandler.conferDataSet[position][9] as ArrayList<Uri>,
-            uid = DataHandler.conferDataSet[position][7] as String,
+            documentID = DataHandler.conferDataSet[position].documentID,
+            uploader = DataHandler.conferDataSet[position].uploader,
+            image = DataHandler.conferDataSet[position].image,
+            uid = DataHandler.conferDataSet[position].uid,
             startDate = binding.startDateTextView.text.toString().replace(",", "."),
             finishDate = binding.finishDateTextView.text.toString().replace(",", "."),
             manager = binding.conferManagerCheckBox.isChecked
@@ -266,7 +266,7 @@ class EditConferenceActivity() : AppCompatActivity() {
         }
         if(FirebaseIO.storageWrite(
                 "conferenceDocument",
-                DataHandler.conferDataSet[position][8] as String,
+                DataHandler.conferDataSet[position].documentID,
                 snapshotImage,
                 editImageList,
                 conference
@@ -292,10 +292,9 @@ class EditConferenceActivity() : AppCompatActivity() {
     }
 
     private fun showImage(position: Int, editConferenceActivity: EditConferenceActivity) {
-        val list: ArrayList<Uri> = DataHandler.conferDataSet[position][9] as ArrayList<Uri>
-        val confershowNoImage = findViewById<ImageView>(R.id.conferDetailImageView)
+        val list: ArrayList<Uri> = DataHandler.conferDataSet[position].image as ArrayList<Uri>
         if(list.isEmpty()){
-            imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, deleteImageList = DataHandler.conferDataSet[position][9] as ArrayList<Uri>, viewModel = viewModel)
+            imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, deleteImageList = DataHandler.conferDataSet[position].image as ArrayList<Uri>, viewModel = viewModel)
             binding.addConferenceImageRecyclerView.adapter = imageAdapter
             binding.addConferenceImageRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
             return
@@ -306,7 +305,7 @@ class EditConferenceActivity() : AppCompatActivity() {
                 storageRef.downloadUrl.addOnSuccessListener { image->
                     if(image.path!!.contains("MapSnapShot.jpeg")){
                         var mapLayout = findViewById<ExpandableCardView>(R.id.showMapSnapShotLayout)
-                        mapLayout.setTitle(DataHandler.conferDataSet[position][12].toString())
+                        mapLayout.setTitle(DataHandler.conferDataSet[position].place)
                         mapLayout.setOnExpandedListener { view, isExpanded ->
                             Glide.with(view)
                                 .load(image)
@@ -322,7 +321,7 @@ class EditConferenceActivity() : AppCompatActivity() {
                 }.addOnSuccessListener {
                     viewModel.updateValue(originalImageList.size)
                     originalImageList.sort()
-                    imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, deleteImageList = DataHandler.conferDataSet[position][9] as ArrayList<Uri>, viewModel = viewModel)
+                    imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, deleteImageList = DataHandler.conferDataSet[position].image as ArrayList<Uri>, viewModel = viewModel)
                     binding.addConferenceImageRecyclerView.adapter = imageAdapter
                     binding.addConferenceImageRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
                 }
