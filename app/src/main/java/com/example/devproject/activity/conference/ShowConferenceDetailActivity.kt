@@ -119,8 +119,7 @@ class ShowConferenceDetailActivity : AppCompatActivity() {
         conferPager = findViewById(R.id.detailViewPager)
         brightIndicator = findViewById(R.id.circleIndicator)
         darkerIndicator = findViewById(R.id.circleIndicator2)
-        conferManagerImageView?.visibility = if(conferDataSet[position][13] as Boolean){
-
+        conferManagerImageView?.visibility = if(conferDataSet[position].manager){
             View.VISIBLE
         }else{
             View.INVISIBLE
