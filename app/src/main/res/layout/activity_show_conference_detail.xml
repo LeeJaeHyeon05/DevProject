@@ -31,11 +31,25 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <me.relex.circleindicator.CircleIndicator3
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
             android:id="@+id/circleIndicator"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            app:dotsColor="@color/white"
+            app:selectedDotColor="@color/black"
+            app:dotsSize="10sp"
+            android:layout_gravity="center|bottom"
+            android:visibility="invisible"
+            />
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            android:id="@+id/circleIndicator2"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            app:dotsColor="@color/black"
+            app:selectedDotColor="@color/white"
+            app:dotsSize="10sp"
+            android:layout_gravity="center|bottom"
+            android:visibility="invisible"
             />
 
     </FrameLayout>
