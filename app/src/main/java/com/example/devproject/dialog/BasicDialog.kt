@@ -15,8 +15,8 @@ class BasicDialog(context : Context, content : String) {
 
     fun activate() {
         binding = DialogDefaultBinding.inflate(dialog.layoutInflater)
-        dialog.show()
         dialog.setContentView(binding.root)
+        dialog.show()
         dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
         var defaultDialogTextView : TextView = binding.defaultDialogTextView
         defaultDialogTextView.text = content

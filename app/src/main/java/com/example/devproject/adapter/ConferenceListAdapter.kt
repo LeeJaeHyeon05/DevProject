@@ -20,7 +20,7 @@ import com.example.devproject.util.DataHandler
 import com.example.devproject.util.UIHandler
 
 @RequiresApi(Build.VERSION_CODES.P)
-class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
+class ConferenceListAdapter() : RecyclerView.Adapter<ConferenceListAdapter.ViewHolder>() {
 
     private var context : Context? = null
     private var todayDate = DataHandler.currentDate.toInt()
@@ -46,12 +46,12 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.conferLinkImageView.setOnClickListener {
             val intent = Intent(context, ShowWebViewActivity::class.java)
-            intent.putExtra("conferenceURL", DataHandler.conferDataSet[position][5].toString())
+            intent.putExtra("conferenceURL", DataHandler.conferDataSet[position].conferenceURL)
             context?.startActivity(intent)
         }
-        viewHolder.conferPreTitleTextVIew.text = DataHandler.conferDataSet[position][1].toString()
-        var startDate = DataHandler.conferDataSet[position][10].toString()
-        var endDate = DataHandler.conferDataSet[position][11].toString()
+        viewHolder.conferPreTitleTextVIew.text = DataHandler.conferDataSet[position].title
+        var startDate = DataHandler.conferDataSet[position].startDate
+        var endDate = DataHandler.conferDataSet[position].finishDate
 
         val startDateInt = startDate.replace(". ", "").toInt()
         val endDateInt = endDate.replace(". ", "").toInt()
@@ -65,7 +65,7 @@ class ListAdapter() : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
         viewHolder.conferPreStartDateTextView.text = startDate.substring(2, startDate.length)
         viewHolder.conferPreFinishDateTextView.text =endDate.substring(2, endDate.length)
-        viewHolder.conferPreContentTextView.text = DataHandler.conferDataSet[position][6].toString()
+        viewHolder.conferPreContentTextView.text = DataHandler.conferDataSet[position].content
         viewHolder.conferPreCardView.setOnClickListener {
             val intent = Intent(UIHandler.rootView?.context, ShowConferenceDetailActivity::class.java)
             intent.putExtra("position", position)

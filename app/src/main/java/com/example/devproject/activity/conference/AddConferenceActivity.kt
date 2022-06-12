@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -29,17 +28,14 @@ import com.example.devproject.others.DBType
 import com.example.devproject.adapter.ImageViewAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
+import com.example.devproject.util.OneSignalUtil
 import com.example.devproject.util.UIHandler
 import com.google.android.material.chip.Chip
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
-import com.onesignal.OneSignal
-import com.onesignal.OneSignal.PostNotificationResponseHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONException
-import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -51,7 +47,6 @@ class AddConferenceActivity() : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddConferenceBinding
     lateinit var viewModel: ImageCounterViewModel
-    private lateinit var uploader: String
     private lateinit var imageAdapter: ImageViewAdapter
     private var checkOffline = false
 
@@ -65,17 +60,14 @@ class AddConferenceActivity() : AppCompatActivity() {
         supportActionBar!!.title = "컨퍼런스 등록"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        var latitude: Double = 0.0
-        var longitude: Double = 0.0
+        var latitude  = 0.0
+        var longitude = 0.0
         val mGeocoder = Geocoder(this, Locale.getDefault())
         var list = mutableListOf<Address>()
         val imageList = ArrayList<Uri>()
         val imageRecyclerView = binding.addConferenceImageRecyclerView
 
-        uploader = ""
-
         setDatePrice()
-
         viewModel = ViewModelProvider(this).get(ImageCounterViewModel::class.java)
 
         viewModel.imageCounterValue.observe(this, androidx.lifecycle.Observer {
@@ -179,7 +171,7 @@ class AddConferenceActivity() : AppCompatActivity() {
 
             val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
 
-            val conference = ConferenceInfo(
+            val conferenceInfo = ConferenceInfo(
                 conferenceURL = link,
                 content = conContent,
                 date = binding.startDateTextView.text.toString(),
@@ -198,7 +190,7 @@ class AddConferenceActivity() : AppCompatActivity() {
 
 
 
-            if(checkInput(conference)){
+            if(checkInput(conferenceInfo)){
 
                 var deviceIDs = ""
                 DataHandler.conferenceNotiDeviceIDList.forEachIndexed { index, s ->
@@ -209,24 +201,10 @@ class AddConferenceActivity() : AppCompatActivity() {
                     }
                 }
 
-                if(storageWrite("conferenceDocument", documentId, snapshotImage, imageList, conference)){
+                if(storageWrite("conferenceDocument", documentId, snapshotImage, imageList, conferenceInfo)){
                     Toast.makeText(this, "업로드했어요!", Toast.LENGTH_SHORT).show()
                     //Notification
-                    try {
-                        OneSignal.postNotification("{'headings' : {'en' : '신규 컨퍼런스'}, 'contents': {'en':'${conference.title}'}, 'include_player_ids': [${deviceIDs}]}",
-                            object : PostNotificationResponseHandler {
-                                override fun onSuccess(response: JSONObject) {
-                                    Log.i("OneSignalExample", "postNotification Success: $response")
-                                }
-
-                                override fun onFailure(response: JSONObject) {
-                                    Log.e("OneSignalExample", "postNotification Failure: $response")
-                                }
-                            })
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
-
+                    OneSignalUtil.post("신규 컨퍼런스", conferenceInfo.title, deviceIDs)
                     CoroutineScope(Dispatchers.Main).launch {
                         DataHandler.reload(DBType.CONFERENCE)
                     }

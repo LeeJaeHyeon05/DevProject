@@ -23,6 +23,7 @@ import com.example.devproject.dialog.FilterDialog
 import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
+import com.example.devproject.util.OneSignalUtil
 import com.example.devproject.util.UIHandler
 import com.google.android.material.snackbar.Snackbar
 import com.onesignal.OneSignal
@@ -31,7 +32,7 @@ import com.onesignal.OneSignal
 class MainActivity : AppCompatActivity() {
     private var backPressedTime : Long = 0
     private lateinit var mBinding: ActivityMainBinding
-    private val ONESIGNAL_APP_ID = "75c55497-72ce-473d-98ba-a2d796996de7"
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if(FirebaseIO.isValidAccount()) {
             menuInflater.inflate(R.menu.actionbar_logined_menu, menu)
@@ -72,21 +73,15 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
-        // OneSignal Initialization
-        OneSignal.initWithContext(this);
-        OneSignal.setAppId(ONESIGNAL_APP_ID);
-
+        OneSignalUtil.initialize(this)
         UIHandler.allocateUI(window.decorView.rootView, this)
-
-        //navigation host
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
-        //navigation controller
         val navController = navHostFragment.navController
-        //binding bottom navigation view & navigation
         NavigationUI.setupWithNavController(mBinding.bottomNav, navController)
     }
 
@@ -95,7 +90,6 @@ class MainActivity : AppCompatActivity() {
             backPressedTime = System.currentTimeMillis()
             Snackbar.make(window.decorView.rootView, "한번 더 눌러 종료합니다." , Snackbar.LENGTH_LONG).show()
         }else{
-            DataHandler.delete(DBType.CONFERENCE)
             finish()
         }
     }

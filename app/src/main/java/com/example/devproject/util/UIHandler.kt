@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.devproject.adapter.ListAdapter
+import com.example.devproject.adapter.ConferenceListAdapter
 import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
 import com.example.devproject.activity.conference.ImageCounterViewModel
@@ -22,7 +22,7 @@ class UIHandler {
 
     companion object{
         private var conferAddButton : Button? = null// findViewById<Button>(R.id.addBtn)
-        var adapter : ListAdapter? = null
+        var adapterConference : ConferenceListAdapter? = null
         var rootView : View? = null
         var mainActivity : MainActivity? = null
         var languageNumberTextView : TextView? = null
