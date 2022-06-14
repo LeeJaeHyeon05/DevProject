@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.devproject">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_main"
@@ -10,14 +12,16 @@
         android:roundIcon="@mipmap/ic_main_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DevProject">
+        <activity
+            android:name=".activity.conference.ShowDetailImage"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-2611628960821157~8611013768"/>
-
+            android:value="ca-app-pub-2611628960821157~8611013768" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA_ppNk6FfxhQVmU59Ic5zmaS_9KEbeipk"/>
+            android:value="AIzaSyA_ppNk6FfxhQVmU59Ic5zmaS_9KEbeipk" />
 
         <activity
             android:name=".activity.SplashActivity"
@@ -25,58 +29,49 @@
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.MainActivity"
-            android:exported="false" >
-        </activity>
-
+            android:exported="false"></activity>
         <activity
             android:name=".activity.account.LoginActivity"
             android:exported="false" />
-
         <activity
             android:name=".activity.account.ProfileActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".activity.account.EditProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.account.SignUpActivity"
             android:exported="false" />
-
         <activity
             android:name=".activity.conference.ShowConferenceDetailActivity"
             android:exported="false" />
-
         <activity
-            android:name=".activity.conference.AddConferencesActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
-
+            android:name=".activity.conference.AddConferenceActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.conference.EditConferenceActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
-
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.study.AddStudyActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
-
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.study.ShowStudyDetailActivity"
             android:exported="false" />
-
         <activity
             android:name=".activity.study.EditStudyActivity"
             android:exported="false" />
-
         <activity
             android:name=".activity.MapActivity"
             android:exported="false" />
-
         <activity
             android:name=".activity.ShowWebViewActivity"
             android:exported="false" />

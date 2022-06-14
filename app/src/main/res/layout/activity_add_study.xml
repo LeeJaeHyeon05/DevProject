@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".activity.conference.AddConferencesActivity">
+    android:paddingLeft="5dp"
+    tools:context=".activity.conference.AddConferenceActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -103,6 +104,7 @@
             android:id="@+id/studyOnlineCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:buttonTint="@color/yellow_500"
             android:text="온라인 입니다"
             app:layout_constraintStart_toStartOf="@+id/addStudyGuideLeft"
             app:layout_constraintTop_toBottomOf="@+id/tableRow2" />
@@ -140,7 +142,52 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text=" 명 모집" />
+                android:text=" 명 모집"
+                android:textSize="18sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@+id/addStudyGuideRight"
+            app:layout_constraintTop_toBottomOf="@+id/languageSelectRecyclerView">
+
+            <Button
+                android:id="@+id/studyMemberMinusButton"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/selectedMemberTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:paddingRight="3dp"
+                android:text="1"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:text="명 등록"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/studyMemberPlusButton"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:textSize="24sp" />
+
         </TableRow>
 
         <androidx.recyclerview.widget.RecyclerView

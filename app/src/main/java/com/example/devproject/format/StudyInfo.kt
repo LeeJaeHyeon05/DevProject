@@ -1,11 +1,9 @@
 package com.example.devproject.format
 
-import android.net.Uri
-
 data class StudyInfo (
     var documentID : String? = null,
     var ongoing : Boolean? = null,
-    var title : String? = null,
+    var title : String = "",
     var content : String? = null,
     var offline : Boolean? = null,
     var studyURL : String? = null,
@@ -13,5 +11,6 @@ data class StudyInfo (
     var remainingMemeber : Long? = 0,
     val language: MutableList<String>? = null,
     var uid : String? = null,
-    var uploader : String? = null
+    var uploader : String? = null,
+    var endDate : String? = null
 )

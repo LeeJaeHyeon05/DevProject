@@ -1,14 +1,12 @@
-package com.example.devproject.others
+package com.example.devproject.adapter
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.R
-import com.example.devproject.util.UIHandler
 
 class LanguageListAdapter2(languageArray: MutableList<String>) : RecyclerView.Adapter<LanguageListAdapter2.ViewHolder>() {
 

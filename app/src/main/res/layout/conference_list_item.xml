@@ -13,52 +13,33 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/conferPreImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/conferPreTitleTextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/conferPreImageView"
-            app:layout_constraintTop_toTopOf="@+id/conferPreImageView"
-            app:srcCompat="@drawable/ic_baseline_free_cancellation_24"
-            tools:visibility="gone" />
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/conferPreTitleTextView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="18dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:paddingRight="2dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
             android:text="네이버 컨퍼런스"
             android:textColor="@color/black"
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/conferPreImageView"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/conferPreContentTextView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:ellipsize="end"
             android:letterSpacing="-0.035"
             android:maxLines="2"
-            android:paddingRight="2dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:text="The Conference for Java"
             android:textColor="@color/darkGrayColor"
             android:textSize="18sp"
@@ -68,9 +49,10 @@
 
         <TextView
             android:id="@+id/conferPreStartDateTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
+            android:paddingLeft="5dp"
             android:text="2022. 05. 02"
             android:textColor="@color/brightGrayColor"
             app:layout_constraintStart_toStartOf="@+id/conferPreTitleTextView"
@@ -78,7 +60,7 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
@@ -88,23 +70,35 @@
 
         <TextView
             android:id="@+id/conferPreFinishDateTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingLeft="0dp"
             android:text="2022. 05. 02"
             android:textColor="@color/brightGrayColor"
             app:layout_constraintStart_toEndOf="@+id/textView3"
             app:layout_constraintTop_toBottomOf="@+id/conferPreContentTextView" />
 
+        <ImageView
+            android:id="@+id/conferLinkImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/link" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/languageChip"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
             android:background="@color/buttonColor"
             android:text="코틀린"
             android:visibility="invisible"
             app:chipBackgroundColor="@color/buttonColor"
-            app:layout_constraintStart_toStartOf="@+id/conferPreTitleTextView"
-            app:layout_constraintTop_toBottomOf="@+id/conferPreStartDateTextView" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

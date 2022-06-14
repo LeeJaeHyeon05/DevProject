@@ -23,8 +23,10 @@ import com.example.devproject.dialog.FilterDialog
 import com.example.devproject.others.DBType
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
+import com.example.devproject.util.OneSignalUtil
 import com.example.devproject.util.UIHandler
 import com.google.android.material.snackbar.Snackbar
+import com.onesignal.OneSignal
 
 
 class MainActivity : AppCompatActivity() {
@@ -71,16 +73,15 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
-        UIHandler.allocateUI(window.decorView.rootView, this)
 
-        //navigation host
+        OneSignalUtil.initialize(this)
+        UIHandler.allocateUI(window.decorView.rootView, this)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
-        //navigation controller
         val navController = navHostFragment.navController
-        //binding bottom navigation view & navigation
         NavigationUI.setupWithNavController(mBinding.bottomNav, navController)
     }
 
@@ -89,7 +90,6 @@ class MainActivity : AppCompatActivity() {
             backPressedTime = System.currentTimeMillis()
             Snackbar.make(window.decorView.rootView, "한번 더 눌러 종료합니다." , Snackbar.LENGTH_LONG).show()
         }else{
-            DataHandler.delete(DBType.CONFERENCE)
             finish()
         }
     }

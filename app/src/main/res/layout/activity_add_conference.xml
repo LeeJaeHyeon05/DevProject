@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".activity.conference.AddConferenceActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/addConferenceGuideLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/addConferenceGuideRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/addConImageButtonLayout"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/addConImage"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_baseline_camera_alt_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/addConImageTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:text="@{Integer.toString(viewModel.imageCounterLiveData)} / 3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/addConferenceImageRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:orientation="horizontal"></androidx.recyclerview.widget.RecyclerView>
+
+
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/titleTextInput"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColorHint="#9A9A9A"
+            android:hint="내용"
+            app:layout_constraintBottom_toTopOf="@id/detailTextInput"
+            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+            <EditText
+                android:id="@+id/addConTitle"
+                style="@style/TextInputEditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:hint="제목" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/detailTextInput"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textColorHint="#9A9A9A"
+            android:hint="내용"
+            app:layout_constraintBottom_toTopOf="@id/conferenceLinkInput"
+            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@id/titleTextInput">
+
+            <EditText
+                android:id="@+id/addConDetail"
+                style="@style/TextInputEditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:fontFamily="@font/jua_regular"
+                android:gravity="top|start"
+                android:hint="내용"
+                android:inputType="text|textMultiLine"
+                android:maxHeight="300dp"
+                android:scrollbars="vertical" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/conferenceLinkInput"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:maxHeight="200dp"
+            android:hint="내용"
+            android:textColorHint="#9A9A9A"
+            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@id/detailTextInput">
+
+            <EditText
+                android:id="@+id/addConLink"
+                style="@style/TextInputEditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|start"
+                android:hint="홈페이지"
+                android:inputType="text|textMultiLine"
+                android:maxHeight="200dp"
+                android:scrollbars="vertical" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/conferManagerCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/yellow_500"
+            android:text="담당자 입니다"
+            app:layout_constraintStart_toStartOf="@+id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@+id/conferenceLinkInput" />
+
+
+        <CheckBox
+            android:id="@+id/conferOnlineCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/yellow_500"
+            android:text="온라인 입니다"
+            app:layout_constraintBottom_toTopOf="@+id/LinearLayout"
+            app:layout_constraintStart_toStartOf="@+id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@+id/conferManagerCheckBox" />
+
+        <LinearLayout
+            android:id="@+id/LinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
+            app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
+            app:layout_constraintTop_toBottomOf="@+id/conferManagerCheckBox">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/TextLayoutConferenceGeo"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:maxHeight="100dp"
+                android:textColorHint="#9A9A9A"
+                app:endIconDrawable="@drawable/ic_map"
+                app:endIconMode="custom">
+
+                <EditText
+                    android:id="@+id/ETConferenceGeo"
+                    style="@style/TextInputEditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="위치"
+                    android:inputType="text|textMultiLine"
+                    android:maxHeight="100dp"
+                    android:scrollbars="vertical"
+                    android:textColorHint="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.alespero.expandablecardview.ExpandableCardView
+                android:id="@+id/showMapSnapShotLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:animationDuration="300"
+                app:expandOnClick="true"
+                app:inner_view="@layout/expandable_second_map_snapshot"
+                app:title="지도 보이기" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="시작/종료일" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:weightSum="9">
+
+                <TextView
+                    android:id="@+id/startDateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="3"
+                    android:padding="5dp"
+                    android:text="0000. 00. 00"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="~"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/finishDateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="3"
+                    android:padding="5dp"
+                    android:text="0000. 00. 00"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/conferDateImageButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:backgroundTint="@color/yellow_200"
+                    android:src="@drawable/ic_baseline_date_range_24" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="금액 추가" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="9">
+
+                <TextView
+                    android:id="@+id/priceTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                     android:padding="5dp"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:layout_weight="7"
+                    android:textSize="24sp" />
+
+                <ImageButton
+                    android:id="@+id/conferPriceButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:backgroundTint="@color/yellow_200"
+                    android:src="@drawable/ic_baseline_attach_money_24" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/conferPreClip"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="260dp"
+                        android:layout_height="wrap_content"
+                        android:maxHeight="200dp"
+                        android:textColorHint="#9A9A9A">
+
+                        <EditText
+                            android:id="@+id/addClip"
+                            style="@style/TextInputEditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="top|start"
+                            android:hint="태그 추가하기"
+                            android:inputType="text|textMultiLine"
+                            android:maxHeight="200dp"
+                            android:scrollbars="vertical" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/addChipButton"
+                        android:layout_width="70dp"
+                        android:layout_height="60dp"
+                        android:text="추가하기"
+                        android:textColor="@color/black"
+                        tools:ignore="MissingConstraints" />
+
+                </LinearLayout>
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/conferChipGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp" />
+
+                <TextView
+                    android:id="@+id/tagNumberTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="현재 태그 갯수 : 0"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/addConButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/con_round"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/jua_regular"
+                android:letterSpacing="-0.01"
+                android:padding="5dp"
+                android:text="@string/addConferenceText"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:layout_editor_absoluteX="30dp" />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

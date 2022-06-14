@@ -1,51 +1,52 @@
 package com.example.devproject.activity.conference
 
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.Pair
+import androidx.lifecycle.ViewModelProvider
 import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
-import com.example.devproject.others.ImageViewAdapter
-import com.example.devproject.databinding.ActivityAddConferencesBinding
+import com.example.devproject.databinding.ActivityAddConferenceBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.others.DBType
+import com.example.devproject.adapter.ImageViewAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
+import com.example.devproject.util.OneSignalUtil
+import com.example.devproject.util.UIHandler
 import com.google.android.material.chip.Chip
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class AddConferencesActivity() : AppCompatActivity() {
 
-    private lateinit var binding: ActivityAddConferencesBinding
-    private lateinit var uploader: String
+class AddConferenceActivity() : AppCompatActivity() {
+
+    private lateinit var binding: ActivityAddConferenceBinding
+    lateinit var viewModel: ImageCounterViewModel
     private lateinit var imageAdapter: ImageViewAdapter
     private var checkOffline = false
 
@@ -53,48 +54,57 @@ class AddConferencesActivity() : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddConferencesBinding.inflate(layoutInflater)
+        binding = ActivityAddConferenceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar!!.title = "컨퍼런스 추가"
+        supportActionBar!!.title = "컨퍼런스 등록"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        var latitude: Double = 0.0
-        var longitude: Double = 0.0
+        var latitude  = 0.0
+        var longitude = 0.0
         val mGeocoder = Geocoder(this, Locale.getDefault())
         var list = mutableListOf<Address>()
         val imageList = ArrayList<Uri>()
         val imageRecyclerView = binding.addConferenceImageRecyclerView
 
-        uploader = ""
-
         setDatePrice()
+        viewModel = ViewModelProvider(this).get(ImageCounterViewModel::class.java)
+
+        viewModel.imageCounterValue.observe(this, androidx.lifecycle.Observer {
+            binding.addConImageTextView.text = "$it / 3"
+        })
 
         val startGetImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result-> //사진 불러오기
-            if(result.data != null){
-                val imageData = result.data
-                val size = imageData?.clipData?.itemCount
-                val imageUri = imageData?.clipData
-                if (imageUri != null) {
-                    for(i in 0 until size!!){
-                        imageList.add(result.data!!.clipData!!.getItemAt(i).uri)
-                    }
-                    imageList.sort()
-                    imageAdapter = ImageViewAdapter(imageList = imageList, this)
-                    imageRecyclerView.adapter = imageAdapter
-                    imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-                }
-            }
+            imageAdapter = ImageViewAdapter(imageList = imageList, this, viewModel = viewModel)
+            val imageSize = UIHandler.countImage(result, imageList, this, imageRecyclerView, imageAdapter, viewModel).toString()
+
+            viewModel.updateValue(imageSize.toInt())
         }
 
-        binding.addConImageBtn.setOnClickListener { //사진 불러오기
+        binding.addConImageButtonLayout.setOnClickListener { //사진 불러오기
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             startGetImageResult.launch(intent)
         }
 
-        getDate()
+        val formatter = SimpleDateFormat("yyyy. MM. dd")
+        binding.conferDateImageButton.setOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.dateRangePicker().setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
+                .setTitleText("컨퍼런스 날짜 선택").setSelection(
+                    Pair(MaterialDatePicker.thisMonthInUtcMilliseconds(),
+                        MaterialDatePicker.todayInUtcMilliseconds())
+                )
+
+            datePicker.build().also { picker ->
+                picker.show(supportFragmentManager, picker.toString())
+                picker.addOnPositiveButtonClickListener { it ->
+                    binding.startDateTextView.text = formatter.format(Date(it.first))
+                    binding.finishDateTextView.text = formatter.format(Date(it.second))
+                }
+            }
+        }
+
         getPrice()
         //칩
         tagClip()
@@ -154,7 +164,6 @@ class AddConferencesActivity() : AppCompatActivity() {
             } else Integer.parseInt(exceptWon[0]).toLong()
 
             val tag = binding.conferChipGroup.toString()
-            var offline = !binding.conferOnlineCheckBox.isChecked
 
             //월 불러오기
             val documentId = "document" + ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS")).toString()
@@ -162,11 +171,11 @@ class AddConferencesActivity() : AppCompatActivity() {
 
             val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
 
-            val conference = ConferenceInfo(
+            val conferenceInfo = ConferenceInfo(
                 conferenceURL = link,
                 content = conContent,
-                date = binding.startDateTextView.text.toString().replace(",", "."),
-                offline = offline,
+                date = binding.startDateTextView.text.toString(),
+                offline = !binding.conferOnlineCheckBox.isChecked,
                 place = binding.ETConferenceGeo.text.toString(),
                 price = price,
                 title = conTitle,
@@ -174,13 +183,28 @@ class AddConferencesActivity() : AppCompatActivity() {
                 uploader = DataHandler.userInfo.id,
                 image = imageList,
                 uid = uid,
-                startDate =  binding.startDateTextView.text.toString().replace(",", "."),
-                finishDate =  binding.finishDateTextView.text.toString().replace(",", ".")
+                startDate =  binding.startDateTextView.text.toString(),
+                finishDate =  binding.finishDateTextView.text.toString(),
+                manager = binding.conferManagerCheckBox.isChecked
             )
 
-            if(checkInput(conference)){
-                if(storageWrite("conferenceDocument", documentId, snapshotImage, imageList, conference)){
-                    Toast.makeText(this, "업로드했습니다", Toast.LENGTH_SHORT).show()
+
+
+            if(checkInput(conferenceInfo)){
+
+                var deviceIDs = ""
+                DataHandler.conferenceNotiDeviceIDList.forEachIndexed { index, s ->
+                    deviceIDs += if(index + 1 == DataHandler.conferenceNotiDeviceIDList.size ){
+                        "'${s}'"
+                    }else{
+                        "'${s}', "
+                    }
+                }
+
+                if(storageWrite("conferenceDocument", documentId, snapshotImage, imageList, conferenceInfo)){
+                    Toast.makeText(this, "업로드했어요!", Toast.LENGTH_SHORT).show()
+                    //Notification
+                    OneSignalUtil.post("신규 컨퍼런스", conferenceInfo.title, deviceIDs)
                     CoroutineScope(Dispatchers.Main).launch {
                         DataHandler.reload(DBType.CONFERENCE)
                     }
@@ -197,6 +221,7 @@ class AddConferencesActivity() : AppCompatActivity() {
         val day = c.get(Calendar.DAY_OF_MONTH)
 
         binding.startDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
+        binding.finishDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
         binding.priceTextView.text = "무료"
     }
 
@@ -275,35 +300,8 @@ class AddConferencesActivity() : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    private fun getDate() {
-
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-
-        binding.startDateTextView.setOnClickListener {
-            val dig = DatePickerDialog(this,
-                { p0, year, month, day ->
-                    binding.startDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
-                    binding.finishDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
-                }, year, month, day)
-            dig.show()
-        }
-
-        binding.finishDateTextView.setOnClickListener{
-            val datePickerDialog = DatePickerDialog(this,
-                { p0, year, month, day ->
-                    binding.finishDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
-                }, year, month, day)
-           datePickerDialog.show()
-        }
-
-    }
-
     private fun getPrice() {
-        val priceBtn = binding.priceButton
+        val priceBtn = binding.conferPriceButton
         priceBtn.setOnClickListener {
             val dialog = PriceDialog(this)
             dialog.setOnOkClickedListener{ price->

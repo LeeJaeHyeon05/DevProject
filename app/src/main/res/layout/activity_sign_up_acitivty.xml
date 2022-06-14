@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.25" />
+            app:layout_constraintGuide_percent="0.05" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/GuidelineBottom"
@@ -53,17 +53,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.43" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/GuidelineLeft"
-            app:layout_constraintEnd_toEndOf="@id/GuidelineRight"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/GuidelineTop"
-            android:text="회원가입"
-            android:textSize="35sp"
-            android:textColor="@color/black"/>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/TextInputLayoutStyle"
@@ -168,15 +157,15 @@
             app:layout_constraintStart_toStartOf="@+id/GuidelineLeft"
             app:layout_constraintTop_toBottomOf="@+id/TextLayoutPasswordConfirm" />
 
-        <Spinner
-            android:id="@+id/languageSpinner"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/languageRecyclerView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:foregroundGravity="center"
+            android:layout_height="52dp"
+            app:layout_constraintBottom_toTopOf="@+id/BtnSinUp"
             app:layout_constraintEnd_toStartOf="@+id/GuidelineRight"
             app:layout_constraintStart_toStartOf="@+id/GuidelineLeft"
-            app:layout_constraintTop_toBottomOf="@+id/languageTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/languageTextView"
+            tools:listitem="@layout/language_list_item"/>
 
         <Button
             android:id="@+id/BtnSinUp"

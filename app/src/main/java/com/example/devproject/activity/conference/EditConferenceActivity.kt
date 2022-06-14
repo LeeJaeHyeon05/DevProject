@@ -1,7 +1,6 @@
 package com.example.devproject.activity.conference
 
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.location.Address
@@ -21,29 +20,35 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.Pair
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alespero.expandablecardview.ExpandableCardView
 import com.bumptech.glide.Glide
 import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
-import com.example.devproject.databinding.ActivityAddConferencesBinding
+import com.example.devproject.databinding.ActivityAddConferenceBinding
 import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.others.DBType
-import com.example.devproject.others.ImageViewAdapter
+import com.example.devproject.adapter.ImageViewAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
+import com.example.devproject.util.UIHandler
+import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class EditConferenceActivity() : AppCompatActivity() {
 
-    private lateinit var binding: ActivityAddConferencesBinding
+    private lateinit var binding: ActivityAddConferenceBinding
     private var pos = 0
+    lateinit var viewModel: ImageCounterViewModel
     private lateinit var imageAdapter: ImageViewAdapter
     private var originalImageList: ArrayList<Uri> = ArrayList()
     private var editImageList: ArrayList<Uri> = ArrayList()
@@ -53,7 +58,7 @@ class EditConferenceActivity() : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddConferencesBinding.inflate(layoutInflater)
+        binding = ActivityAddConferenceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar!!.title = "컨퍼런스 편집"
@@ -67,19 +72,45 @@ class EditConferenceActivity() : AppCompatActivity() {
         pos = position
         val imageRecyclerView = binding.addConferenceImageRecyclerView
 
-        binding.addConTitle.setText(DataHandler.conferDataSet[position][1] as String)
-        binding.startDateTextView.text = DataHandler.conferDataSet[position][10] as String
-        binding.finishDateTextView.text = DataHandler.conferDataSet[position][11] as String
-        binding.priceTextView.text = DataHandler.conferDataSet[position][3].toString()
-        binding.addConLink.setText(DataHandler.conferDataSet[position][5] as String)
-        binding.addConDetail.setText(DataHandler.conferDataSet[position][6] as String)
+        binding.addConTitle.setText(DataHandler.conferDataSet[position].title)
+        binding.startDateTextView.text = DataHandler.conferDataSet[position].startDate
+        binding.finishDateTextView.text = DataHandler.conferDataSet[position].finishDate
+        binding.priceTextView.text = DataHandler.conferDataSet[position].price.toString()
+        binding.addConLink.setText(DataHandler.conferDataSet[position].conferenceURL)
+        binding.addConDetail.setText(DataHandler.conferDataSet[position].content)
         binding.addConButton.text = "컨퍼런스 편집하기"
-        val imagelist: ArrayList<Uri> = DataHandler.conferDataSet[position][9] as ArrayList<Uri>
+        binding.conferOnlineCheckBox.isChecked =  !(DataHandler.conferDataSet[position].offline)
+        binding.conferManagerCheckBox.isChecked = DataHandler.conferDataSet[position].manager
+
+        val imagelist: MutableList<Uri>? = DataHandler.conferDataSet[position].image
         var snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
-        
-        getDate()
+
         getPrice()
+
+        viewModel = ViewModelProvider(this).get(ImageCounterViewModel::class.java)
+        viewModel.imageCounterValue.observe(this, androidx.lifecycle.Observer {
+            binding.addConImageTextView.text = "$it / 3"
+        })
         showImage(position, this)
+
+        val formatter = SimpleDateFormat("yyyy. MM. dd")
+        binding.conferDateImageButton.setOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.dateRangePicker().setInputMode(
+                MaterialDatePicker.INPUT_MODE_CALENDAR)
+                .setTitleText("컨퍼런스 날짜 선택").setSelection(
+                    Pair(
+                        MaterialDatePicker.thisMonthInUtcMilliseconds(),
+                        MaterialDatePicker.todayInUtcMilliseconds())
+                )
+
+            datePicker.build().also { picker ->
+                picker.show(supportFragmentManager, picker.toString())
+                picker.addOnPositiveButtonClickListener { it ->
+                    binding.startDateTextView.text = formatter.format(Date(it.first))
+                    binding.finishDateTextView.text = formatter.format(Date(it.second))
+                }
+            }
+        }
 
         var startMapActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result -> //지도 액티비티 결과값 받아오기
             if (result?.resultCode ?: 0 == Activity.RESULT_OK) {
@@ -117,31 +148,24 @@ class EditConferenceActivity() : AppCompatActivity() {
             if(result.data != null){
                 val imageData = result.data
                 var size: Int = imageData?.clipData?.itemCount!!
-                val imageUri = imageData?.clipData
-                if (imageUri != null) {
-                    for(i in 0 until size){
-                        editImageList.add(result.data!!.clipData!!.getItemAt(i).uri)
-                    }
-                    if(originalImageList.isNotEmpty()){
-                        for(i in originalImageList){
-                            if(editImageList.contains(i)){
-                                continue
-                            }
-                            else{
-                                editImageList.add(i)
-                            }
+                if(originalImageList.isNotEmpty()){ //서버에서 받아온 이미지가 있었으면 같이 포함해야함
+                    for(i in originalImageList){
+                        if(editImageList.contains(i)){
+                            continue
+                        }
+                        else{
+                            editImageList.add(i)
                         }
                     }
-                    editImageList.sortDescending()
-                    imageAdapter = ImageViewAdapter(imageList = editImageList, this, deleteImageList = imagelist)
-                    imageRecyclerView.adapter = imageAdapter
-                    imageRecyclerView.layoutManager =  LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
                 }
+                imageAdapter = ImageViewAdapter(imageList = editImageList, this, deleteImageList = imagelist as ArrayList<Uri>, viewModel)
+                val imageSize = UIHandler.countImage(result, editImageList, this, imageRecyclerView, imageAdapter, viewModel).toString()
+                viewModel.updateValue(imageSize.toInt())
 
             }
         }
 
-        binding.addConImageBtn.setOnClickListener { //사진 불러오기
+        binding.addConImageButtonLayout.setOnClickListener { //사진 불러오기
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
@@ -177,7 +201,7 @@ class EditConferenceActivity() : AppCompatActivity() {
                 this.deleteImageList = imageAdapter.getDeleteImage()
             }
 
-            var place = DataHandler.conferDataSet[position][12] as String
+            var place = DataHandler.conferDataSet[position].place
 
             val conference = initConference(link, conContent, place, snapshotImage ,price, conTitle, position)
 
@@ -215,12 +239,13 @@ class EditConferenceActivity() : AppCompatActivity() {
             place = switchPlace,
             price = price,
             title = conTitle,
-            documentID = DataHandler.conferDataSet[position][8] as String,
-            uploader = DataHandler.conferDataSet[position][0] as String,
-            image = DataHandler.conferDataSet[position][9] as ArrayList<Uri>,
-            uid = DataHandler.conferDataSet[position][7] as String,
+            documentID = DataHandler.conferDataSet[position].documentID,
+            uploader = DataHandler.conferDataSet[position].uploader,
+            image = DataHandler.conferDataSet[position].image,
+            uid = DataHandler.conferDataSet[position].uid,
             startDate = binding.startDateTextView.text.toString().replace(",", "."),
-            finishDate = binding.finishDateTextView.text.toString().replace(",", ".")
+            finishDate = binding.finishDateTextView.text.toString().replace(",", "."),
+            manager = binding.conferManagerCheckBox.isChecked
         )
     }
 
@@ -241,7 +266,7 @@ class EditConferenceActivity() : AppCompatActivity() {
         }
         if(FirebaseIO.storageWrite(
                 "conferenceDocument",
-                DataHandler.conferDataSet[position][8] as String,
+                DataHandler.conferDataSet[position].documentID,
                 snapshotImage,
                 editImageList,
                 conference
@@ -267,10 +292,9 @@ class EditConferenceActivity() : AppCompatActivity() {
     }
 
     private fun showImage(position: Int, editConferenceActivity: EditConferenceActivity) {
-        val list: ArrayList<Uri> = DataHandler.conferDataSet[position][9] as ArrayList<Uri>
-        val confershowNoImage = findViewById<ImageView>(R.id.conferDetailImageView)
+        val list: ArrayList<Uri> = DataHandler.conferDataSet[position].image as ArrayList<Uri>
         if(list.isEmpty()){
-            imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, deleteImageList = DataHandler.conferDataSet[position][9] as ArrayList<Uri>)
+            imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, deleteImageList = DataHandler.conferDataSet[position].image as ArrayList<Uri>, viewModel = viewModel)
             binding.addConferenceImageRecyclerView.adapter = imageAdapter
             binding.addConferenceImageRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
             return
@@ -281,7 +305,7 @@ class EditConferenceActivity() : AppCompatActivity() {
                 storageRef.downloadUrl.addOnSuccessListener { image->
                     if(image.path!!.contains("MapSnapShot.jpeg")){
                         var mapLayout = findViewById<ExpandableCardView>(R.id.showMapSnapShotLayout)
-                        mapLayout.setTitle(DataHandler.conferDataSet[position][12].toString())
+                        mapLayout.setTitle(DataHandler.conferDataSet[position].place)
                         mapLayout.setOnExpandedListener { view, isExpanded ->
                             Glide.with(view)
                                 .load(image)
@@ -295,8 +319,9 @@ class EditConferenceActivity() : AppCompatActivity() {
                         originalImageList.add(image)
                     }
                 }.addOnSuccessListener {
+                    viewModel.updateValue(originalImageList.size)
                     originalImageList.sort()
-                    imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, deleteImageList = DataHandler.conferDataSet[position][9] as ArrayList<Uri>)
+                    imageAdapter = ImageViewAdapter(imageList = originalImageList, editConferenceActivity.applicationContext, deleteImageList = DataHandler.conferDataSet[position].image as ArrayList<Uri>, viewModel = viewModel)
                     binding.addConferenceImageRecyclerView.adapter = imageAdapter
                     binding.addConferenceImageRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
                 }
@@ -333,34 +358,8 @@ class EditConferenceActivity() : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    private fun getDate() {
-
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-
-
-        binding.startDateTextView.setOnClickListener{
-            val dig = DatePickerDialog(this,
-                { p0, year, month, day ->
-                    binding.startDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
-                }, year, month, day)
-            dig.show()
-        }
-
-        binding.finishDateTextView.setOnClickListener{
-            val dig = DatePickerDialog(this,
-                { p0, year, month, day ->
-                    binding.finishDateTextView.text = "$year. ${if(month + 1 < 10) "0" + (month + 1) else  (month + 1)}. ${if(day < 10) "0" + day else day}"
-                }, year, month, day)
-            dig.show()
-        }
-    }
-
     private fun getPrice() {
-        val priceBtn = binding.priceButton
+        val priceBtn = binding.conferPriceButton
         priceBtn.setOnClickListener {
             val dialog = PriceDialog(this)
             dialog.setOnOkClickedListener{ price->
@@ -379,6 +378,7 @@ class EditConferenceActivity() : AppCompatActivity() {
         super.onBackPressed()
         val intent = Intent(this, ShowConferenceDetailActivity::class.java)
         intent.putExtra("position", pos)
+        Toast.makeText(this, "편집 취소", Toast.LENGTH_SHORT).show()
         startActivity(intent)
         finish()
     }

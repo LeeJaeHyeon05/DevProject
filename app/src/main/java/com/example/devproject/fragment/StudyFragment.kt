@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.activity.study.AddStudyActivity
 import com.example.devproject.databinding.FragmentStudyBinding
 import com.example.devproject.others.DBType
-import com.example.devproject.others.StudyListAdapter
+import com.example.devproject.adapter.StudyListAdapter
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
+import com.example.devproject.util.UIHandler
 
 class StudyFragment : Fragment() {
     private var mBinding : FragmentStudyBinding? = null
@@ -28,6 +29,9 @@ class StudyFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        UIHandler.mainActivity?.supportActionBar?.title = "그룹 스터디"
+
         val binding = FragmentStudyBinding.inflate(inflater, container, false)
         mBinding = binding
 

@@ -6,6 +6,14 @@
     app:startDestination="@id/homeFragment">
 
     <fragment
+        android:id="@+id/headhuntingFragment"
+        android:name="com.example.devproject.fragment.HeadhuntingFragment"
+        android:label="fragment_headhunting"
+        tools:layout="@layout/fragment_headhunting"
+        >
+    </fragment>
+
+    <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.devproject.fragment.HomeFragment"
         android:label="fragment_home"

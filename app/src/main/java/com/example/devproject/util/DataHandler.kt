@@ -4,8 +4,10 @@ import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.example.devproject.R
+import com.example.devproject.format.ConferenceInfo
+import com.example.devproject.format.StudyInfo
 import com.example.devproject.format.UserInfo
+import com.example.devproject.fragment.HeadhuntingFragment
 import com.example.devproject.fragment.HomeFragment
 import com.example.devproject.fragment.StudyFragment
 import com.example.devproject.others.DBType
@@ -20,8 +22,15 @@ class DataHandler {
     companion object {
 
         var imageDataSet : MutableList<Array<File>> = emptyList<Array<File>>().toMutableList()
-        var conferDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
-        var studyDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
+        var studyDataSet : MutableList<StudyInfo> = emptyList<StudyInfo>().toMutableList()
+        var headhuntingDataSet : MutableList<Array<Any>> = emptyList<Array<Any>>().toMutableList()
+        var conferDataSet : MutableList<ConferenceInfo> = emptyList<ConferenceInfo>().toMutableList()
+
+
+        var conferenceNotiDeviceIDList : MutableList<String> = emptyList<String>().toMutableList()
+        var studyNotiDeviceIDList : MutableList<String> = emptyList<String>().toMutableList()
+        var headhuntingUserList : MutableList<String> = emptyList<String>().toMutableList()
+
         var userInfo = UserInfo()
 
         val filterList : MutableList<Any> = mutableListOf(0)
@@ -35,51 +44,91 @@ class DataHandler {
             when(type){
                 DBType.CONFERENCE -> {
                     FirebaseIO.readPublic("conferenceDocument").addOnSuccessListener { result ->
-                        run {
-                            conferDataSet.clear()
-                            for (document in result) {
-                                conferDataSet.add(arrayOf(                   //index
-                                    document.data["uploader"] as String,     //0
-                                    document.data["title"] as String,        //1
-                                    document.data["date"] as String,         //2
-                                    document.data["price"] as Long,           //3
-                                    document.data["offline"] as Boolean,     //4
-                                    document.data["conferenceURL"] as String,//5
-                                    document.data["content"] as String,       //6
-                                    document.data["uid"] as String,
-                                    document.data["documentID"] as String,
-                                    document.data["image"] as MutableList<*>,
-                                    document.data["startDate"] as String,   //10
-                                    document.data["finishDate"] as String,   //11
-                                    document.data["place"] as String //12
-                                )
-                                )
-                            }
+                        conferDataSet.clear()
+                        for (document in result) {
+                            conferDataSet.add(
+                                    ConferenceInfo(
+                                        uploader =  document.data["uploader"] as String,     //0
+                                        title =  document.data["title"] as String,        //1
+                                        date =  document.data["date"] as String,         //2
+                                        price =  document.data["price"] as Long,           //3
+                                        offline = document.data["offline"] as Boolean,     //4
+                                        conferenceURL = document.data["conferenceURL"] as String,//5
+                                        content = document.data["content"] as String,       //6
+                                        uid = document.data["uid"] as String,
+                                        documentID =  document.data["documentID"] as String,
+                                        image = document.data["image"] as MutableList<Uri>,
+                                        startDate = document.data["startDate"] as String,   //10
+                                        finishDate = document.data["finishDate"] as String,   //11
+                                        place = document.data["place"] as String, //12
+                                        manager = document.data["manager"] as Boolean
+                                    )
+                            )
                         }
                     }
                 }
+
                 DBType.STUDY -> {
                     FirebaseIO.readPublic("groupstudyDocument").addOnSuccessListener { result ->
                         studyDataSet.clear()
                         for (document in result) {
-                            studyDataSet.add(arrayOf(
-                                document.data["ongoing"] as Boolean,
-                                document.data["uploader"] as String,
-                                document.data["title"] as String,
-                                document.data["content"] as String,
-                                document.data["offline"] as Boolean,
-                                document.data["studyURL"] as String,
-                                document.data["totalMember"] as Long,
-                                document.data["remainingMemeber"] as Long,
-                                document.data["language"] as MutableList<String>,
-                                document.data["documentID"] as String,
-                                document.data["uid"] as String
+                            studyDataSet.add(
+                                StudyInfo(
+                                ongoing = document.data["ongoing"] as Boolean,
+                                uploader = document.data["uploader"] as String,
+                                title = document.data["title"] as String,
+                                content = document.data["content"] as String,
+                                offline = document.data["offline"] as Boolean,
+                                studyURL = document.data["studyURL"] as String,
+                                totalMember =  document.data["totalMember"] as Long,
+                                remainingMemeber = document.data["remainingMemeber"] as Long,
+                                language = document.data["language"] as MutableList<String>,
+                                documentID = document.data["documentID"] as String,
+                                uid = document.data["uid"] as String,
+                                endDate = document.data["endDate"] as String
                             )
                             )
                         }
                     }
 
                 }
+
+                DBType.HEADHUNTING -> {
+                        FirebaseIO.db.collection("UserInfo").get().addOnSuccessListener { result->
+                            for(document in result){
+                                if( headhuntingUserList.contains(document.id)){
+                                    headhuntingDataSet.add(arrayOf(
+                                        document.data["position"] as Long,
+                                        document.data["email"] as String,
+                                    )
+                                    )
+                                }
+                            }
+                        }
+                }
+            }
+        }
+
+        fun loadNotiInformation(){
+            FirebaseIO.readPublic("onesignalInfo").addOnSuccessListener {
+                result->
+                for (document in result){
+                    when(document.id){
+                        "conferenceNotification" -> {
+                            conferenceNotiDeviceIDList = document.data["deviceID"] as MutableList<String>
+                        }
+                        "studyNotification" -> {
+                            studyNotiDeviceIDList = document.data["deviceID"] as MutableList<String>
+                        }
+                    }
+                }
+            }
+        }
+
+        fun loadHeadhuntingInformation() {
+            headhuntingUserList.clear()
+            FirebaseIO.db.collection("etc").document("headhunting").get().addOnSuccessListener {
+                headhuntingUserList = it["users"] as MutableList<String>
             }
         }
 
@@ -90,25 +139,27 @@ class DataHandler {
                     FirebaseIO.readPublic("conferenceDocument").addOnSuccessListener { result ->
                         run {
                             for (document in result) {
-                                conferDataSet.add(arrayOf(                   //index
-                                    document.data["uploader"] as String,     //0
-                                    document.data["title"] as String,        //1
-                                    document.data["date"] as String,         //2
-                                    document.data["price"] as Long,           //3
-                                    document.data["offline"] as Boolean,     //4
-                                    document.data["conferenceURL"] as String,//5
-                                    document.data["content"] as String,       //6
-                                    document.data["uid"] as String,
-                                    document.data["documentID"] as String,
-                                    document.data["image"] as MutableList<*>,
-                                    document.data["startDate"] as String,   //10
-                                    document.data["finishDate"] as String,   //11
-                                    document.data["place"] as String //12
-                                )
+                                conferDataSet.add(
+                                    ConferenceInfo(
+                                        uploader =  document.data["uploader"] as String,     //0
+                                        title =  document.data["title"] as String,        //1
+                                        date =  document.data["date"] as String,         //2
+                                        price =  document.data["price"] as Long,           //3
+                                        offline = document.data["offline"] as Boolean,     //4
+                                        conferenceURL = document.data["conferenceURL"] as String,//5
+                                        content = document.data["content"] as String,       //6
+                                        uid = document.data["uid"] as String,
+                                        documentID =  document.data["documentID"] as String,
+                                        image = document.data["image"] as MutableList<Uri>,
+                                        startDate = document.data["startDate"] as String,   //10
+                                        finishDate = document.data["finishDate"] as String,   //11
+                                        place = document.data["place"] as String, //12
+                                        manager = document.data["manager"] as Boolean
+                                    )
                                 )
                             }
                         }.run {
-                              HomeFragment.adapter!!.notifyDataSetChanged()
+                              HomeFragment.adapterConference!!.notifyDataSetChanged()
                         }
                     }
                 }
@@ -118,24 +169,44 @@ class DataHandler {
                             studyDataSet.clear()
                             for (document in result) {
                                 studyDataSet.add(
-                                    arrayOf(
-                                        document.data["ongoing"] as Boolean,
-                                        document.data["uploader"] as String,
-                                        document.data["title"] as String,
-                                        document.data["content"] as String,
-                                        document.data["offline"] as Boolean,
-                                        document.data["studyURL"] as String,
-                                        document.data["totalMember"] as Long,
-                                        document.data["remainingMemeber"] as Long,
-                                        document.data["language"] as MutableList<String>,
-                                        document.data["documentID"] as String,
-                                        document.data["uid"] as String
+                                    StudyInfo(
+                                        ongoing = document.data["ongoing"] as Boolean,
+                                        uploader = document.data["uploader"] as String,
+                                        title = document.data["title"] as String,
+                                        content = document.data["content"] as String,
+                                        offline = document.data["offline"] as Boolean,
+                                        studyURL = document.data["studyURL"] as String,
+                                        totalMember =  document.data["totalMember"] as Long,
+                                        remainingMemeber = document.data["remainingMemeber"] as Long,
+                                        language = document.data["language"] as MutableList<String>,
+                                        documentID = document.data["documentID"] as String,
+                                        uid = document.data["uid"] as String,
+                                        endDate = document.data["endDate"] as String
                                     )
                                 )
                             }
                         }.run {
                             StudyFragment.adapter!!.notifyDataSetChanged()
                         }
+                    }
+                }
+
+                DBType.HEADHUNTING->{
+                        FirebaseIO.db.collection("UserInfo").get().addOnSuccessListener { result ->
+                            run {
+                                for (document in result) {
+                                    if (headhuntingUserList.contains(document.id)) {
+                                        headhuntingDataSet.add(
+                                            arrayOf(
+                                                document.data["position"] as Long,
+                                                document.data["email"] as String
+                                            )
+                                        )
+                                    }
+                                }
+                            }
+                    }.run {
+                        HeadhuntingFragment.adapter!!.notifyDataSetChanged()
                     }
                 }
             }
@@ -148,22 +219,27 @@ class DataHandler {
                     FirebaseIO.readPublic("conferenceDocument", filterList).addOnSuccessListener { result ->
                         run {
                             for (document in result) {
-                                conferDataSet.add(arrayOf(                   //index
-                                    document.data["uploader"] as String,     //0
-                                    document.data["title"] as String,        //1
-                                    document.data["date"] as String,         //2
-                                    document.data["price"] as Long,           //3
-                                    document.data["offline"] as Boolean,     //4
-                                    document.data["conferenceURL"] as String,//5
-                                    document.data["content"] as String,       //6
-                                    document.data["uid"] as String,
-                                    document.data["documentID"] as String,
-                                    document.data["image"] as MutableList<*>
-                                )
+                                conferDataSet.add(
+                                    ConferenceInfo(
+                                        uploader =  document.data["uploader"] as String,     //0
+                                        title =  document.data["title"] as String,        //1
+                                        date =  document.data["date"] as String,         //2
+                                        price =  document.data["price"] as Long,           //3
+                                        offline = document.data["offline"] as Boolean,     //4
+                                        conferenceURL = document.data["conferenceURL"] as String,//5
+                                        content = document.data["content"] as String,       //6
+                                        uid = document.data["uid"] as String,
+                                        documentID =  document.data["documentID"] as String,
+                                        image = document.data["image"] as MutableList<Uri>,
+                                        startDate = document.data["startDate"] as String,   //10
+                                        finishDate = document.data["finishDate"] as String,   //11
+                                        place = document.data["place"] as String, //12
+                                        manager = document.data["manager"] as Boolean
+                                    )
                                 )
                             }
                         }.run {
-                            HomeFragment.adapter!!.notifyDataSetChanged()
+                            HomeFragment.adapterConference!!.notifyDataSetChanged()
                         }
                     }
                 }
@@ -173,16 +249,19 @@ class DataHandler {
                             studyDataSet.clear()
                             for (document in result) {
                                 studyDataSet.add(
-                                    arrayOf(
-                                        document.data["ongoing"] as Boolean,
-                                        document.data["uploader"] as String,
-                                        document.data["title"] as String,
-                                        document.data["offline"] as Boolean,
-                                        document.data["studyURL"] as String,
-                                        document.data["totalMember"] as Long,
-                                        document.data["remainingMemeber"] as Long,
-                                        document.data["documentID"] as String,
-                                        document.data["uid"] as String
+                                    StudyInfo(
+                                        ongoing = document.data["ongoing"] as Boolean,
+                                        uploader = document.data["uploader"] as String,
+                                        title = document.data["title"] as String,
+                                        content = document.data["content"] as String,
+                                        offline = document.data["offline"] as Boolean,
+                                        studyURL = document.data["studyURL"] as String,
+                                        totalMember =  document.data["totalMember"] as Long,
+                                        remainingMemeber = document.data["remainingMemeber"] as Long,
+                                        language = document.data["language"] as MutableList<String>,
+                                        documentID = document.data["documentID"] as String,
+                                        uid = document.data["uid"] as String,
+                                        endDate = document.data["endDate"] as String
                                     )
                                 )
                             }
@@ -203,7 +282,9 @@ class DataHandler {
                 DBType.STUDY->{
                     studyDataSet.clear()
                 }
-                else->{}
+                DBType.HEADHUNTING -> {
+                    headhuntingDataSet.clear()
+                }
             }
 
         }
@@ -215,6 +296,13 @@ class DataHandler {
                 .addOnSuccessListener {
                     for(document in it){
                         userInfo.id = document["id"] as String
+                        //userInfo.position = document["position"] as Long
+                        try{
+                            userInfo.languages = document["languages"] as MutableList<String>
+                        }catch (e : Exception){
+                            userInfo.languages = emptyList<String>().toMutableList()
+                        }
+
                     }
                 }
                 .addOnFailureListener{
