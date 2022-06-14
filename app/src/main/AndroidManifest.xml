@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DevProject">
         <activity
+            android:name=".chat.ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.conference.ShowDetailImage"
             android:exported="false" />
 
@@ -35,7 +38,7 @@
         </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".activity.account.LoginActivity"
             android:exported="false" />

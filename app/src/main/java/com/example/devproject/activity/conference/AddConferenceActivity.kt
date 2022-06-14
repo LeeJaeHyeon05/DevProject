@@ -209,22 +209,22 @@ class AddConferenceActivity() : AppCompatActivity() {
 
             if(checkInput(conference)){
                 //태그를 태그이름/conferenceNoti/idList형태로 추가
-                if(chipList.isNotEmpty()){
-                    for(i in chipList.indices){
-
-                        val ref = db.collection("language").document(chipList[i])
-
-                        ref.addSnapshotListener { value, error ->
-                            if(value?.exists() == true){
-                                Log.d("TAG", "already set db")
-                            }
-                            else{
-                                db.collection("language").document(chipList[i]).set(init)
-                                Log.d("TAG", "set new db now")
-                            }
-                        }
-                    }
-                }
+//                if(chipList.isNotEmpty()){
+//                    for(i in chipList.indices){
+//
+//                        val ref = db.collection("language").document(chipList[i])
+//
+//                        ref.addSnapshotListener { value, error ->
+//                            if(value?.exists() == true){
+//                                Log.d("TAG", "already set db")
+//                            }
+//                            else{
+//                                db.collection("language").document(chipList[i]).set(init)
+//                                Log.d("TAG", "set new db now")
+//                            }
+//                        }
+//                    }
+//                }
 
                 var deviceIDs = ""
                 DataHandler.conferenceNotiDeviceIDList.forEachIndexed { index, s ->
@@ -238,20 +238,20 @@ class AddConferenceActivity() : AppCompatActivity() {
                 if(storageWrite("conferenceDocument", documentId, snapshotImage, imageList, conference)){
                     Toast.makeText(this, "업로드했어요!", Toast.LENGTH_SHORT).show()
                     //Notification
-//                    try {
-//                        OneSignal.postNotification("{'headings' : {'en' : '신규 컨퍼런스'}, 'contents': {'en':'${conference.title}'}, 'include_player_ids': [${deviceIDs}]}",
-//                            object : PostNotificationResponseHandler {
-//                                override fun onSuccess(response: JSONObject) {
-//                                    Log.i("OneSignalExample", "postNotification Success: $response")
-//                                }
-//
-//                                override fun onFailure(response: JSONObject) {
-//                                    Log.e("OneSignalExample", "postNotification Failure: $response")
-//                                }
-//                            })
-//                    } catch (e: JSONException) {
-//                        e.printStackTrace()
-//                    }
+                    try {
+                        OneSignal.postNotification("{'headings' : {'en' : '신규 컨퍼런스'}, 'contents': {'en':'${conference.title}'}, 'include_player_ids': [${deviceIDs}]}",
+                            object : PostNotificationResponseHandler {
+                                override fun onSuccess(response: JSONObject) {
+                                    Log.i("OneSignalExample", "postNotification Success: $response")
+                                }
+
+                                override fun onFailure(response: JSONObject) {
+                                    Log.e("OneSignalExample", "postNotification Failure: $response")
+                                }
+                            })
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
 
                     CoroutineScope(Dispatchers.Main).launch {
                         DataHandler.reload(DBType.CONFERENCE)
