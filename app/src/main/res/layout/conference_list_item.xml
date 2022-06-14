@@ -95,13 +95,12 @@
             app:layout_constraintStart_toEndOf="@+id/textView3"
             app:layout_constraintTop_toBottomOf="@+id/conferPreContentTextView" />
 
-        <com.google.android.material.chip.Chip
+        <com.google.android.material.chip.ChipGroup
             android:id="@+id/languageChip"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
+            android:layout_height="35dp"
             android:background="@color/buttonColor"
-            android:text="코틀린"
-            android:visibility="invisible"
+            android:text=""
             app:chipBackgroundColor="@color/buttonColor"
             app:layout_constraintStart_toStartOf="@+id/conferPreTitleTextView"
             app:layout_constraintTop_toBottomOf="@+id/conferPreStartDateTextView" />
