@@ -30,11 +30,11 @@ class EditProfileActivity : AppCompatActivity() {
         var adapter = PositionListAdapter(typedArray, DataHandler.userInfo.position!!.toInt())
         positionSelectRecyclerView?.adapter = adapter
 
-        binding.profileEditDoneButton.setOnClickListener {
-            UIHandler.profileImageView?.setImageDrawable(typedArray.getDrawable(adapter.convertKeyToIndex()))
-            FirebaseIO.db.collection("UserInfo").document(DataHandler.userInfo.id.toString()).update("position", adapter.convertKeyToIndex().toLong())
-            finish()
-        }
+//        binding.profileEditDoneButton.setOnClickListener {
+//            UIHandler.profileImageView?.setImageDrawable(typedArray.getDrawable(adapter.convertKeyToIndex()))
+//            FirebaseIO.db.collection("UserInfo").document(DataHandler.userInfo.id.toString()).update("position", adapter.convertKeyToIndex().toLong())
+//            finish()
+//        }
     }
 
     private fun convertIndexToString(index : Int) : String{

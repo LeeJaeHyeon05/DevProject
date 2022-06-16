@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -26,6 +27,7 @@ import com.example.devproject.dialog.PriceDialog
 import com.example.devproject.format.ConferenceInfo
 import com.example.devproject.others.DBType
 import com.example.devproject.adapter.ImageViewAdapter
+import com.example.devproject.dialog.BasicDialog
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO.Companion.storageWrite
 import com.example.devproject.util.OneSignalUtil
@@ -49,6 +51,89 @@ class AddConferenceActivity() : AppCompatActivity() {
     lateinit var viewModel: ImageCounterViewModel
     private lateinit var imageAdapter: ImageViewAdapter
     private var checkOffline = false
+    private val imageList = ArrayList<Uri>()
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.actionbar_register_menu, menu)
+        return true
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
+            R.id.registerButton -> {
+                val dialog = BasicDialog(this, "정말 등록할까요?")
+                dialog.activate()
+                dialog.okButton?.setOnClickListener {
+                    //editText 불러오기
+                    val conTitle = binding.addConTitle.text.toString()
+                    val conContent = binding.addConDetail.text.toString()
+                    val link = binding.addConLink.text.toString()
+
+                    val exceptWon = binding.priceTextView.text.split(" ")
+
+                    val price: Long = if(exceptWon[0] == "무료" || exceptWon[0] == ""){
+                        0
+                    } else Integer.parseInt(exceptWon[0]).toLong()
+
+                    val tag = binding.conferChipGroup.toString()
+
+                    //월 불러오기
+                    val documentId = "document" + ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS")).toString()
+                    val uid = FirebaseAuth.getInstance().uid
+
+                    val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
+
+                    val conferenceInfo = ConferenceInfo(
+                        conferenceURL = link,
+                        content = conContent,
+                        date = binding.startDateTextView.text.toString(),
+                        offline = !binding.conferOnlineCheckBox.isChecked,
+                        place = binding.ETConferenceGeo.text.toString(),
+                        price = price,
+                        title = conTitle,
+                        documentID = documentId,
+                        uploader = DataHandler.userInfo.id,
+                        image = imageList,
+                        uid = uid,
+                        startDate =  binding.startDateTextView.text.toString(),
+                        finishDate =  binding.finishDateTextView.text.toString(),
+                        manager = binding.conferManagerCheckBox.isChecked
+                    )
+
+
+
+                    if(checkInput(conferenceInfo)){
+
+                        var deviceIDs = ""
+                        DataHandler.conferenceNotiDeviceIDList.forEachIndexed { index, s ->
+                            deviceIDs += if(index + 1 == DataHandler.conferenceNotiDeviceIDList.size ){
+                                "'${s}'"
+                            }else{
+                                "'${s}', "
+                            }
+                        }
+
+                        if(storageWrite("conferenceDocument", documentId, snapshotImage, imageList, conferenceInfo)){
+                            Toast.makeText(this, "등록했어요!", Toast.LENGTH_SHORT).show()
+                            //Notification
+                            OneSignalUtil.post("신규 컨퍼런스", conferenceInfo.title, deviceIDs)
+                            CoroutineScope(Dispatchers.Main).launch {
+                                DataHandler.reload(DBType.CONFERENCE)
+                            }
+                            finish()
+                        }
+                    }else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -64,7 +149,7 @@ class AddConferenceActivity() : AppCompatActivity() {
         var longitude = 0.0
         val mGeocoder = Geocoder(this, Locale.getDefault())
         var list = mutableListOf<Address>()
-        val imageList = ArrayList<Uri>()
+
         val imageRecyclerView = binding.addConferenceImageRecyclerView
 
         setDatePrice()
@@ -151,67 +236,6 @@ class AddConferenceActivity() : AppCompatActivity() {
             }
         }
 
-        binding.addConButton.setOnClickListener {
-            //editText 불러오기
-            val conTitle = binding.addConTitle.text.toString()
-            val conContent = binding.addConDetail.text.toString()
-            val link = binding.addConLink.text.toString()
-
-            val exceptWon = binding.priceTextView.text.split(" ")
-
-            val price: Long = if(exceptWon[0] == "무료" || exceptWon[0] == ""){
-                0
-            } else Integer.parseInt(exceptWon[0]).toLong()
-
-            val tag = binding.conferChipGroup.toString()
-
-            //월 불러오기
-            val documentId = "document" + ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS")).toString()
-            val uid = FirebaseAuth.getInstance().uid
-
-            val snapshotImage = findViewById<ImageView>(R.id.IvMapSnapshot)
-
-            val conferenceInfo = ConferenceInfo(
-                conferenceURL = link,
-                content = conContent,
-                date = binding.startDateTextView.text.toString(),
-                offline = !binding.conferOnlineCheckBox.isChecked,
-                place = binding.ETConferenceGeo.text.toString(),
-                price = price,
-                title = conTitle,
-                documentID = documentId,
-                uploader = DataHandler.userInfo.id,
-                image = imageList,
-                uid = uid,
-                startDate =  binding.startDateTextView.text.toString(),
-                finishDate =  binding.finishDateTextView.text.toString(),
-                manager = binding.conferManagerCheckBox.isChecked
-            )
-
-
-
-            if(checkInput(conferenceInfo)){
-
-                var deviceIDs = ""
-                DataHandler.conferenceNotiDeviceIDList.forEachIndexed { index, s ->
-                    deviceIDs += if(index + 1 == DataHandler.conferenceNotiDeviceIDList.size ){
-                        "'${s}'"
-                    }else{
-                        "'${s}', "
-                    }
-                }
-
-                if(storageWrite("conferenceDocument", documentId, snapshotImage, imageList, conferenceInfo)){
-                    Toast.makeText(this, "업로드했어요!", Toast.LENGTH_SHORT).show()
-                    //Notification
-                    OneSignalUtil.post("신규 컨퍼런스", conferenceInfo.title, deviceIDs)
-                    CoroutineScope(Dispatchers.Main).launch {
-                        DataHandler.reload(DBType.CONFERENCE)
-                    }
-                    finish()
-                }
-            }else Toast.makeText(this, "빈칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun setDatePrice(){
@@ -287,17 +311,6 @@ class AddConferenceActivity() : AppCompatActivity() {
                 validateDateString(conference.finishDate) == true &&
                 validateString(conference.title) == true &&
                 validateString(conference.uploader) == true && validateLong(conference.price) && validateString(conference.image.toString()) == true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            android.R.id.home -> {
-                finish()
-                return true
-            }
-            else ->
-                return super.onOptionsItemSelected(item)
-        }
     }
 
     private fun getPrice() {
