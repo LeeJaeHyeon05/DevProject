@@ -1,6 +1,5 @@
 package com.example.devproject.activity.study
 
-import android.content.Intent
 import android.content.res.TypedArray
 import android.os.Build
 import android.os.Bundle

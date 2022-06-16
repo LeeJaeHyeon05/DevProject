@@ -2,11 +2,17 @@ package com.example.devproject.activity.account
 
 import android.R
 import android.content.res.TypedArray
+import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.devproject.adapter.PositionListAdapter
 import com.example.devproject.databinding.ActivityEditProfileBinding
+import com.example.devproject.dialog.BasicDialog
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.UIHandler
@@ -14,6 +20,30 @@ import com.example.devproject.util.UIHandler
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditProfileBinding
+    private lateinit var typedArray : TypedArray
+    private lateinit var adapter : PositionListAdapter
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(com.example.devproject.R.menu.actionbar_edit_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId){
+            R.id.home -> {
+                finish()
+                return true
+            }
+
+            com.example.devproject.R.id.editButton -> {
+            UIHandler.profileImageView?.setImageDrawable(typedArray.getDrawable(adapter.convertKeyToIndex()))
+            FirebaseIO.db.collection("UserInfo").document(DataHandler.userInfo.id.toString()).update("position", adapter.convertKeyToIndex().toLong())
+            finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,17 +54,11 @@ class EditProfileActivity : AppCompatActivity() {
         UIHandler.positionTextView = binding.positionTextView
 
 
-        var typedArray : TypedArray = resources.obtainTypedArray(com.example.devproject.R.array.position_array)
+        typedArray = resources.obtainTypedArray(com.example.devproject.R.array.position_array)
         var positionSelectRecyclerView = binding.positionSelectRecyclerView
         positionSelectRecyclerView?.layoutManager = LinearLayoutManager(this.baseContext, LinearLayoutManager.HORIZONTAL, false)
-        var adapter = PositionListAdapter(typedArray, DataHandler.userInfo.position!!.toInt())
+        adapter = PositionListAdapter(typedArray, DataHandler.userInfo.position!!.toInt())
         positionSelectRecyclerView?.adapter = adapter
-
-//        binding.profileEditDoneButton.setOnClickListener {
-//            UIHandler.profileImageView?.setImageDrawable(typedArray.getDrawable(adapter.convertKeyToIndex()))
-//            FirebaseIO.db.collection("UserInfo").document(DataHandler.userInfo.id.toString()).update("position", adapter.convertKeyToIndex().toLong())
-//            finish()
-//        }
     }
 
     private fun convertIndexToString(index : Int) : String{

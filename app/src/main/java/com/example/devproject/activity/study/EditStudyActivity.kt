@@ -35,7 +35,7 @@ class EditStudyActivity : AppCompatActivity() {
     var adapter : LanguageListAdapter? = null
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.actionbar_register_menu, menu)
+        menuInflater.inflate(R.menu.actionbar_edit_menu, menu)
         return true
     }
 
@@ -48,7 +48,7 @@ class EditStudyActivity : AppCompatActivity() {
                 return true
             }
 
-            R.id.registerButton -> {
+            R.id.editButton -> {
                 val dialog = BasicDialog(this, "편집할까요?")
                 dialog.activate()
                 dialog.okButton?.setOnClickListener {

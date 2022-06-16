@@ -37,17 +37,12 @@ import com.example.devproject.adapter.ImageViewAdapter
 import com.example.devproject.dialog.BasicDialog
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.FirebaseIO
-import com.example.devproject.util.OneSignalUtil
 import com.example.devproject.util.UIHandler
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -65,7 +60,7 @@ class EditConferenceActivity() : AppCompatActivity() {
     private lateinit var snapshotImage : ImageView
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.actionbar_register_menu, menu)
+        menuInflater.inflate(R.menu.actionbar_edit_menu, menu)
         return true
     }
 
@@ -78,7 +73,7 @@ class EditConferenceActivity() : AppCompatActivity() {
                 return true
             }
 
-            R.id.registerButton -> {
+            R.id.editButton -> {
                 val dialog = BasicDialog(this, "편집할까요?")
                 dialog.activate()
                 dialog.okButton?.setOnClickListener {
