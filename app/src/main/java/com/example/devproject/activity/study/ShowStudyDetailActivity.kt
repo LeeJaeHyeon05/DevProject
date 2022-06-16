@@ -53,7 +53,7 @@ class ShowStudyDetailActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if(FirebaseIO.isValidAccount() && (FirebaseAuth.getInstance().uid == studyDataSet[intent.getIntExtra("position", 0)].uploader.toString())) {
+        if(FirebaseIO.isValidAccount() && (FirebaseAuth.getInstance().uid == studyDataSet[intent.getIntExtra("position", 0)].uid)) {
             if(studyDataSet[intent.getIntExtra("position", 0)].ongoing == true){
                 menuInflater.inflate(R.menu.actionbar_study_menu, menu)
             }else{
