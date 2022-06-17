@@ -13,11 +13,13 @@ import android.text.Editable
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.devproject.R
 import com.example.devproject.activity.MapActivity
@@ -36,6 +38,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -163,8 +166,9 @@ class AddConferenceActivity() : AppCompatActivity() {
                 0
             } else Integer.parseInt(exceptWon[0]).toLong()
 
-            val tag = binding.conferChipGroup.toString()
 
+            val chipEditText = binding.addClip
+            val editString = chipEditText.text.toString()
             //월 불러오기
             val documentId = "document" + ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmSS")).toString()
             val uid = FirebaseAuth.getInstance().uid
@@ -185,7 +189,8 @@ class AddConferenceActivity() : AppCompatActivity() {
                 uid = uid,
                 startDate =  binding.startDateTextView.text.toString(),
                 finishDate =  binding.finishDateTextView.text.toString(),
-                manager = binding.conferManagerCheckBox.isChecked
+                manager = binding.conferManagerCheckBox.isChecked,
+                tag = editString
             )
 
 
@@ -229,10 +234,15 @@ class AddConferenceActivity() : AppCompatActivity() {
         val chipEdiText = binding.addClip
         val chipAddButton = binding.addChipButton
         val chipGroup = binding.conferChipGroup
-        val chipCountText = binding.tagNumberTextView
+
+        val tagNumText  = binding.tagNumberTextView
+        var countNum = 0
+        tagNumText.setText("현재 갯수는 ${countNum} 입니다.")
+
 
         //만약 editText 없다면
         chipAddButton.setOnClickListener {
+            countNum++
             val editString = chipEdiText.text.toString()
             if (editString.isEmpty()) {
                 Toast.makeText(this, "내용을 추가해주세요", Toast.LENGTH_SHORT).show()
@@ -244,27 +254,29 @@ class AddConferenceActivity() : AppCompatActivity() {
                     setChipIconResource(R.drawable.ic_baseline_code_24)
                     setOnCloseIconClickListener {
                         chipGroup.removeView(this)
+                        countNum--
                     }
                 })
             }
-        }
-        //이 밑에 파트를 갯수 파트로 변경 예정
-        chipCountText.text
-        val chipList = ArrayList<String>()
-        for (i: Int in 1..chipGroup.childCount) {
-            val chip: Chip = chipGroup.getChildAt(i - 1) as Chip
-            chipList.add(chip.text.toString())
+            val tagId = chipGroup.checkedChipId
+            if (tagId == tagId) {
+                Toast.makeText(this, "같은 태그가 있어요", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        var output = "count: ${chipList.size}\n"
-        for (i in chipList) {
-            output += "$i / "
-        }
-        showToast(output)
 
-    }
-    private fun showToast(message: String) {
-        Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+
+//        val tagNum = binding.tagNumberTextView
+//        val chipList = ArrayList<String>()
+//        tagNum.text = "현재 갯수는 ${chipList.size}입니다"
+//        for (i : Int in 1..binding.conferChipGroup.childCount) {
+//            val chip : Chip? = binding.conferChipGroup.getChildAt(i - 1) as? Chip
+//            chipList.add(chip?.text.toString())
+//        }
+//        var output : Int = chipList.size
+//        for (i in chipList) {
+//           output + "$i / "
+//        }
     }
 
     private fun checkInput(conference: ConferenceInfo): Boolean{
