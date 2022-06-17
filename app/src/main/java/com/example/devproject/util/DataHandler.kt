@@ -61,7 +61,8 @@ class DataHandler {
                                         startDate = document.data["startDate"] as String,   //10
                                         finishDate = document.data["finishDate"] as String,   //11
                                         place = document.data["place"] as String, //12
-                                        manager = document.data["manager"] as Boolean
+                                        manager = document.data["manager"] as Boolean,
+                                        tag = document.data["tag"] as String
                                     )
                             )
                         }

@@ -18,4 +18,5 @@ data class ConferenceInfo(
     var startDate : String = "",
     var finishDate : String  = "",
     var manager : Boolean  = false,
+    var tag : String = "",
 )

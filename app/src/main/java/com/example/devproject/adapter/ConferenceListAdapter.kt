@@ -18,6 +18,8 @@ import com.example.devproject.activity.conference.ShowConferenceDetailActivity
 import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.util.DataHandler
 import com.example.devproject.util.UIHandler
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 
 @RequiresApi(Build.VERSION_CODES.P)
 class ConferenceListAdapter() : RecyclerView.Adapter<ConferenceListAdapter.ViewHolder>() {
@@ -32,6 +34,8 @@ class ConferenceListAdapter() : RecyclerView.Adapter<ConferenceListAdapter.ViewH
         val conferPreFinishDateTextView : TextView = view.findViewById(R.id.conferPreFinishDateTextView)
         val conferPreContentTextView : TextView = view.findViewById(R.id.conferPreContentTextView)
         val conferPreCardView: CardView = view.findViewById(R.id.conferPreCardView)
+        val conferPreTag: Chip = view.findViewById(R.id.languageChip)
+        
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -74,7 +78,7 @@ class ConferenceListAdapter() : RecyclerView.Adapter<ConferenceListAdapter.ViewH
         viewHolder.conferPreCardView.setOnLongClickListener {
             true
         }
-
+        viewHolder.conferPreTag.text = DataHandler.conferDataSet[position].tag
     }
 
     override fun getItemCount() = DataHandler.conferDataSet.size
