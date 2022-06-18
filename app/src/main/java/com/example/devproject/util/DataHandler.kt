@@ -298,9 +298,9 @@ class DataHandler {
                         userInfo.id = document["id"] as String
                         //userInfo.position = document["position"] as Long
                         try{
-                            userInfo.languages = document["languages"] as MutableList<String>
+                            userInfo.language = document["language"] as MutableList<String>
                         }catch (e : Exception){
-                            userInfo.languages = emptyList<String>().toMutableList()
+                            userInfo.language = emptyList<String>().toMutableList()
                         }
 
                     }

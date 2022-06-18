@@ -28,6 +28,7 @@ class UIHandler {
         var languageNumberTextView : TextView? = null
         var positionTextView : TextView? = null
         var profileImageView : ImageView? = null
+        var languageSelectRecyclerView : RecyclerView? = null
 
         lateinit var viewModel: ImageCounterViewModel
         fun allocateUI(rootView: View, mainActivity: MainActivity) {

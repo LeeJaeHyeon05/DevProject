@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.devproject.adapter.LanguageListAdapter
+import com.example.devproject.adapter.LanguageListAdapter2
 import com.example.devproject.adapter.PositionListAdapter
 import com.example.devproject.databinding.ActivityEditProfileBinding
 import com.example.devproject.dialog.BasicDialog
@@ -21,7 +23,9 @@ class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditProfileBinding
     private lateinit var typedArray : TypedArray
-    private lateinit var adapter : PositionListAdapter
+    private lateinit var languageTypedArray: TypedArray
+    private lateinit var positionListAdapter : PositionListAdapter
+    private lateinit var languageListAdapter : LanguageListAdapter
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(com.example.devproject.R.menu.actionbar_edit_menu, menu)
@@ -29,7 +33,6 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when(item.itemId){
             R.id.home -> {
                 finish()
@@ -37,8 +40,11 @@ class EditProfileActivity : AppCompatActivity() {
             }
 
             com.example.devproject.R.id.editButton -> {
-            UIHandler.profileImageView?.setImageDrawable(typedArray.getDrawable(adapter.convertKeyToIndex()))
-            FirebaseIO.db.collection("UserInfo").document(DataHandler.userInfo.id.toString()).update("position", adapter.convertKeyToIndex().toLong())
+            UIHandler.profileImageView?.setImageDrawable(typedArray.getDrawable(positionListAdapter.convertKeyToIndex()))
+            UIHandler.languageSelectRecyclerView?.adapter = LanguageListAdapter2(languageListAdapter.getLanguageList())
+
+            FirebaseIO.db.collection("UserInfo").document(DataHandler.userInfo.id.toString()).update("language", languageListAdapter.getLanguageList())
+            FirebaseIO.db.collection("UserInfo").document(DataHandler.userInfo.id.toString()).update("position", positionListAdapter.convertKeyToIndex().toLong())
             finish()
             }
         }
@@ -47,6 +53,8 @@ class EditProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.title = "프로필 편집"
+
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -57,8 +65,14 @@ class EditProfileActivity : AppCompatActivity() {
         typedArray = resources.obtainTypedArray(com.example.devproject.R.array.position_array)
         var positionSelectRecyclerView = binding.positionSelectRecyclerView
         positionSelectRecyclerView?.layoutManager = LinearLayoutManager(this.baseContext, LinearLayoutManager.HORIZONTAL, false)
-        adapter = PositionListAdapter(typedArray, DataHandler.userInfo.position!!.toInt())
-        positionSelectRecyclerView?.adapter = adapter
+        positionListAdapter = PositionListAdapter(typedArray, DataHandler.userInfo.position!!.toInt())
+        positionSelectRecyclerView?.adapter = positionListAdapter
+
+        languageTypedArray = resources.obtainTypedArray(com.example.devproject.R.array.language_array)
+        var languageRecyclerView = binding.languageRecyclerView
+        languageRecyclerView?.layoutManager = LinearLayoutManager(this.baseContext, LinearLayoutManager.HORIZONTAL, false)
+        languageListAdapter = LanguageListAdapter(languageTypedArray, DataHandler.userInfo.language!!)
+        languageRecyclerView?.adapter = languageListAdapter
     }
 
     private fun convertIndexToString(index : Int) : String{
