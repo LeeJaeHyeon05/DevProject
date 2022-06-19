@@ -66,9 +66,9 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         //language list view
-        var languageSelectRecyclerView = binding.languageRecyclerView
-        languageSelectRecyclerView?.layoutManager = LinearLayoutManager(this.baseContext, LinearLayoutManager.HORIZONTAL, false)
-        languageSelectRecyclerView?.adapter = LanguageListAdapter2(userInfo.languages!!)
+        UIHandler.languageSelectRecyclerView = binding.languageRecyclerView
+        UIHandler.languageSelectRecyclerView?.layoutManager = LinearLayoutManager(this.baseContext, LinearLayoutManager.HORIZONTAL, false)
+        UIHandler.languageSelectRecyclerView?.adapter = LanguageListAdapter2(userInfo.language!!)
 
         conferenceNotiSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked) {

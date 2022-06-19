@@ -82,7 +82,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColorHint="#9A9A9A"
-            android:hint="내용"
             app:layout_constraintBottom_toTopOf="@id/detailTextInput"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
             app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
@@ -105,7 +104,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:textColorHint="#9A9A9A"
-            android:hint="내용"
             app:layout_constraintBottom_toTopOf="@id/conferenceLinkInput"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
             app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
@@ -133,7 +131,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:maxHeight="200dp"
-            android:hint="내용"
             android:textColorHint="#9A9A9A"
             app:layout_constraintEnd_toEndOf="@id/addConferenceGuideRight"
             app:layout_constraintStart_toStartOf="@id/addConferenceGuideLeft"
@@ -363,21 +360,6 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/addConButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/con_round"
-                android:backgroundTint="@color/white"
-                android:fontFamily="@font/jua_regular"
-                android:letterSpacing="-0.01"
-                android:padding="5dp"
-                android:text="@string/addConferenceText"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                tools:layout_editor_absoluteX="30dp" />
         </LinearLayout>
 
 

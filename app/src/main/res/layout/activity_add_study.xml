@@ -199,17 +199,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textView6"
             tools:listitem="@layout/language_list_item" />
 
-        <Button
-            android:id="@+id/addStudyButton"
-            style="@style/JuaButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/yellow_500"
-            android:text="모집글 등록하기"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/addStudyGuideRight"
-            app:layout_constraintStart_toStartOf="@+id/addStudyGuideLeft" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
