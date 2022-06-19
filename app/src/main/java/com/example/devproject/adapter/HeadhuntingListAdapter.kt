@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.R
 import com.example.devproject.others.PositionType
@@ -24,6 +25,7 @@ class HeadhuntingListAdapter : RecyclerView.Adapter<HeadhuntingListAdapter.ViewH
         var headhuntingPositionImageView : ImageView = view.findViewById(R.id.headhuntingPositionImageView)
         var headhuntingPositionTextView : TextView = view.findViewById(R.id.headhuntingPositionTextView)
         var headhuntingEmailImageButton : ImageButton = view.findViewById(R.id.headhuntingEmailImageButton)
+        var headhuntingLanguageRecyclerView : RecyclerView = view.findViewById(R.id.headhuntingLanguageRecyclerView)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -33,9 +35,14 @@ class HeadhuntingListAdapter : RecyclerView.Adapter<HeadhuntingListAdapter.ViewH
         context = view.context
         return ViewHolder(view)
     }
+
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.headhuntingPositionImageView.setImageResource(convertIntToDrawable(headhuntingDataSet[position][0].toString().toInt()))
         viewHolder.headhuntingPositionTextView.text = convertIntToPosition(headhuntingDataSet[position][0].toString().toInt())
+
+        viewHolder.headhuntingLanguageRecyclerView.layoutManager = LinearLayoutManager(this.context, RecyclerView.HORIZONTAL, false)
+        viewHolder.headhuntingLanguageRecyclerView.adapter = LanguageListAdapter2(headhuntingDataSet[position][2] as MutableList<String>)
+
         viewHolder.headhuntingEmailImageButton.setOnClickListener {
             var email = Intent(Intent.ACTION_SEND)
             email.type = "plain/text"

@@ -15,14 +15,12 @@ class ShowWebViewActivity : AppCompatActivity(){
         supportActionBar?.hide()
 
         val webView : WebView = findViewById(R.id.conferWebView)
-        MobileAds.initialize(this) {}
+        MobileAds.initialize(this)
 
         val mAdView : AdView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
         val conferenceURL = this.intent.getStringExtra("conferenceURL")
         webView.loadUrl(conferenceURL!!)
-
     }
-
 }

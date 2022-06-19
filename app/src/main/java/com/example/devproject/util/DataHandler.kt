@@ -100,7 +100,8 @@ class DataHandler {
                                     headhuntingDataSet.add(arrayOf(
                                         document.data["position"] as Long,
                                         document.data["email"] as String,
-                                    )
+                                        document.data["language"] as MutableList<String>
+                                        )
                                     )
                                 }
                             }
@@ -199,7 +200,8 @@ class DataHandler {
                                         headhuntingDataSet.add(
                                             arrayOf(
                                                 document.data["position"] as Long,
-                                                document.data["email"] as String
+                                                document.data["email"] as String,
+                                                document.data["language"] as MutableList<String>
                                             )
                                         )
                                     }
