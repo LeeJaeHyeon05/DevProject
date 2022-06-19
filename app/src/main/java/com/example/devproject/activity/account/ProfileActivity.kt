@@ -126,7 +126,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun logout(){
         FirebaseAuth.getInstance().signOut()
-        DataHandler.userInfo = UserInfo()
+        userInfo = UserInfo()
         Toast.makeText(this, "로그아웃 되었습니다", Toast.LENGTH_SHORT).show()
         startActivity(Intent(this, MainActivity::class.java))
         finish()

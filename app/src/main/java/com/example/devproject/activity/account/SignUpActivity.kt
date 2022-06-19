@@ -26,16 +26,22 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class SignUpActivity : AppCompatActivity() {
+    lateinit var menu : Menu
     lateinit var binding : ActivitySignUpBinding
     private lateinit var  auth: FirebaseAuth
     private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.actionbar_signup_menu, menu)
+        if (menu != null) {
+            this.menu = menu
+        }
+        showOverflowMenu(false)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
         when(item.itemId) {
             R.id.nextButton -> {
                 supportFragmentManager.beginTransaction()
@@ -43,7 +49,15 @@ class SignUpActivity : AppCompatActivity() {
                     .commit()
             }
         }
+
         return super.onOptionsItemSelected(item)
+    }
+
+    fun showOverflowMenu(flag : Boolean){
+        if(menu == null){
+            return
+        }
+        menu.setGroupVisible(R.id.menu_group, flag)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -168,7 +182,7 @@ class SignUpActivity : AppCompatActivity() {
 //        })
 
         auth = Firebase.auth
-
+//        showOverflowMenu(false)
 //        binding.BtnSinUp.setOnClickListener {
 //            if(binding.TvFieldInputPassword.text.length > 20){
 //                Toast.makeText(this, "비밀번호는 20자리 이하여야 합니다", Toast.LENGTH_SHORT).show()

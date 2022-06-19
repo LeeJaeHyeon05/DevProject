@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:title="다음"
-        android:id="@+id/nextButton"
-        app:showAsAction="always"
-        />
+    <group
+        android:id="@+id/menu_group">
+        <item
+            android:title="다음"
+            android:id="@+id/nextButton"
+            app:showAsAction="always"
+            />
+    </group>
+
 </menu>

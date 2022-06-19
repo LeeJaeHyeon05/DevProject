@@ -77,8 +77,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="주력 언어 선택"
-        app:layout_constraintTop_toTopOf="@+id/GuidelineTop"
-        tools:layout_editor_absoluteX="41dp" />
+        app:layout_constraintStart_toStartOf="@+id/GuidelineLeft"
+        app:layout_constraintTop_toTopOf="@+id/GuidelineTop" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/languageRecyclerView"
