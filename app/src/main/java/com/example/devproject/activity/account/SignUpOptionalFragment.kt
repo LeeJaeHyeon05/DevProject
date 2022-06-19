@@ -1,18 +1,35 @@
 package com.example.devproject.activity.account
 
+import android.content.res.TypedArray
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.devproject.R
+import com.example.devproject.adapter.LanguageListAdapter
+import com.example.devproject.databinding.FragmentSignUpNecessaryBinding
+import com.example.devproject.databinding.FragmentSignUpOptionalBinding
 
 class SignUpOptionalFragment : Fragment() {
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_sign_up_optional, null)
+
+        val binding = FragmentSignUpOptionalBinding.inflate(inflater, container, false)
+
+        //language list view
+        var typedArray : TypedArray = resources.obtainTypedArray(R.array.language_array)
+        var languageSelectRecyclerView = binding.languageRecyclerView
+        languageSelectRecyclerView?.layoutManager = LinearLayoutManager(activity?.baseContext, LinearLayoutManager.HORIZONTAL, false)
+        var adapter = LanguageListAdapter(typedArray, null)
+        languageSelectRecyclerView?.adapter = adapter
+
+        return binding?.root
     }
 }

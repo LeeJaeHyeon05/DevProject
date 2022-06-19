@@ -9,13 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.devproject.R
+import com.example.devproject.databinding.FragmentHeadhuntingBinding
 import com.example.devproject.databinding.FragmentSignUpNecessaryBinding
 import com.example.devproject.util.UIHandler.Companion.signUpOptionalFragment
 
 class SignUpNecessaryFragment : Fragment() {
-
-    private var mBinding : FragmentSignUpNecessaryBinding? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,7 +21,9 @@ class SignUpNecessaryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        mBinding.TvFieldInputId.addTextChangedListener(object: TextWatcher {
+        val binding = FragmentSignUpNecessaryBinding.inflate(inflater, container, false)
+
+        binding.TvFieldInputId.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -119,17 +119,16 @@ class SignUpNecessaryFragment : Fragment() {
                 else{
                     binding.TextLayoutPasswordConfirm.helperText = null
 
-                    println("비밀번호가 일치합니다!!!!")
+                    activity?.supportFragmentManager?.beginTransaction()
+                        ?.replace(R.id.fragmentContainerView, signUpOptionalFragment)
+                        ?.commit()
                 }
             }
 
         })
 
 
-        activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.fragmentContainerView, signUpOptionalFragment)
-            ?.commit()
-
-        return inflater.inflate(R.layout.fragment_sign_up_necessary, null)
+        return binding?.root
     }
+
 }
