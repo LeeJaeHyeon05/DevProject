@@ -12,6 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView"
+            android:name="com.example.devproject.activity.account.SignUpNecessaryFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/GuidelineLeft"
             android:layout_width="wrap_content"

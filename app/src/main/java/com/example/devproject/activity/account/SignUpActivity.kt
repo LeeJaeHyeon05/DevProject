@@ -1,5 +1,6 @@
 package com.example.devproject.activity.account
 
+import android.app.Activity
 import android.content.Intent
 import android.content.res.TypedArray
 import androidx.appcompat.app.AppCompatActivity
@@ -7,29 +8,52 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.devproject.R
 import com.example.devproject.util.FirebaseIO
 import com.example.devproject.util.KeyboardVisibilityUtils
 import com.example.devproject.format.UserInfo
-import com.example.devproject.databinding.ActivitySignUpAcitivtyBinding
 import com.example.devproject.adapter.LanguageListAdapter
+import com.example.devproject.util.UIHandler
+import com.example.devproject.util.UIHandler.Companion.signUpNecessaryFragment
+import com.example.devproject.util.UIHandler.Companion.signUpOptionalFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class SignUpActivity : AppCompatActivity() {
-
-    lateinit var binding: ActivitySignUpAcitivtyBinding
+    lateinit var binding: com.example.devproject.databinding.ActivitySignUpBinding
     private lateinit var  auth: FirebaseAuth
     private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.actionbar_signup_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.nextButton -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, signUpOptionalFragment)
+                    .commit()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         supportActionBar?.title = "회원가입"
 
-        binding = ActivitySignUpAcitivtyBinding.inflate(layoutInflater)
+        signUpNecessaryFragment = SignUpNecessaryFragment()
+        signUpOptionalFragment = SignUpOptionalFragment()
+
+        binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         keyboardVisibilityUtils = KeyboardVisibilityUtils(window,
@@ -119,7 +143,6 @@ class SignUpActivity : AppCompatActivity() {
                     binding.TextLayoutPassword.helperText = "비밀번호는 6자리 이상 20자리 이하여야합니다"
                 }
             }
-
         })
 
         binding.TvFieldInputPasswordConfirm.addTextChangedListener(object: TextWatcher{
@@ -143,6 +166,8 @@ class SignUpActivity : AppCompatActivity() {
                 }
                 else{
                     binding.TextLayoutPasswordConfirm.helperText = null
+
+                    println("비밀번호가 일치합니다!!!!")
                 }
             }
 

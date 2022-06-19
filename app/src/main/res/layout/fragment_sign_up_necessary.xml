@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/GuidelineLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/GuidelineRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/GuidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/GuidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/GuidelineMiddle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.11" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/GuidelineMiddle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.43" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputLayoutStyle"
+        android:id="@+id/TextLayoutId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:helperTextEnabled="true"
+        app:helperTextTextColor="@color/textInputErrorColor"
+        app:layout_constraintStart_toStartOf="@id/GuidelineLeft"
+        app:layout_constraintEnd_toEndOf="@id/GuidelineRight"
+        app:layout_constraintTop_toTopOf="@id/GuidelineTop">
+
+        <EditText
+            style="@style/TextInputEditTextStyle"
+            android:id="@+id/TvFieldInputId"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="아이디 입력"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputLayoutStyle"
+        android:id="@+id/TextLayoutEmail"
+        android:layout_marginTop="20dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        app:helperTextEnabled="true"
+        app:helperTextTextColor="@color/textInputErrorColor"
+        app:layout_constraintStart_toStartOf="@id/GuidelineLeft"
+        app:layout_constraintEnd_toEndOf="@id/GuidelineRight"
+        app:layout_constraintTop_toBottomOf="@id/TextLayoutId">
+
+        <EditText
+            style="@style/TextInputEditTextStyle"
+            android:id="@+id/TvFieldInputEmail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/black"
+            android:hint="이메일 입력"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputLayoutStyle"
+        android:id="@+id/TextLayoutPassword"
+        android:layout_marginTop="20dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        app:helperTextEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
+        app:counterTextColor="@color/textInputErrorColor"
+        app:helperTextTextColor="@color/textInputErrorColor"
+        app:layout_constraintStart_toStartOf="@id/GuidelineLeft"
+        app:layout_constraintEnd_toEndOf="@id/GuidelineRight"
+        app:layout_constraintTop_toBottomOf="@id/TextLayoutEmail">
+
+        <EditText
+            style="@style/TextInputEditTextStyle"
+            android:inputType="textPassword"
+            android:id="@+id/TvFieldInputPassword"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="비밀번호 입력"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputLayoutStyle"
+        android:id="@+id/TextLayoutPasswordConfirm"
+        android:layout_marginTop="20dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        app:helperTextEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
+        app:counterTextColor="@color/textInputErrorColor"
+        app:helperTextTextColor="@color/textInputErrorColor"
+        app:layout_constraintStart_toStartOf="@id/GuidelineLeft"
+        app:layout_constraintEnd_toEndOf="@id/GuidelineRight"
+        app:layout_constraintTop_toBottomOf="@id/TextLayoutPassword">
+
+        <EditText
+            style="@style/TextInputEditTextStyle"
+            android:id="@+id/TvFieldInputPasswordConfirm"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="비밀번호 재입력"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.adapter.ConferenceListAdapter
 import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
+import com.example.devproject.activity.account.SignUpNecessaryFragment
+import com.example.devproject.activity.account.SignUpOptionalFragment
 import com.example.devproject.activity.conference.ImageCounterViewModel
 import com.example.devproject.adapter.ImageViewAdapter
 
@@ -29,6 +31,8 @@ class UIHandler {
         var positionTextView : TextView? = null
         var profileImageView : ImageView? = null
         var languageSelectRecyclerView : RecyclerView? = null
+        lateinit var signUpNecessaryFragment : SignUpNecessaryFragment
+        lateinit var signUpOptionalFragment : SignUpOptionalFragment
 
         lateinit var viewModel: ImageCounterViewModel
         fun allocateUI(rootView: View, mainActivity: MainActivity) {
