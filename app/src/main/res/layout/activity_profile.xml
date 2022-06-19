@@ -35,8 +35,18 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/languageRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                tools:listitem="@layout/language_list_item"/>
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/language_list_item">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <ImageView
+                android:id="@+id/gitLinkImageView"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="5dp"
+                app:srcCompat="@drawable/logo_github" />
+
         </LinearLayout>
     </TableRow>
 

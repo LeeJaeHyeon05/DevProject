@@ -167,12 +167,12 @@ class SignUpActivity : AppCompatActivity() {
                             auth.createUserWithEmailAndPassword(binding.TvFieldInputEmail.text.toString(), binding.TvFieldInputPassword.text.toString())
                                 .addOnCompleteListener(this){ task ->
                                     if(task.isSuccessful){
-
                                         val userInfo = UserInfo(
                                             uid = auth.uid,
                                             id = binding.TvFieldInputId.text.toString(),
                                             Email = binding.TvFieldInputEmail.text.toString(),
-                                            language = adapter.getLanguageList()
+                                            language = adapter.getLanguageList(),
+                                            gitLink = binding.gitLinkEditText.text.toString(),
                                         )
                                         FirebaseIO.write("UserInfo", binding.TvFieldInputId.text.toString(), userInfo)
 

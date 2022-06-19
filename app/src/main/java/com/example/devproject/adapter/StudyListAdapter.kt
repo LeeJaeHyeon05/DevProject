@@ -65,9 +65,9 @@ class StudyListAdapter() : RecyclerView.Adapter<StudyListAdapter.ViewHolder>() {
         }
         viewHolder.remainingMemeberTextView.text = studyDataSet[position].remainingMemeber.toString() + "명 남음!"
 
-        viewHolder.languageRecyclerView2?.layoutManager =
+        viewHolder.languageRecyclerView2.layoutManager =
             LinearLayoutManager(this.context, RecyclerView.HORIZONTAL, false)
-        viewHolder.languageRecyclerView2?.adapter =
+        viewHolder.languageRecyclerView2.adapter =
             LanguageListAdapter2(studyDataSet[position].language!!)
         viewHolder.studyCardView.setOnClickListener {
             val intent = Intent(UIHandler.rootView?.context, ShowStudyDetailActivity::class.java)

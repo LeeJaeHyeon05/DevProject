@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
+import com.example.devproject.activity.ShowWebViewActivity
 import com.example.devproject.databinding.ActivityProfileBinding
 import com.example.devproject.format.UserInfo
 import com.example.devproject.adapter.LanguageListAdapter2
@@ -52,12 +53,16 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.title = userInfo.id + "의 프로필"
+        supportActionBar?.title = "내 프로필"
         UIHandler.profileImageView = binding.profileImageView
 
         var typedArray : TypedArray = resources.obtainTypedArray(R.array.position_array)
         binding.profileImageView.setImageDrawable(typedArray.getDrawable(userInfo.position!!.toInt()))
-
+        binding.gitLinkImageView.setOnClickListener {
+            val intent = Intent(baseContext, ShowWebViewActivity::class.java)
+            intent.putExtra("conferenceURL", userInfo.gitLink)
+            baseContext.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        }
 
         var userId =  OneSignal.getDeviceState()?.userId
         val conferenceNotiSwitch = binding.conferenceNotiSwitch

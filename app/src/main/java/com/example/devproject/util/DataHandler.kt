@@ -298,6 +298,7 @@ class DataHandler {
                 .addOnSuccessListener {
                     for(document in it){
                         userInfo.id = document["id"] as String
+                        userInfo.gitLink = document["gitLink"] as String
                         //userInfo.position = document["position"] as Long
                         try{
                             userInfo.language = document["language"] as MutableList<String>
