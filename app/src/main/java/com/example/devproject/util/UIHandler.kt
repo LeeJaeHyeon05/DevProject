@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.devproject.adapter.ConferenceListAdapter
 import com.example.devproject.R
 import com.example.devproject.activity.MainActivity
-import com.example.devproject.activity.account.SignUpNecessaryFragment
-import com.example.devproject.activity.account.SignUpOptionalFragment
+import com.example.devproject.fragment.SignUpNecessaryFragment
+import com.example.devproject.fragment.SignUpOptionalFragment
 import com.example.devproject.activity.conference.ImageCounterViewModel
 import com.example.devproject.adapter.ImageViewAdapter
 

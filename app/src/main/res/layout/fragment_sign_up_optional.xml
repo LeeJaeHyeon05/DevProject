@@ -89,7 +89,26 @@
         app:layout_constraintTop_toBottomOf="@+id/languageTextView"
         tools:listitem="@layout/language_list_item" />
 
-<!--    <Button-->
+    <Button
+        android:id="@+id/signUpPrevButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="앞으로"
+        app:layout_constraintBottom_toTopOf="@+id/sigunUpButton"
+        app:layout_constraintEnd_toStartOf="@+id/GuidelineRight"
+        app:layout_constraintStart_toStartOf="@+id/GuidelineLeft" />
+
+    <Button
+        android:id="@+id/sigunUpButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="가입하기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/GuidelineRight"
+        app:layout_constraintStart_toStartOf="@+id/GuidelineMiddle1" />
+
+    <!--    <Button-->
 <!--        android:id="@+id/BtnSinUp"-->
 <!--        android:layout_width="0dp"-->
 <!--        android:layout_height="wrap_content"-->

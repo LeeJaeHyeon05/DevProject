@@ -141,5 +141,15 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <Button
+        android:id="@+id/signUpNextButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="다음"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/GuidelineRight"
+        app:layout_constraintStart_toStartOf="@+id/GuidelineMiddle1" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,6 +31,7 @@ class DataHandler {
         var studyNotiDeviceIDList : MutableList<String> = emptyList<String>().toMutableList()
         var headhuntingUserList : MutableList<String> = emptyList<String>().toMutableList()
 
+        var signUpUserInfo = UserInfo()
         var userInfo = UserInfo()
 
         val filterList : MutableList<Any> = mutableListOf(0)
