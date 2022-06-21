@@ -56,8 +56,10 @@ class SignUpOptionalFragment : Fragment() {
         binding.sigunUpButton.setOnClickListener {
             DataHandler.signUpUserInfo.language = adapter.getLanguageList()
             DataHandler.signUpUserInfo.gitLink = binding.gitLinkEditText.text.toString()
+
             auth.createUserWithEmailAndPassword(DataHandler.signUpUserInfo.Email.toString(), password!!).addOnCompleteListener {
                 if(it.isSuccessful){
+                    DataHandler.signUpUserInfo.uid = auth.uid
                     FirebaseIO.write("UserInfo", DataHandler.signUpUserInfo.id.toString(), DataHandler.signUpUserInfo)
 
                     Toast.makeText(this.context, "회원가입 완료", Toast.LENGTH_SHORT).show()
