@@ -53,20 +53,20 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Deverence"
+        android:text="커밋"
         android:textColor="@color/black"
         android:textSize="70sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/splashGuideRight"
         app:layout_constraintStart_toStartOf="@id/splashGuideLeft"
-        app:layout_constraintTop_toBottomOf="@id/textView2"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/textView2" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Powered By Team Deverence"
+        android:text="Powered By Team DevProject"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/splashGuideRight"
         app:layout_constraintStart_toStartOf="@+id/splashGuideLeft" />

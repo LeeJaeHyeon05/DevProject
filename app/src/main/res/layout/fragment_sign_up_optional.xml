@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/GuidelineLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/GuidelineRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/GuidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/GuidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/GuidelineMiddle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.11" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/GuidelineMiddle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.43" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/gitLinkTextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:maxHeight="200dp"
+        android:textColorHint="#9A9A9A"
+        app:layout_constraintEnd_toStartOf="@+id/GuidelineRight"
+        app:layout_constraintStart_toStartOf="@+id/GuidelineLeft"
+        app:layout_constraintTop_toBottomOf="@+id/languageRecyclerView">
+
+        <EditText
+            android:id="@+id/gitLinkEditText"
+            style="@style/TextInputEditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|start"
+            android:hint="git 주소"
+            android:inputType="text|textMultiLine"
+            android:maxHeight="200dp"
+            android:scrollbars="vertical" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/languageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="주력 언어 선택"
+        app:layout_constraintStart_toStartOf="@+id/GuidelineLeft"
+        app:layout_constraintTop_toTopOf="@+id/GuidelineTop" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/languageRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        app:layout_constraintEnd_toStartOf="@+id/GuidelineRight"
+        app:layout_constraintStart_toStartOf="@+id/GuidelineLeft"
+        app:layout_constraintTop_toBottomOf="@+id/languageTextView"
+        tools:listitem="@layout/language_list_item" />
+
+    <Button
+        android:id="@+id/signUpPrevButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="앞으로"
+        app:layout_constraintBottom_toTopOf="@+id/sigunUpButton"
+        app:layout_constraintEnd_toStartOf="@+id/GuidelineRight"
+        app:layout_constraintStart_toStartOf="@+id/GuidelineLeft" />
+
+    <Button
+        android:id="@+id/sigunUpButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="가입하기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/GuidelineRight"
+        app:layout_constraintStart_toStartOf="@+id/GuidelineMiddle1" />
+
+    <!--    <Button-->
+<!--        android:id="@+id/BtnSinUp"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:backgroundTint="@color/white"-->
+<!--        android:text="가입하기"-->
+<!--        android:textAppearance="@style/JuaButton"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="18sp"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/gitLinkTextInputLayout"-->
+<!--        tools:layout_editor_absoluteX="41dp" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

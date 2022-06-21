@@ -31,6 +31,7 @@ class DataHandler {
         var studyNotiDeviceIDList : MutableList<String> = emptyList<String>().toMutableList()
         var headhuntingUserList : MutableList<String> = emptyList<String>().toMutableList()
 
+        var signUpUserInfo = UserInfo()
         var userInfo = UserInfo()
 
         val filterList : MutableList<Any> = mutableListOf(0)
@@ -100,7 +101,8 @@ class DataHandler {
                                     headhuntingDataSet.add(arrayOf(
                                         document.data["position"] as Long,
                                         document.data["email"] as String,
-                                    )
+                                        document.data["language"] as MutableList<String>
+                                        )
                                     )
                                 }
                             }
@@ -199,7 +201,8 @@ class DataHandler {
                                         headhuntingDataSet.add(
                                             arrayOf(
                                                 document.data["position"] as Long,
-                                                document.data["email"] as String
+                                                document.data["email"] as String,
+                                                document.data["language"] as MutableList<String>
                                             )
                                         )
                                     }
@@ -296,6 +299,7 @@ class DataHandler {
                 .addOnSuccessListener {
                     for(document in it){
                         userInfo.id = document["id"] as String
+                        userInfo.gitLink = document["gitLink"] as String
                         //userInfo.position = document["position"] as Long
                         try{
                             userInfo.language = document["language"] as MutableList<String>

@@ -12,7 +12,8 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp">
 
             <TextView
                 android:id="@+id/positionLabel"
@@ -41,12 +42,36 @@
             android:id="@+id/textView17"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
             android:text="주력 언어" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/languageRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/gitLinkTextInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:maxHeight="200dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textColorHint="#9A9A9A">
+
+            <EditText
+                android:id="@+id/gitLinkEditText"
+                style="@style/TextInputEditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|start"
+                android:hint="git 주소 입력"
+                android:inputType="text|textMultiLine"
+                android:maxHeight="200dp"
+                android:scrollbars="vertical" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 

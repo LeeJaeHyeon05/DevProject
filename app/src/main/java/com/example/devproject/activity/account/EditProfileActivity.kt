@@ -43,8 +43,16 @@ class EditProfileActivity : AppCompatActivity() {
             UIHandler.profileImageView?.setImageDrawable(typedArray.getDrawable(positionListAdapter.convertKeyToIndex()))
             UIHandler.languageSelectRecyclerView?.adapter = LanguageListAdapter2(languageListAdapter.getLanguageList())
 
-            FirebaseIO.db.collection("UserInfo").document(DataHandler.userInfo.id.toString()).update("language", languageListAdapter.getLanguageList())
-            FirebaseIO.db.collection("UserInfo").document(DataHandler.userInfo.id.toString()).update("position", positionListAdapter.convertKeyToIndex().toLong())
+            DataHandler.userInfo.language = languageListAdapter.getLanguageList()
+            DataHandler.userInfo.position = positionListAdapter.convertKeyToIndex().toLong()
+            DataHandler.userInfo.gitLink = binding.gitLinkEditText.text.toString()
+            println(DataHandler.userInfo.gitLink)
+
+            FirebaseIO.db.collection("UserInfo").document(DataHandler.userInfo.id.toString()).update("language", DataHandler.userInfo.language)
+            FirebaseIO.db.collection("UserInfo").document(DataHandler.userInfo.id.toString()).update("position",DataHandler.userInfo.position)
+            FirebaseIO.db.collection("UserInfo").document(DataHandler.userInfo.id.toString()).update("gitLink", DataHandler.userInfo.gitLink)
+
+            Toast.makeText(this, "수정했어요", Toast.LENGTH_SHORT).show()
             finish()
             }
         }
@@ -61,6 +69,7 @@ class EditProfileActivity : AppCompatActivity() {
         binding.positionTextView.text = convertIndexToString(DataHandler.userInfo.position!!.toInt())
         UIHandler.positionTextView = binding.positionTextView
 
+        binding.gitLinkEditText.setText(DataHandler.userInfo.gitLink)
 
         typedArray = resources.obtainTypedArray(com.example.devproject.R.array.position_array)
         var positionSelectRecyclerView = binding.positionSelectRecyclerView
